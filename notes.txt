@@ -1,0 +1,21 @@
+Parsing, tokens:
+commmand:
+binary + flags / arguments / file / string
+
+stdin-related:
+< redirect input 
+<< redirect input until delimiter
+
+stdout-related:
+> redirect output
+>> redirect output to file
+
+control operators:
+|| or
+&& and
+
+pipe:
+| pipe
+
+dollarsign:
+$ environment variables and exit status
