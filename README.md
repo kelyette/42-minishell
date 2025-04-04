@@ -1,5 +1,5 @@
 ## Changelog:
 
 04 April: Nguyen
-- input.h: - change token structure **int type;** -> **e_token_t type;**
-- add various files to Nguyen directory
+- input.h: - change token structure to make a linked list of token.
+- add various files to Nguyen directory.
