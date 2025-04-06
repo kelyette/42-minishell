@@ -11,7 +11,7 @@
     - Doesn't handle unclosed quotes because it is not a requirement
 - Lexer returns a linked list of tokens
 
-- Lexer doesn't handle variable assignment for now
+- Lexer doesn't handle variable assignment = and wildcard * for now
 
 
 04 April: Nguyen
