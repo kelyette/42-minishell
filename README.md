@@ -6,6 +6,7 @@
 - Token $ now is only created of $ is not followed by whitespace. 
     - "$ ?", $ is a string, ? is a string
     - "$?", $ is a $ token, ? is a string
+- Working history is now available
 - Bugs fix
 
 // Wildcard not handle.
