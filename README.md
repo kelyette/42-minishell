@@ -1,5 +1,18 @@
 ## Changelog:
 
+07 April: Nguyen
+- input.h: Created TK_Assign type to handle Assignment. eg: VAR=test or _VAR=test;
+- Lexer now creates token from Assignement string. A token would be of value "VAR=test" and type TK_Assign
+- Token $ now is only created of $ is not followed by whitespace. 
+    eg: - "$ ?", $ is a string, ? is a string
+        - "$?", $ is a $ token, ? is a string
+- Bugs fix
+
+- Wildcard not handle.
+  (Probably mbetter to handle it during the execution by looping through string to check for $ and *)
+
+  
+----------------
 06 April: Nguyen
 - input.h: Created more type of token
 - Lexer now creates token from single characters: >, <, |, $ 
@@ -13,7 +26,7 @@
 
 - Lexer doesn't handle variable assignment = and wildcard * for now
 
-
+----------------
 04 April: Nguyen
 - input.h: change token structure to make a linked list of token.
 - add various files to Nguyen directory.
