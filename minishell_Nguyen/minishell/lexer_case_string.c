@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/06 11:41:36 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/07 10:34:25 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,31 @@ t_token	*case_doublequote(t_token *token, char *line, int *count)
 	return (token);
 }
 
+// handle unquoted string, and assignment
+// FOR ASSIGNMENT: the assignment can only happen at the start of the command,
+// or with export. To manage during ast or execution.
 t_token	*case_string(t_token *token, char *line, int *count)
 {
-	while (line[*count] != ' ' && line[*count] != '\0')
-		(*count)++;
+	int	flag;
+
+	flag = 0;
+	if (ft_isalphabet(line[0]) || line[0] == '_')
+	{
+		while (line[*count] != ' ' && line[*count] != '\0')
+		{
+			if (line[*count] == '=' && line[*count + 1] != ' ')
+				flag = 1;
+			(*count)++;
+		}
+	}
+	else
+	{
+		while (line[*count] != ' ' && line[*count] != '\0')
+			(*count)++;
+	}
 	token->type = TK_String;
+	if (flag == 1)
+		token->type = TK_Assign;
 	token->str = ft_substring(line, *count);
 	if (token->str == NULL)
 		return (NULL);
