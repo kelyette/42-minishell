@@ -6,14 +6,16 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:54:15 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/02 11:30:56 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/03 13:13:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	process(char **argv)
 {
 	pid_t	pid;
+	int		child_stat;
 
 	pid = fork();
 	if (pid == 0)
+		wait(&child_stat); 
 }

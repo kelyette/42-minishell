@@ -9,7 +9,7 @@ INCDIR       := include
 OBJDIR       := target
 RLLIBDIR     ?= /opt/homebrew/Cellar/readline/8.2.13# TODO
 
-SRC          := minishell.c init.c prompt_handler.c
+SRC          := minishell.c ast_parser.c ast_node.c ast_utils.c
 OBJ          := $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 
 LIBFLAGS     := -I$(RLLIBDIR)/include -L$(RLLIBDIR)/lib -lreadline# TODO

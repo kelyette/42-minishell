@@ -1,0 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast_node.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 15:24:55 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/04/08 05:06:16 by kcsajka          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ast.h"
+
+t_node	*create_node(int type)
+{
+	t_node	*node;
+
+	node = calloc(1, sizeof(t_node)); // TODO replace forbidden func
+	node->type = type;
+	return (node);
+}
+
+t_node	*create_parent(int type, t_node *lchild, t_node *rchild)
+{
+	t_node	*node;
+
+	node = create_node(type);
+	node->lnode = lchild;
+	node->rnode = rchild;
+	return (node);
+}
+
+void	free_tree(t_node *root)
+{
+	if (root->lnode)
+		free_tree(root->lnode);
+	if (root->rnode)
+		free_tree(root->rnode);
+	free(root);
+}

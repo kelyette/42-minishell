@@ -1,0 +1,4 @@
+extra/
+target/
+minishell
+*.o
