@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:46:05 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/10 16:24:50 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:35:07 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	lexer(char *line, t_token **head)
 	{
 		while (ft_isspace(line[i]))
 			i++;
-		if (line[i] == '$' && !ft_isspace(line[i + 1]) && line[i + 1] != '\0')
+		if (line[i] == '$' && !ft_isspace(line[i + 1]) && line[i + 1] != '\0'
+			&& line[i + 1] != '<' && line[i + 1] != '>' && line[i + 1] != '|')
 		{
 			if (case_single_char(head, line[i]) == NULL)
 				return (ft_lstclear(head), 1);

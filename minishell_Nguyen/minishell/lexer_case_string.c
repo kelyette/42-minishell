@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/10 16:17:16 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:42:34 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,12 @@ void	case_string_helper1(t_token **token, char *line, int *count)
 			break ;
 		}
 		else if ((line[*count + 1] == '<' && line[*count + 2] != '<')
-			|| (line[*count + 1] == '>' && line[*count + 2] != '>'))
-		{
-			if (line[*count + 1] == '<' && line[*count + 2] != '<')
-				(*token)->type = TK_In;
-			else if (line[*count + 1] == '>' && line[*count + 2] != '>')
-				(*token)->type = TK_Out;
-			*count += 2;
-			break ;
-		}
-		else if ((line[*count + 1] == '<' && line[*count + 2] == '<')
+			|| (line[*count + 1] == '>' && line[*count + 2] != '>')
+			|| (line[*count + 1] == '<' && line[*count + 2] == '<')
 			|| (line[*count + 1] == '>' && line[*count + 2] == '>'))
 		{
-			case_string_helper2(token, line, count);
+			(*token)->type = TK_Number;
+			(*count)++;
 			break ;
 		}
 		(*count)++;

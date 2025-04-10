@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/10 16:28:43 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:46:32 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,20 @@
 # define GROUP2     32
 # define GROUP3     48
 
-enum	e_token_t
+enum    e_token_t
 {
-	TK_Null,// 0
-	TK_String = 1,// 1
-	TK_Assign = 2,// 2
-	TK_USD = 3,// 5
-	TK_In = GROUP1 | 1,// 3
-	TK_Out = GROUP1 | 2,// 4
-	TK_HereDoc = GROUP1 | 3,// 6
-	TK_Append = GROUP1 | 4,// 7
-	TK_Pipe = GROUP2 | 1,// 8
-	TK_And = GROUP3 | 1,// 9
-	TK_Or = GROUP3 | 2,// 10
+    TK_Null, // 0
+    TK_String, //= 1,// 1
+    TK_Assign, //= 2,// 2
+    TK_USD, //= 3,// 3
+    TK_In, //= GROUP1 | 1,// 17
+    TK_Out, //= GROUP1 | 2,// 18
+    TK_HereDoc, //= GROUP1 | 3,// 19
+    TK_Append, //= GROUP1 | 4,// 20
+    TK_Pipe, //= GROUP2 | 1,// 33
+    TK_And, //= GROUP3 | 1,// 49
+    TK_Or, //= GROUP3 | 2,// 50
+    TK_Number,
 };
 
 typedef struct s_token

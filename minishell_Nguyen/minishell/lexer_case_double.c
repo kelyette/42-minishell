@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 22:15:44 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/06 11:38:31 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:23:21 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	case_append(t_token *token)
 
 void	case_heredoc(t_token *token)
 {
-	token->type = TK_Heredoc;
+	token->type = TK_HereDoc;
 	token->str[0] = '<';
 	token->str[1] = '<';
 	token->str[2] = '\0';
