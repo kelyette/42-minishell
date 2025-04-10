@@ -1,5 +1,15 @@
 ## Changelog:
 
+10 April: Nguyen
+- input.h: Minor modifications to align with the parser
+- Fixed bug where $ alone is a token, it is now a string
+- Fixed bug where redirection tokens not created if there is no space before or after redirection
+    - eg: echo hello>>out.txt -> TK_String TK_String TK_Append TK_tring
+- Token is now correctly created to handle file descriptor precede redirection
+    - eg: 213>out.txt -> TK_Out TK_String
+    - eg: 87124<<text -> TK_HereDoc TK_String
+
+----------------
 07 April: Nguyen
 - input.h: Created TK_Assign type to handle Assignment. eg: VAR=test or _VAR=test;
 - Lexer now creates token from Assignement string. A token would be of value "VAR=test" and type TK_Assign
@@ -12,7 +22,6 @@
 // Wildcard not handle.
   (Probably better to handle it during the execution by looping through string to check for $ and *)
 
-  
 ----------------
 06 April: Nguyen
 - input.h: Created more type of token
