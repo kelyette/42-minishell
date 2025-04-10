@@ -8,6 +8,7 @@
 - Token is now correctly created to handle file descriptor precede redirection
     - eg: 213>out.txt -> TK_Out TK_String
     - eg: 87124<<text -> TK_HereDoc TK_String
+- Norminette est bonne
 
 ----------------
 07 April: Nguyen
