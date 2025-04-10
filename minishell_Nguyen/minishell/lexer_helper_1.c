@@ -6,11 +6,20 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:39:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/06 11:06:07 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:16:51 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "input.h"
+
+void	case_string_helper2(t_token **token, char *line, int *count)
+{
+	if (line[*count + 1] == '<' && line[*count + 2] == '<')
+		(*token)->type = TK_Heredoc;
+	else if (line[*count + 1] == '>' && line[*count + 2] == '>')
+		(*token)->type = TK_Append;
+	*count += 3;
+}
 
 // free individual node
 void	ft_lstdelone(t_token *lst)

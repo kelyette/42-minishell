@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/07 10:34:25 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:17:16 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,60 @@ t_token	*case_doublequote(t_token *token, char *line, int *count)
 	return (token);
 }
 
+void	case_string_helper1(t_token **token, char *line, int *count)
+{
+	while (ft_isnumber(line[*count]))
+	{
+		if (ft_isspace(line[*count + 1]) && !ft_isnumber(line[*count + 1]))
+		{
+			*count = 0;
+			break ;
+		}
+		else if ((line[*count + 1] == '<' && line[*count + 2] != '<')
+			|| (line[*count + 1] == '>' && line[*count + 2] != '>'))
+		{
+			if (line[*count + 1] == '<' && line[*count + 2] != '<')
+				(*token)->type = TK_In;
+			else if (line[*count + 1] == '>' && line[*count + 2] != '>')
+				(*token)->type = TK_Out;
+			*count += 2;
+			break ;
+		}
+		else if ((line[*count + 1] == '<' && line[*count + 2] == '<')
+			|| (line[*count + 1] == '>' && line[*count + 2] == '>'))
+		{
+			case_string_helper2(token, line, count);
+			break ;
+		}
+		(*count)++;
+	}
+}
+
 // handle unquoted string, and assignment
 // FOR ASSIGNMENT: the assignment can only happen at the start of the command,
 // or with export. To manage during ast or execution.
 t_token	*case_string(t_token *token, char *line, int *count)
 {
-	int	flag;
-
-	flag = 0;
-	if (ft_isalphabet(line[0]) || line[0] == '_')
+	token->type = TK_String;
+	case_string_helper1(&token, line, count);
+	if ((ft_isalphabet(line[0]) || line[0] == '_') && token->type == TK_String)
 	{
-		while (line[*count] != ' ' && line[*count] != '\0')
+		while (line[*count] != ' ' && line[*count] != '\0'
+			&& line[*count] != '<' && line[*count] != '>'
+			&& line[*count] != '|')
 		{
 			if (line[*count] == '=' && line[*count + 1] != ' ')
-				flag = 1;
+				token->type = TK_Assign;
 			(*count)++;
 		}
 	}
-	else
+	else if (ft_isprintable(line[0]) && token->type == TK_String)
 	{
-		while (line[*count] != ' ' && line[*count] != '\0')
+		while (line[*count] != ' ' && line[*count] != '\0'
+			&& line[*count] != '<' && line[*count] != '>'
+			&& line[*count] != '|')
 			(*count)++;
 	}
-	token->type = TK_String;
-	if (flag == 1)
-		token->type = TK_Assign;
 	token->str = ft_substring(line, *count);
 	if (token->str == NULL)
 		return (NULL);
