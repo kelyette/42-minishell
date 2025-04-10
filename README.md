@@ -6,8 +6,13 @@
 - Fixed bug where redirection tokens not created if there is no space before or after redirection
     - eg: echo hello>>out.txt -> TK_String TK_String TK_Append TK_tring
 - Token is now correctly created to handle file descriptor precede redirection
-    - eg: 213>out.txt -> TK_Out TK_String
-    - eg: 87124<<text -> TK_HereDoc TK_String
+    - eg: 213>out.txt -> TK_Number TK_Out TK_String
+    - eg: 87124<< text -> TK_Number TK_HereDoc TK_String
+    - eg: echo 3242 << text -> TK_String TK_String TK_HereDoc TK_String
+- Token $ now is only created of $ is not followed by whitespace, \0, <, > or |. 
+    - "$ ?", $ is a string, ? is a string
+    - "$|", $ is a string, | is a pipe
+    - "$?", $ is a $ token, ? is a string
 - Norminette est bonne
 
 ----------------
