@@ -2,6 +2,7 @@
 
 10 April: Nguyen
 - input.h: Minor modifications to align with the parser and add TK_Number
+    - IMPORTANT: TK_Number format is a String. So need to run atoi on it during execution
 - Fixed bug where $ alone is a token, it is now a string
 - Fixed bug where redirection tokens not created if there is no space before or after redirection
     - eg: echo hello>>out.txt -> TK_String TK_String TK_Append TK_tring
