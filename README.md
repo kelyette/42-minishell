@@ -8,8 +8,7 @@
 - The logic behind the executor is recursively apply the executor function to nodes.
     - The base cases are NT_Cmd and NT_Candidate (Assume to be null?)
     - The variable " i " serve as exit code. It should be initated outside the executor and is passed around using pointer.
- 
-Todo: pass the envp to executor and its child as well.
+- No error handling for now
 
 ----------------
 10 April: Nguyen
