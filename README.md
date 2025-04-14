@@ -1,5 +1,13 @@
 ## Changelog:
 
+14 April: Nguyen
+
+- Start of executor
+- The executor doesn't compile nor working. It is served as a complementary guideline to the [minishell flow](https://www.figma.com/board/Jq8jCcA387ejD9taclT17H/Minishell-flow?node-id=0-1&t=2iSGymJoeilHbcG0-1).
+  The executor will be reworked later.
+- The logic behind the executor is recursively apply the executor function to nodes. The base cases are NT_Cmd and NT_Candidate (Assume to be null?)
+
+----------------
 10 April: Nguyen
 - input.h: Minor modifications to align with the parser and add TK_Number
     - IMPORTANT: TK_Number format is a String. So need to run atoi on it during execution
