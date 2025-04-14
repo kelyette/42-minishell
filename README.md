@@ -5,7 +5,9 @@
 - Start of executor
 - The executor doesn't compile nor working. It is served as a complementary guideline to the [minishell flow](https://www.figma.com/board/Jq8jCcA387ejD9taclT17H/Minishell-flow?node-id=0-1&t=2iSGymJoeilHbcG0-1).
   The executor will be reworked later.
-- The logic behind the executor is recursively apply the executor function to nodes. The base cases are NT_Cmd and NT_Candidate (Assume to be null?)
+- The logic behind the executor is recursively apply the executor function to nodes.
+    - The base cases are NT_Cmd and NT_Candidate (Assume to be null?)
+    - The variable " i " serve as exit code. It should be initated outside the executor and is passed around using pointer.
 
 ----------------
 10 April: Nguyen
