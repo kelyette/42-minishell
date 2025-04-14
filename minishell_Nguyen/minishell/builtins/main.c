@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   case_command.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/14 12:02:25 by hoannguy         ###   ########.fr       */
+/*   Created: 2025/04/14 12:05:19 by hoannguy          #+#    #+#             */
+/*   Updated: 2025/04/14 12:16:45 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "buildins.h"
 
-void	case_cmd(t_node *tree, int *i, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-	/* code to execute command
 	
-	
-	
-	*/
 }

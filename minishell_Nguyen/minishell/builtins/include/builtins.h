@@ -1,22 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   case_command.c                                     :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/14 12:02:25 by hoannguy         ###   ########.fr       */
+/*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
+/*   Updated: 2025/04/14 12:05:12 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
+# include "minishell.h"
 
-void	case_cmd(t_node *tree, int *i, char **envp)
-{
-	/* code to execute command
-	
-	
-	
-	*/
-}
+#endif
