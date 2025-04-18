@@ -1,0 +1,48 @@
+-------------
+Unquoted String ($test):
+
+Variable Expansion: Like $test, the shell will expand the variable test to its value.
+
+Word Splitting: If the value of test contains spaces or special characters (like newlines), 
+the shell will split the value into separate words.
+
+Filename Expansion (Glob Expansion): The shell will also expand any patterns like * or ? in the value of the variable if present.
+hello 12"e"
+------------- 
+Double-Quoted String ("$test"):
+
+Variable Expansion: The value of test will still be expanded.
+
+No Word Splitting: Spaces or special characters in the value of test will not cause the value to be split into separate arguments.
+
+No Filename Expansion (Glob Expansion): No globbing will happen within the variable's value.
+
+-------------------------
+Special Characters You Are Required to Handle:
+These are covered in the subject and must be handled:
+
+Character	Meaning
+'	Single quote (disables all expansions)
+"	Double quote (allows $ expansion)
+$	Environment variable expansion
+<	Input redirection
+>	Output redirection
+<<	Here document
+>>	Output append redirection
+`	`
+?	$? → last exit code
+
+------------------------
+Special Characters You Are NOT Required to Handle (Optional/Out of Scope)
+These are considered “special” by bash, but you can ignore them in minishell unless you want bonus functionality:
+
+Character	Bash Meaning	Required?
+\	Escape next character (e.g. \n, \$)
+;	Command separator (e.g. ls; pwd)
+&	Background process (e.g. sleep 1 &)
+()	Subshell / grouping
+{}	Grouping / brace expansion
+*	Wildcard (e.g. *.txt)
+[ ]	Test expressions
+!	Logical NOT / history expansion
+~	Home directory shortcut
