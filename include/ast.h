@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:50:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/08 05:50:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/15 14:18:40 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,20 @@
 # define AST_H
 # include "minishell.h"
 # include "input.h"
+# define STERRBADTKN "minishell: unexpected token '%s'\n"
+# define STERREOL "minishell: unexpected end of line\n"
+
+enum	e_parse_error
+{
+	PE_OK,
+	PE_BadTkn,
+	PE_Internal
+};
 
 enum	e_node_t
 {
 	NT_Candidate = 0,
 	NT_Cmd = 1,
-	NT_Expand = TK_USD,
-	NT_Assign = TK_Assign,
 	NT_RdrOut = TK_Out,
 	NT_RdrAppn = TK_Append,
 	NT_RdrIn = TK_In,
@@ -30,37 +37,37 @@ enum	e_node_t
 	NT_Or = TK_Or,
 };
 
-typedef struct s_args
-{
-	char	**argv;
-	int		argc;
-}	t_args;
-
-union u_data
-{
-	t_args	*args;
-	char	*field;
-	t_token	*token;
-};
-
 typedef struct s_node
 {
 	int				type;
 	struct s_node	*lnode;
 	struct s_node	*rnode;
-	union u_data	data;
+	t_token			*data;
 }	t_node;
 
+typedef struct s_parse_ctx
+{
+	enum e_parse_error	error;
+	t_token				*tkn;
+}	t_pctx;
+
 // parsing
-t_node	*parse(t_token *tkn);
+int		parse(t_token *tkn, t_node **rootptr);
+int		handle_redir(t_pctx *ctx, t_node **nodeptr);
+int		handle_assign(t_pctx *ctx, t_node **nodeptr);
+int		handle_string(t_pctx *ctx, t_node **nodeptr);
 
 // node related
 t_node	*create_node(int type);
 t_node	*create_parent(int type, t_node *lchild, t_node *rchild);
-void	free_tree(t_node *root);
+void	free_tree(t_node **rootptr);
 
 // utils
-t_token	*expect_token(t_token *tkn, int type);
-int		append_tkn_copy(t_token *base, t_token *next);
+int		handle_err(t_pctx *ctx, enum e_parse_error err, t_node **rootptr);
+t_pctx	*set_err(t_pctx *ctx, int err);
+int		append_tkn_copy(t_pctx *ctx, t_token **head);
+
+// dev functions TODO
+void	print_tree(t_node *root);
 
 #endif
