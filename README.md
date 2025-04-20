@@ -8,8 +8,6 @@ Nguyen todo:
     - Signals in child processes.
 - Assign node
 - Wildcard *
-- Known bugs:
-    - "VAR= " without quotes and have whitespaces after = is not assigned as assignment.
 
 ----------------
 20 April: Nguyen
