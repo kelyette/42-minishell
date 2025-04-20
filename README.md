@@ -6,8 +6,12 @@ Nguyen todo:
     - Quotes trim and variable expansion for echo.
 - Signal:
     - Signals in child processes.
-- Assign node
-- Wildcard *
+- Assign:
+    - Assign can only at the start, or at second if export.
+    - Assign can be followed by cmd, in this case assign scope is local.
+    - If a variable that exist in env is assigned, it will replace the value in env.
+    - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
+- Wildcard *.
 
 ----------------
 20 April: Nguyen
