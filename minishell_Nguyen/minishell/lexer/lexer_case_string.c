@@ -75,7 +75,7 @@ t_token	*case_string(t_token *token, char *line, int *count)
 			&& line[*count] != '<' && line[*count] != '>'
 			&& line[*count] != '|')
 		{
-			if (line[*count] == '=' && line[*count + 1] != ' ')
+			if (line[*count] == '=')
 				token->type = TK_Assign;
 			(*count)++;
 		}
