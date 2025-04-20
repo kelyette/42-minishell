@@ -7,6 +7,7 @@ Nguyen todo:
 - Signal:
     - Signals in child processes.
 - Assign node
+- Wildcard *
 
 ----------------
 20 April: Nguyen
