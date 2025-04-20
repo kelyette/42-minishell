@@ -1,7 +1,27 @@
 ## Changelog:
 
+Nguyen todo:
+- Builtins: 
+    - cd, export, unset, exit.
+    - Quotes trim and variable expansion for echo.
+- Signal:
+    - Signals in child processes.
+- Assign node
+
+----------------
+20 April: Nguyen
+- Start of Builtins.
+- Now handle env.
+- Now handle pwd.
+- Now partially handle echo.
+    - Handle echo.
+    - Handle echo -n.
+    - Variable expansion $ isn't handled yet, waiting for Assignation component.
+    - Quotes not trimmed yet. 
+
+----------------
 18 April: Nguyen
-- Start of Signal
+- Start of Signal.
 - Now handle CTRL-C in main, which mean it correctly starts a new prompt on a new line.
     - CTRL-C behaves differently in child process (clean and kill the process). This will be handled later.
 - CTRL-\ is currently used to exit the minishell.
