@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/07 19:40:28 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/14 16:37:07 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 # define INPUT_H
 # include "minishell.h"
 # define GROUP_MASK 0b11110000
-# define GROUP1     16
-# define GROUP2     32
-# define GROUP3     48
+# define GRP_SIMPLE 0
+# define GRP_REDIR  16
+# define GRP_PIPE   32
+# define GRP_BIN    48
 
 enum	e_token_t
 {
-	TK_Null,// 0
-	TK_String = 1,// 1
-	TK_Assign = 2,// 2
-	TK_USD = 3,// 5
-	TK_In = GROUP1 | 1,// 3
-	TK_Out = GROUP1 | 2,// 4
-	TK_HereDoc = GROUP1 | 3,// 6
-	TK_Append = GROUP1 | 4,// 7
-	TK_Pipe = GROUP2 | 1,// 8
-	TK_And = GROUP3 | 1,// 9
-	TK_Or = GROUP3 | 2,// 10
+	TK_Null, // 0
+	TK_String = GRP_SIMPLE | 1,// 1
+	TK_Assign = GRP_SIMPLE | 2, // 2
+	TK_USD = GRP_SIMPLE | 3,// 3
+	TK_In = GRP_REDIR | 1,// 17
+	TK_Out = GRP_REDIR | 2,// 18
+	TK_HereDoc = GRP_REDIR | 3,// 19
+	TK_Append = GRP_REDIR | 4,// 20
+	TK_Pipe = GRP_PIPE | 1,// 33
+	TK_And = GRP_BIN | 1,// 49
+	TK_Or = GRP_BIN | 2,// 50
 };
 
 typedef struct s_token
@@ -52,5 +53,6 @@ int		lexer(char *line, t_token **head);
 t_token	**case_single_char(t_token **head, char character);
 t_token	**case_double_char(t_token **head, char character);
 t_token	**case_printable(t_token **head, char *line, int *count);
+void	case_string_helper2(t_token **token, char *line, int *count);
 
 #endif

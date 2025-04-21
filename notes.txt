@@ -1,9 +1,9 @@
 Parsing, tokens:
-commmand:
-binary + flags / arguments / file / string
+string
+binaries / arguments / paths / quoted strings
 
 stdin-related:
-< redirect input 
+< redirect input
 << redirect input until delimiter
 
 stdout-related:
@@ -19,3 +19,22 @@ pipe:
 
 dollarsign:
 $ environment variables and exit status
+
+|| && < << > >> |
+
+AST Nodes
+word
+WORD
+child nodes: WORD (optional)
+
+command
+CMD
+child nodes: WORD
+
+logical operators && ||
+AND, OR
+child nodes: ANY rnode, ANY lnode
+
+unary redirection > >> < <<
+REDIR_OUT, REDIR_APPEND, REDIR_IN, HERE_DOC
+child nodes: CMD cmd, WORD [path/delim]
