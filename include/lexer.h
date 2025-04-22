@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/21 16:57:50 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:42:59 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@
 enum	e_token_t
 {
 	TK_Null, // 0
-	TK_String = GRP_SIMPLE | 1,// 1
+	TK_String = GRP_SIMPLE | 1, // 1
 	TK_Assign = GRP_SIMPLE | 2, // 2
 	TK_USD = GRP_SIMPLE | 3,// 3
-	TK_In = GRP_REDIR | 1,// 17
-	TK_Out = GRP_REDIR | 2,// 18
-	TK_HereDoc = GRP_REDIR | 3,// 19
-	TK_Append = GRP_REDIR | 4,// 20
+	TK_Number = GRP_REDIR | 1, // 17
+	TK_In = GRP_REDIR | 2,// 18
+	TK_Out = GRP_REDIR | 3,// 19
+	TK_HereDoc = GRP_REDIR | 4,// 20
+	TK_Append = GRP_REDIR | 5,// 21
 	TK_Pipe = GRP_PIPE | 1,// 33
 	TK_And = GRP_BIN | 1,// 49
 	TK_Or = GRP_BIN | 2,// 50

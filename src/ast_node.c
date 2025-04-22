@@ -6,33 +6,30 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:24:55 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/10 16:48:36 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/21 17:32:03 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
-t_node	*create_node(int type)
+int	create_node(t_pctx *ctx, t_node **nodeptr, int type)
 {
-	t_node	*node;
-
-	node = calloc(1, sizeof(t_node)); // TODO replace forbidden func
-	if (!node)
-		return (perror("minishell: "), NULL);
-	node->type = type;
-	return (node);
+	*nodeptr = calloc(1, sizeof(t_node)); // TODO replace forbidden func
+	if (!*nodeptr)
+		return (set_err(ctx, PE_Internal), 1);
+	(*nodeptr)->type = type;
+	return (0);
 }
 
-t_node	*create_parent(int type, t_node *lchild, t_node *rchild)
+int	split_node(t_pctx *ctx, t_node **nodeptr, int type)
 {
 	t_node	*node;
 
-	node = create_node(type);
-	if (!node)
-		return (free_tree(&lchild), free_tree(&rchild), NULL);
-	node->lnode = lchild;
-	node->rnode = rchild;
-	return (node);
+	if (create_node(ctx, &node, type))
+		return (free_tree(nodeptr), 1);
+	node->lnode = *nodeptr;
+	*nodeptr = node;
+	return (0);
 }
 
 void	free_tree(t_node **rootptr)

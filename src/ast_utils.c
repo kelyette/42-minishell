@@ -6,25 +6,40 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:53:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/15 14:20:11 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:39:57 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
-int	handle_err(enum e_parse_error err, t_node **rootptr, t_token *ctx)
+void	print_err(t_pctx *ctx)
 {
-	if (err == PE_OK)
-		return (0);
-	free_tree(rootptr);
-	if (err == PE_BadTkn && (!ctx || !ctx->next))
-		return (printf(STERREOL), 1);
+	if (ctx->error == PE_OK)
+		return ;
+	else if (ctx->error == PE_UEOL || !ctx->tkn)
+		printf(STERREOL);
+	else if (ctx->error == PE_BadTkn)
+		printf(STERRBADTKN, ctx->tkn->str);
+	else if (ctx->error == PE_Internal)
+		perror("fatal: ");
 	else
-		return (printf(STERRBADTKN, ctx->next->str), 1);
-	return (perror("fatal: "), err);
+		printf("error: unknown error code %d\n", ctx->error);
 }
 
-int	append_tkn_copy(t_pctx *ctx, t_token **head)
+inline void	set_err(t_pctx *ctx, int err)
+{
+	if (ctx->error == PE_OK)
+		ctx->error = err;
+}
+
+t_token	*lst_getlast(t_token *head)
+{
+	while (head && head->next)
+		head = head->next;
+	return (head);
+}
+
+int	add_data(t_pctx *ctx, t_token **dataptr, t_token *val)
 {
 	t_token	*copy;
 	t_token	*tmp;
@@ -32,24 +47,16 @@ int	append_tkn_copy(t_pctx *ctx, t_token **head)
 	copy = malloc(sizeof(t_node));
 	if (!copy)
 		return (set_err(ctx, PE_Internal), 1);
-	*copy = *ctx->tkn;
+	*copy = *val;
 	copy->next = NULL;
-	if (!*head)
-		*head = copy;
+	if (!*dataptr)
+		*dataptr = copy;
 	else
 	{
-		tmp = *head;
-		while (tmp->next)
-			tmp = tmp->next;
+		tmp = lst_getlast(*dataptr);
 		tmp->next = copy;
 	}
 	return (0);
-}
-
-inline t_pctx	*set_err(t_pctx *ctx, int err)
-{
-	ctx->error = err;
-	return (ctx);
 }
 
 char	*tok2str(int type)
@@ -68,6 +75,8 @@ char	*tok2str(int type)
 			return "<<";
 		case TK_Append:
 			return ">>";
+		case TK_Pipe:
+			return "|";
 		case TK_And:
 			return "&&";
 		case TK_Or:
@@ -92,7 +101,7 @@ void	print_tree_helper(t_node *tree, int indent) // TODO remove dev function
 		printf(")\n");
 		return ;
 	}
-	if ((tree->type & GROUP_MASK) == GROUP1)
+	if ((tree->type & GROUP_MASK) == GRP_REDIR)
 		printf("%s \"%s\"\n", tok2str(tree->type), tree->data->str);
 	else
 		printf("%s\n", tok2str(tree->type));

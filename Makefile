@@ -1,4 +1,4 @@
-CC           := gcc-14 # TODO
+CC           := gcc # TODO
 RM           := rm -rf
 
 CCFLAGS      := -Wall -Wextra -Werror -g
