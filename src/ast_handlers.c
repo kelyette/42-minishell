@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:42:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 16:56:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/22 19:26:28 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_token	*checkfd(t_pctx *ctx)
 
 // handles redirection operators
 //  - check if the next token is valid
-//  - split the tree and create a new redirection node
+//  - create a parent redirection node
 //  - copy relevant tokens to t_token *data
 int	handle_redir(t_pctx *ctx, t_node **nodeptr)
 {
@@ -52,6 +52,10 @@ int	handle_redir(t_pctx *ctx, t_node **nodeptr)
 	return (0);
 }
 
+// handles assignment operators
+// they will only be accepted as such if the command node is blank
+// and has no other tokens in data than TK_Assign, otherwise
+// they are converted to a string
 int	handle_assign(t_pctx *ctx, t_node **nodeptr)
 {
 	t_token	*data;

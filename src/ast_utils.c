@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:53:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 17:39:57 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/22 19:24:31 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_token	*lst_getlast(t_token *head)
 	return (head);
 }
 
+// append a copy of val to the data pointer of a node
 int	add_data(t_pctx *ctx, t_token **dataptr, t_token *val)
 {
 	t_token	*copy;

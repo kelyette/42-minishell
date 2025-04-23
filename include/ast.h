@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:50:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 17:23:23 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/22 22:35:13 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # define STERRBADTKN "minishell: unexpected token '%s'\n"
 # define STERREOL "minishell: unexpected end of line\n"
 
+// error codes
+// UEOL = unexpected end of line
 enum	e_parse_error
 {
 	PE_OK,
@@ -25,6 +27,7 @@ enum	e_parse_error
 	PE_Internal
 };
 
+// node types inferred mostly from token types
 enum	e_node_t
 {
 	NT_Candidate = 0,
@@ -38,6 +41,11 @@ enum	e_node_t
 	NT_Or = TK_Or,
 };
 
+// TYPE     CHILDREN          DATA
+// CMD      0                 command name and arguments
+// Redir.   1 CMD             [number token] associated field
+// Pipe     2 simple cmd      -
+// Binary   2 pipelines       -
 typedef struct s_node
 {
 	int				type;
@@ -58,7 +66,6 @@ int		handle_redir(t_pctx *ctx, t_node **nodeptr);
 int		handle_assign(t_pctx *ctx, t_node **nodeptr);
 
 // node related
-// 
 int		create_node(t_pctx *ctx, t_node **nodeptr, int type);
 int		split_node(t_pctx *ctx, t_node **nodeptr, int type);
 void	free_tree(t_node **rootptr);

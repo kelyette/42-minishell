@@ -6,13 +6,15 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:19:27 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 17:46:44 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/22 22:07:06 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 
-t_node	*parse_cmd(t_pctx *ctx)
+// parse a "simple" command composed of strings, assignments,
+// variables or redirection operators
+static t_node	*parse_cmd(t_pctx *ctx)
 {
 	t_node	*root;
 	t_node	*cmd;
@@ -26,8 +28,7 @@ t_node	*parse_cmd(t_pctx *ctx)
 	root = cmd;
 	while (ctx->tkn && (ctx->tkn->type & GROUP_MASK) <= GRP_REDIR)
 	{
-		if (ctx->tkn->type == TK_Assign
-			&& handle_assign(ctx, &root))
+		if (ctx->tkn->type == TK_Assign && handle_assign(ctx, &root))
 			return (free_tree(&root), NULL);
 		if ((ctx->tkn->type == TK_String || ctx->tkn->type == TK_USD)
 			&& add_data(ctx, &cmd->data, ctx->tkn))
@@ -37,10 +38,13 @@ t_node	*parse_cmd(t_pctx *ctx)
 			return (free_tree(&root), NULL);
 		ctx->tkn = ctx->tkn->next;
 	}
+	if (cmd == root && !cmd->data)
+		return (set_err(ctx, PE_BadTkn), NULL);
 	return (root);
 }
 
-t_node	*parse_pipe(t_pctx *ctx)
+// parse pipes and commands within
+static t_node	*parse_pipe(t_pctx *ctx)
 {
 	t_node	*root;
 
@@ -59,7 +63,8 @@ t_node	*parse_pipe(t_pctx *ctx)
 	return (root);
 }
 
-t_node	*parse_bin(t_pctx *ctx)
+// parse binary operators and pipelines within
+static t_node	*parse_bin(t_pctx *ctx)
 {
 	t_node	*root;
 
@@ -78,6 +83,9 @@ t_node	*parse_bin(t_pctx *ctx)
 	return (root);
 }
 
+// parse tokens into a tree
+// works by recursively calling sub parsing functions for operators
+// with a precedence one level lower than the current one
 int	parse(t_token *head, t_node **rootptr)
 {
 	t_pctx	ctx;
