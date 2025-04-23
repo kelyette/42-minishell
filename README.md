@@ -17,8 +17,8 @@ Nguyen todo:
 23 April: Nguyen
 - Changing the structure of char **envp to a linked list
     - to pass the envp to execve(), use 
-            char	**env_to_envp(t_env **env);
-            void	free_envp(char **envp);
+        - char	**env_to_envp(t_env **env);
+        - void	free_envp(char **envp);
 
 ----------------
 20 April: Nguyen
