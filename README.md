@@ -1,9 +1,9 @@
 ## Changelog:
 
 Nguyen todo:
+- Trim quotes
 - Builtins: 
     - cd, export, unset, exit.
-    - Quotes trim and variable expansion for echo.
 - Signal:
     - Signals in child processes.
 - Assign:
@@ -12,6 +12,13 @@ Nguyen todo:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
 - Wildcard *.
+
+----------------
+23 April: Nguyen
+- Now handle $ expansion
+    - NOTE: $? not handled and will segfault.
+- Move all file under single lexer.h
+- Bugs fix
 
 ----------------
 23 April: Nguyen
