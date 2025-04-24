@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:50:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 22:35:13 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/23 14:31:49 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ enum	e_node_t
 {
 	NT_Candidate = 0,
 	NT_Cmd = 1,
+	NT_Assign = TK_Assign,
+	NT_Expand = TK_USD,
 	NT_RdrOut = TK_Out,
 	NT_RdrAppn = TK_Append,
 	NT_RdrIn = TK_In,
