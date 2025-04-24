@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/21 16:54:22 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/23 21:03:24 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_token	**case_printable(t_token **head, char *line, int *count)
 
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
-		return (NULL);
+		return (perror("Error"), NULL);
 	*count = 0;
 	if (line[*count] == '\"')
 	{
@@ -118,6 +118,6 @@ t_token	**case_printable(t_token **head, char *line, int *count)
 		if (case_string(token, line, count) == NULL)
 			return (free(token), NULL);
 	}
-	ft_lstadd_back(head, token);
+	ft_lstadd_back_token(head, token);
 	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:19:27 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 22:07:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/23 12:26:32 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_node	*parse_cmd(t_pctx *ctx)
 		ctx->tkn = ctx->tkn->next;
 	}
 	if (cmd == root && !cmd->data)
-		return (set_err(ctx, PE_BadTkn), NULL);
+		return (free(root), set_err(ctx, PE_BadTkn), NULL);
 	return (root);
 }
 

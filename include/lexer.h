@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/22 17:42:59 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/23 21:01:15 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define GRP_REDIR  16
 # define GRP_PIPE   32
 # define GRP_BIN    48
+
+extern sig_atomic_t	g_signal;
 
 enum	e_token_t
 {
@@ -47,8 +49,8 @@ int		ft_isalphabet(int c);
 int		ft_isspace(char c);
 int		ft_isnumber(int c);
 int		ft_isprintable(int c);
-void	ft_lstadd_back(t_token **lst, t_token *new_token);
-void	ft_lstclear(t_token **lst);
+void	ft_lstadd_back_token(t_token **lst, t_token *new_token);
+void	ft_lstclear_token(t_token **lst);
 
 int		lexer(char *line, t_token **head);
 t_token	**case_single_char(t_token **head, char character);

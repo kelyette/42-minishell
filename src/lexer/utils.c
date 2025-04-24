@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_helper_1.c                                   :+:      :+:    :+:   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:39:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/21 16:54:26 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/23 21:05:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-// free individual node
-void	ft_lstdelone(t_token *lst)
+// TOKEN: free individual node
+void	ft_lstdelone_token(t_token *lst)
 {
 	if (lst != NULL)
 	{
@@ -22,8 +22,8 @@ void	ft_lstdelone(t_token *lst)
 	}
 }
 
-// clear and free the linked list
-void	ft_lstclear(t_token **lst)
+// TOKEN: clear and free the linked list
+void	ft_lstclear_token(t_token **lst)
 {
 	t_token	*temp;
 
@@ -32,14 +32,14 @@ void	ft_lstclear(t_token **lst)
 		while (*lst != NULL)
 		{
 			temp = (*lst)->next;
-			ft_lstdelone(*lst);
+			ft_lstdelone_token(*lst);
 			*lst = temp;
 		}
 	}
 }
 
-// add node to the back
-void	ft_lstadd_back(t_token **lst, t_token *new_token)
+// TOKEN: add node to the back
+void	ft_lstadd_back_token(t_token **lst, t_token *new_token)
 {
 	t_token	*temp;
 
@@ -63,7 +63,7 @@ char	*ft_substring(char *s, int len)
 	i = 0;
 	ptr = malloc(sizeof(char) * (len + 1));
 	if (ptr == NULL)
-		return (NULL);
+		return (perror("Error"), NULL);
 	while (len > 0)
 	{
 		ptr[i] = s[i];

@@ -1,72 +1,68 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_case_double.c                                :+:      :+:    :+:   */
+/*   lexer_case_single.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/05 22:15:44 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/21 16:54:13 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/04/05 22:14:13 by hoannguy          #+#    #+#             */
+/*   Updated: 2025/04/23 21:02:58 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-void	case_append(t_token *token)
+void	case_output(t_token *token)
 {
-	token->type = TK_Append;
+	token->type = TK_Out;
 	token->str[0] = '>';
-	token->str[1] = '>';
-	token->str[2] = '\0';
+	token->str[1] = '\0';
 	token->next = NULL;
 }
 
-void	case_heredoc(t_token *token)
+void	case_input(t_token *token)
 {
-	token->type = TK_HereDoc;
+	token->type = TK_In;
 	token->str[0] = '<';
-	token->str[1] = '<';
-	token->str[2] = '\0';
+	token->str[1] = '\0';
 	token->next = NULL;
 }
 
-void	case_or(t_token *token)
+void	case_pipe(t_token *token)
 {
-	token->type = TK_Or;
+	token->type = TK_Pipe;
 	token->str[0] = '|';
-	token->str[1] = '|';
-	token->str[2] = '\0';
+	token->str[1] = '\0';
 	token->next = NULL;
 }
 
-void	case_and(t_token *token)
+void	case_usd(t_token *token)
 {
-	token->type = TK_And;
-	token->str[0] = '&';
-	token->str[1] = '&';
-	token->str[2] = '\0';
+	token->type = TK_USD;
+	token->str[0] = '$';
+	token->str[1] = '\0';
 	token->next = NULL;
 }
 
-// Handle || , && , >> , <<
-t_token	**case_double_char(t_token **head, char character)
+// Handle $ , | , > , <
+t_token	**case_single_char(t_token **head, char character)
 {
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
-		return (NULL);
-	token->str = malloc(sizeof(char) * 3);
+		return (perror("Error"), NULL);
+	token->str = malloc(sizeof(char) * 2);
 	if (token->str == NULL)
-		return (free(token), NULL);
-	if (character == '&')
-		case_and(token);
+		return (perror("Error"), free(token), NULL);
+	if (character == '$')
+		case_usd(token);
 	else if (character == '|')
-		case_or(token);
+		case_pipe(token);
 	else if (character == '<')
-		case_heredoc(token);
+		case_input(token);
 	else if (character == '>')
-		case_append(token);
-	ft_lstadd_back(head, token);
+		case_output(token);
+	ft_lstadd_back_token(head, token);
 	return (head);
 }

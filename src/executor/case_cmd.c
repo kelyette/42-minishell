@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exe_command.c                                      :+:      :+:    :+:   */
+/*   case_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/24 03:34:24 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/24 17:24:44 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exe_assign(t_node *tree, int *ec, t_env *env)
 {
 	(void)tree;
 	(void)ec;
-	(void)envp;
+	(void)env;
 }
 
 void	exe_cmd(t_node *tree, int *ec, t_env *env) // TODO
@@ -25,7 +25,7 @@ void	exe_cmd(t_node *tree, int *ec, t_env *env) // TODO
 	pid_t		pid;
 	int			status;
 
-	if (collect_cmd(&ctx, tree->data) || collect_env)
+	if (collect_cmdctx(&ctx, tree->data, env))
 		return (perror("minishell"));
 	pid = fork();
 	if (pid == 0)
