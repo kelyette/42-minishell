@@ -2,6 +2,7 @@
 
 Nguyen todo:
 - Trim quotes
+- Remove TK_USD and its case
 - Builtins: 
     - cd, export, unset, exit.
 - Signal:
