@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exe_utils.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:51:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/24 16:01:30 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:29:01 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,18 @@ int	lst_getsize_token(t_token *head)
 
 // copies each string in a t_token* list to a null terminated char*[]
 // only up to n values (-1 means no limit, 0 returns NULL)
-char	**lst_toarr_token(t_token *head, int n)
+char	**lst_toarr_token(t_token *head)
 {
 	char	**arr;
-	int		size;
+	size_t	size;
 	int		i;
 
-	if (!head || !n)
+	if (!head)
 		return (NULL);
 	size = lst_getsize_token(head);
-	if (size > n)
-		size = n;
 	arr = malloc(sizeof(char *) * size);
 	i = 0;
-	while (head && (n == -1 || i < n))
+	while (head)
 	{
 		arr[i++] = ft_strdup(head->str);
 		head = head->next;

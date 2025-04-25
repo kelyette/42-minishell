@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exe_bin_pipe.c                                     :+:      :+:    :+:   */
+/*   case_bin_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/23 17:20:51 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 13:00:42 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 // This part is still to be defined
-void	exe_pipe(t_node *tree, int *i, char **envp)
+void	exe_pipe(t_node *tree, int *i, t_env *env)
 {
 	/*code to open pipe and change redirection to next pipe?
 	
@@ -21,26 +21,16 @@ void	exe_pipe(t_node *tree, int *i, char **envp)
 	
 	
 	*/
-	executor(tree->lnode, i, envp);
-	executor(tree->rnode, i, envp);
+	executor(tree->lnode, i, env);
+	executor(tree->rnode, i, env);
 	// close pipe and reset redirection?
 }
 
 // Case of || and &&
-void	exe_operator(t_node *tree, int *i, char **envp)
+void	exe_operator(t_node *tree, int *i, t_env *env)
 {
-	if (tree->type == NT_Or)
-	{
-		executor(tree->lnode, i, envp);
-		if (*i != 0)
-			executor(tree->rnode, i, envp);
-		return ;
-	}
-	else if (tree->type == NT_And)
-	{
-		executor(tree->lnode, i, envp);
-		if (*i == 0)
-			executor(tree->rnode, i, envp);
-		return ;
-	}
+	executor(tree->lnode, i, env);
+	if ((*i == 0) ^ (tree->type == NT_Or))
+		executor(tree->rnode, i, env);
+	return ;
 }

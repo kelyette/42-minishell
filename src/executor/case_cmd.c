@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/24 17:24:44 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:35:01 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,22 @@ void	exe_assign(t_node *tree, int *ec, t_env *env)
 
 void	exe_cmd(t_node *tree, int *ec, t_env *env) // TODO
 {
-	t_ctx_cmd	ctx;
 	pid_t		pid;
 	int			status;
+	char		**argv;
+	char		**envp;
 
-	if (collect_cmdctx(&ctx, tree->data, env))
+	if (!tree->data)
+		return ;
+	argv = lst_toarr_token(tree->data);
+	envp = env_to_envp(&env);
+	if (!argv || (env && !envp))
 		return (perror("minishell"));
 	pid = fork();
 	if (pid == 0)
 	{
-		char *argv[] = {"/usr/bin/diff", NULL};
-		execve(argv[0], argv, ctx.envp);
-		perror("minishell");
+		execve(argv[0], argv, envp);
+		perror(argv[0]);
 		exit(127);
 	}
 	waitpid(pid, &status, 0);
