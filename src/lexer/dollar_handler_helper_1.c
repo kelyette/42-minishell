@@ -1,45 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_char_utils.c                                 :+:      :+:    :+:   */
+/*   dollar_handler_helper_1.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/05 21:37:01 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/23 21:04:57 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/04/24 18:28:43 by hoannguy          #+#    #+#             */
+/*   Updated: 2025/04/25 18:45:47 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-int	ft_isalphabet(int c)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	else
-		return (0);
+	while (*s1 && *s2 && n > 0)
+	{
+		if (*s1 != *s2)
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		s1++;
+		s2++;
+		n--;
+	}
+	if ((*s1 || *s2) && n > 0)
+		return ((unsigned char)*s1 - (unsigned char)*s2);
+	return (0);
 }
 
-int	ft_isnumber(int c)
+int	ft_isalnum(int c)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
-		return (0);
-}
-
-int	ft_isprintable(int c)
-{
-	if (c >= 32 && c <= 126)
-		return (1);
-	else
-		return (0);
-}
-
-int	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\r' || c == '\f')
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9'))
 		return (1);
 	else
 		return (0);

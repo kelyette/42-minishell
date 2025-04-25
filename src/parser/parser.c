@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_parser.c                                       :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:19:27 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/23 12:26:32 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 18:37:03 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_node	*parse_cmd(t_pctx *ctx)
 	{
 		if (ctx->tkn->type == TK_Assign && handle_assign(ctx, &root))
 			return (free_tree(&root), NULL);
-		if ((ctx->tkn->type == TK_String || ctx->tkn->type == TK_USD)
+		if ((ctx->tkn->type == TK_String)
 			&& add_data(ctx, &cmd->data, ctx->tkn))
 			return (free_tree(&root), NULL);
 		if (((ctx->tkn->type & GROUP_MASK) == GRP_REDIR)

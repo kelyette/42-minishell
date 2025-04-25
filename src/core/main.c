@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/23 20:33:16 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:13:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	history_handler(char *line)
 int	run(t_token **head, t_env **env)
 {
 	char	*line;
+	char	*tmp;
 	t_node	*tree;
 	int		ec;
 
@@ -43,16 +44,20 @@ int	run(t_token **head, t_env **env)
 		history_handler(line);
 		if (line != NULL && line[0] != '\0')
 		{
-			if (lexer(line, head))
-				return (free(line), 1);
+			tmp = dollar_handler(line, env);
+			free(line);
+			if (tmp == NULL)
+				return (1);
+			if (lexer(tmp, head))
+				return (free(tmp), 1);
+			free(tmp);
 			if (parse(*head, &tree))
-				return (free(line), 1);
+				return (1);
+			ft_lstclear_token(head);
 			if (tree)
 				executor(tree, &ec, *env);
 			free_tree(&tree);
-			ft_lstclear_token(head);
 		}
-		free(line);
 	}
 }
 

@@ -6,88 +6,99 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/23 21:03:24 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 10:22:25 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-t_token	*case_singlequote(t_token *token, char *line, int *count)
+t_token	*case_singlequote(t_token *token, char *line, int *cnt)
 {
-	(*count)++;
-	while (line[*count] != '\'' && line[*count] != '\0')
-		(*count)++;
-	(*count)++;
+	char	*temp;
+
+	(*cnt)++;
+	while (line[*cnt] != '\'' && line[*cnt] != '\0')
+		(*cnt)++;
+	(*cnt)++;
 	token->type = TK_String;
-	token->str = ft_substring(line, *count);
+	temp = ft_substring(line, *cnt);
+	if (temp == NULL)
+		return (NULL);
+	token->str = ft_strtrim(temp, "\'");
+	free(temp);
 	if (token->str == NULL)
 		return (NULL);
 	token->next = NULL;
 	return (token);
 }
 
-t_token	*case_doublequote(t_token *token, char *line, int *count)
+t_token	*case_doublequote(t_token *token, char *line, int *cnt)
 {
-	(*count)++;
-	while (line[*count] != '\"' && line[*count] != '\0')
-		(*count)++;
-	(*count)++;
+	char	*temp;
+
+	(*cnt)++;
+	while (line[*cnt] != '\"' && line[*cnt] != '\0')
+		(*cnt)++;
+	(*cnt)++;
 	token->type = TK_String;
-	token->str = ft_substring(line, *count);
+	temp = ft_substring(line, *cnt);
+	if (temp == NULL)
+		return (NULL);
+	token->str = ft_strtrim(temp, "\"");
+	free(temp);
 	if (token->str == NULL)
 		return (NULL);
 	token->next = NULL;
 	return (token);
 }
 
-void	case_string_helper1(t_token **token, char *line, int *count)
+void	case_string_helper1(t_token **token, char *line, int *cnt)
 {
-	while (ft_isnumber(line[*count]))
+	while (ft_isnumber(line[*cnt]))
 	{
-		if (ft_isspace(line[*count + 1]) && !ft_isnumber(line[*count + 1]))
+		if (ft_isspace(line[*cnt + 1]) && !ft_isnumber(line[*cnt + 1]))
 		{
-			*count = 0;
+			*cnt = 0;
 			break ;
 		}
-		else if ((line[*count + 1] == '<' && line[*count + 2] != '<')
-			|| (line[*count + 1] == '>' && line[*count + 2] != '>')
-			|| (line[*count + 1] == '<' && line[*count + 2] == '<')
-			|| (line[*count + 1] == '>' && line[*count + 2] == '>'))
+		else if ((line[*cnt + 1] == '<' && line[*cnt + 2] != '<')
+			|| (line[*cnt + 1] == '>' && line[*cnt + 2] != '>')
+			|| (line[*cnt + 1] == '<' && line[*cnt + 2] == '<')
+			|| (line[*cnt + 1] == '>' && line[*cnt + 2] == '>'))
 		{
 			(*token)->type = TK_Number;
-			(*count)++;
+			(*cnt)++;
 			break ;
 		}
-		(*count)++;
+		(*cnt)++;
 	}
 }
 
 // handle unquoted string, and assignment
 // FOR ASSIGNMENT: the assignment can only happen at the start of the command,
 // or with export. To manage during ast or execution.
-t_token	*case_string(t_token *token, char *line, int *count)
+t_token	*case_string(t_token *token, char *line, int *cnt)
 {
 	token->type = TK_String;
-	case_string_helper1(&token, line, count);
+	case_string_helper1(&token, line, cnt);
 	if ((ft_isalphabet(line[0]) || line[0] == '_') && token->type == TK_String)
 	{
-		while (line[*count] != ' ' && line[*count] != '\0'
-			&& line[*count] != '<' && line[*count] != '>'
-			&& line[*count] != '|')
+		while (line[*cnt] != ' ' && line[*cnt] != '\0'
+			&& line[*cnt] != '<' && line[*cnt] != '>'
+			&& line[*cnt] != '|' && line[*cnt] != '\"' && line[*cnt] != '\'')
 		{
-			if (line[*count] == '=')
+			if (line[*cnt] == '=')
 				token->type = TK_Assign;
-			(*count)++;
+			(*cnt)++;
 		}
 	}
 	else if (ft_isprintable(line[0]) && token->type == TK_String)
 	{
-		while (line[*count] != ' ' && line[*count] != '\0'
-			&& line[*count] != '<' && line[*count] != '>'
-			&& line[*count] != '|')
-			(*count)++;
+		while (line[*cnt] != ' ' && line[*cnt] != '\0'
+			&& line[*cnt] != '<' && line[*cnt] != '>' && line[*cnt] != '|')
+			(*cnt)++;
 	}
-	token->str = ft_substring(line, *count);
+	token->str = ft_substring(line, *cnt);
 	if (token->str == NULL)
 		return (NULL);
 	token->next = NULL;
@@ -95,27 +106,27 @@ t_token	*case_string(t_token *token, char *line, int *count)
 }
 
 // handle String, with case double quote, single quote and no quote
-t_token	**case_printable(t_token **head, char *line, int *count)
+t_token	**case_printable(t_token **head, char *line, int *cnt)
 {
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
 		return (perror("Error"), NULL);
-	*count = 0;
-	if (line[*count] == '\"')
+	*cnt = 0;
+	if (line[*cnt] == '\"')
 	{
-		if (case_doublequote(token, line, count) == NULL)
+		if (case_doublequote(token, line, cnt) == NULL)
 			return (free(token), NULL);
 	}
-	else if (line[*count] == '\'')
+	else if (line[*cnt] == '\'')
 	{
-		if (case_singlequote(token, line, count) == NULL)
+		if (case_singlequote(token, line, cnt) == NULL)
 			return (free(token), NULL);
 	}
 	else
 	{
-		if (case_string(token, line, count) == NULL)
+		if (case_string(token, line, cnt) == NULL)
 			return (free(token), NULL);
 	}
 	ft_lstadd_back_token(head, token);

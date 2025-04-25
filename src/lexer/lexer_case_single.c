@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 22:14:13 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/23 21:02:58 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/25 10:03:22 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,6 @@ void	case_pipe(t_token *token)
 	token->next = NULL;
 }
 
-void	case_usd(t_token *token)
-{
-	token->type = TK_USD;
-	token->str[0] = '$';
-	token->str[1] = '\0';
-	token->next = NULL;
-}
-
 // Handle $ , | , > , <
 t_token	**case_single_char(t_token **head, char character)
 {
@@ -55,8 +47,6 @@ t_token	**case_single_char(t_token **head, char character)
 	token->str = malloc(sizeof(char) * 2);
 	if (token->str == NULL)
 		return (perror("Error"), free(token), NULL);
-	if (character == '$')
-		case_usd(token);
 	else if (character == '|')
 		case_pipe(token);
 	else if (character == '<')
