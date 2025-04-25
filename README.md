@@ -1,8 +1,8 @@
 ## Changelog:
 
 Nguyen todo:
-- Trim quotes
-- Remove TK_USD and its case
+- Expansion:
+    - $?
 - Builtins: 
     - cd, export, unset, exit.
 - Signal:
@@ -13,6 +13,12 @@ Nguyen todo:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
 - Wildcard *.
+
+----------------
+25 April: Nguyen
+- Now handle bonus "'$USER'" and '"$USER"'
+- Remove TK_Usd token
+- Bugs fix
 
 ----------------
 24 April: Nguyen
