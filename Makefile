@@ -1,4 +1,4 @@
-CC           := gcc # TODO
+CC           ?= gcc # TODO
 RM           := rm -rf
 
 CCFLAGS      := -Wall -Wextra -Werror -g
@@ -7,7 +7,7 @@ ASAN         := 1 # TODO
 SRCDIR       := src
 MODULES      := core envp lexer parser executor
 INCDIR       := include
-OBJDIR       := target
+OBJDIR       ?= target
 OBJDIRS      := $(addprefix $(OBJDIR)/,$(MODULES))
 RLLIBDIR     := /opt/homebrew/Cellar/readline/8.2.13# TODO
 
@@ -25,7 +25,7 @@ OBJ          := $(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 INCFLAGS     := -I$(RLLIBDIR)/include -Iinclude
 LIBFLAGS     := -L$(RLLIBDIR)/lib -lreadline
 
-NAME         := minishell
+NAME         ?= minishell
 
 ifneq ($(ASAN),0)
 	CCFLAGS += -fsanitize=address
@@ -34,7 +34,7 @@ endif
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CCFLAGS) $(LIBFLAGS) -o $@ $^
+	$(CC) $(CCFLAGS) -o $@ $^ $(LIBFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIRS)
 	$(CC) $(CCFLAGS) $(INCFLAGS) -o $@ -c $<
