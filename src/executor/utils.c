@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:51:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/25 19:29:01 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/29 15:47:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,19 @@ char	**lst_toarr_token(t_token *head)
 	if (!head)
 		return (NULL);
 	size = lst_getsize_token(head);
-	arr = malloc(sizeof(char *) * size);
+	arr = malloc(sizeof(char *) * (size + 1));
 	i = 0;
 	while (head)
 	{
 		arr[i++] = ft_strdup(head->str);
 		head = head->next;
 	}
+	arr[i] = NULL;
 	return (arr);
+}
+
+void	free_arr(char **arr)
+{
+	while (*arr)
+		free(arr);
 }
