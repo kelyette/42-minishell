@@ -16,7 +16,7 @@ Nguyen todo:
 - Wildcard *.
 
 ----------------
-30 April: Nguyen
+29 April: Nguyen
 - Now handle export:
     - eg: export USER=test
     - eg: export USER
