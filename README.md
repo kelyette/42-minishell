@@ -4,7 +4,8 @@ Nguyen todo:
 - Expansion:
     - $?
 - Builtins: 
-    - cd, export, unset, exit.
+    - cd, unset, exit.
+    - Sort export printout.
 - Signal:
     - Signals in child processes.
 - Assign:
@@ -13,6 +14,14 @@ Nguyen todo:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
 - Wildcard *.
+
+----------------
+25 April: Nguyen
+- Now handle export:
+    - eg: export USER=test
+    - eg: export USER
+    - eg: export nonExistedVariable
+NOTE: The main to test is bugged.
 
 ----------------
 25 April: Nguyen
