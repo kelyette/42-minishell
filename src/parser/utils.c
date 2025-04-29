@@ -6,11 +6,11 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:53:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/25 19:12:23 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:12:31 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "parser.h"
 
 void	print_err(t_pctx *ctx)
 {
@@ -48,6 +48,7 @@ int	add_data(t_pctx *ctx, t_token **dataptr, t_token *val)
 	copy = malloc(sizeof(t_node));
 	if (!copy)
 		return (set_err(ctx, PE_Internal), 1);
+	*copy = *val;
 	copy->str = ft_strdup(val->str);
 	copy->next = NULL;
 	if (!*dataptr)
@@ -58,6 +59,11 @@ int	add_data(t_pctx *ctx, t_token **dataptr, t_token *val)
 		tmp->next = copy;
 	}
 	return (0);
+}
+
+inline int	in_group_tkn(int type, int group)
+{
+	return ((type & GROUP_MASK) == group);
 }
 
 char	*tok2str(int type)
@@ -114,29 +120,3 @@ void	print_tree(t_node *tree)
 {
 	print_tree_helper(tree, 0);
 }
-
-/* leave this part for the execution component
-int	token2args(union u_data *dataptr)
-{
-	t_args	*args;
-	t_token	*tkn;
-	int		i;
-
-	if (!dataptr->token)
-		return (0);
-	args = calloc(1, sizeof(t_args)); // TODO forbidden func
-	args->name = tkn->str;
-	args->argc = 0;
-	while (tkn && ++args->argc)
-		tkn = tkn->next;
-	args->argv = malloc(args->argc * sizeof(t_token *));
-	tkn = dataptr->token->next;
-	i = 0;
-	while (tkn)
-	{
-		args->argv[i++] = tkn->str;
-		tkn = tkn->next;
-	}
-	dataptr->args = args;
-	return (0);
-}*/

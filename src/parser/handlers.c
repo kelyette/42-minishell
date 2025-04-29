@@ -6,11 +6,11 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:42:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/25 18:09:19 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:25:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "parser.h"
 
 // handles redirection operators
 //  - check if the next token is valid

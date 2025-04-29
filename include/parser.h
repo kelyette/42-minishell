@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.h                                              :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:50:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/25 18:36:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:16:10 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AST_H
-# define AST_H
+#ifndef PARSER_H
+# define PARSER_H
 # include "minishell.h"
 # include "lexer.h"
 # define STERRBADTKN "minishell: unexpected token '%s'\n"
@@ -32,14 +32,14 @@ enum	e_node_t
 {
 	NT_Candidate = 0,
 	NT_Cmd = 1,
-	NT_Assign = TK_Assign,
-	NT_RdrOut = TK_Out,
-	NT_RdrAppn = TK_Append,
-	NT_RdrIn = TK_In,
-	NT_HereDoc = TK_HereDoc,
-	NT_Pipe = TK_Pipe,
-	NT_And = TK_And,
-	NT_Or = TK_Or,
+	NT_Assign = TK_Assign, // ---- 2
+	NT_RdrIn = TK_In, // --------- 17
+	NT_RdrOut = TK_Out, // ------- 18
+	NT_RdrAppend = TK_Append, // - 19
+	NT_HereDoc = TK_HereDoc, // -- 20
+	NT_Pipe = TK_Pipe, // -------- 33
+	NT_And = TK_And, // ---------- 49
+	NT_Or = TK_Or, // ------------ 50
 };
 
 // TYPE     CHILDREN          DATA
@@ -76,6 +76,7 @@ void	print_err(t_pctx *ctx);
 void	set_err(t_pctx *ctx, int type);
 int		add_data(t_pctx *ctx, t_token **dataptr, t_token *val);
 t_token	*lst_getlast(t_token *head);
+int		in_group_tkn(int type, int group);
 
 // dev functions TODO
 void	print_tree(t_node *root);
