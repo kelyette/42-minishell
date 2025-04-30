@@ -18,7 +18,7 @@ Nguyen todo:
 - Changed structure of t_env.
 - Now export without argument is handled and output is sorted.
 - Now handle unset with multiple arguments.
-- 
+
 NOTE: The main to test is bugged.
 
 ----------------
@@ -27,7 +27,7 @@ NOTE: The main to test is bugged.
     - eg: export USER=test
     - eg: export USER
     - eg: export nonExistedVariable
-    - 
+
 NOTE: The main to test is bugged.
 
 ----------------
