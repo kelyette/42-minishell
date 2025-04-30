@@ -1,11 +1,8 @@
-## Changelog:
-
 Nguyen todo:
 - Expansion:
     - $?
 - Builtins: 
-    - cd, unset, exit.
-    - Sort export printout.
+    - cd, exit.
 - Signal:
     - Signals in child processes.
 - Assign:
@@ -14,6 +11,14 @@ Nguyen todo:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
 - Wildcard *.
+
+## Changelog:
+----------------
+30 April: Nguyen
+- Changed structure of t_env.
+- Now export without argument is handled and output is sorted.
+- Now handle unset with multiple arguments.
+NOTE: The main to test is bugged.
 
 ----------------
 29 April: Nguyen
