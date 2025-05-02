@@ -1,4 +1,6 @@
 Nguyen todo:
+- Bug:
+    - initiate SHLVL and PWD when shell start
 - Expansion:
     - $?
 - Builtins: 
