@@ -20,7 +20,7 @@ Nguyen todo:
     - cd path
     - cd -
     - cd
-    - Note: not handle cd ~ because it is out of scope, to see if implement.
+    - cd ~ (Note: This is not tested)
 - Now initiate SHLVL and PWD when shell start in case of no environnement.
 - Now SHLVL is correctly incremented everytime a new shell is open.
 
