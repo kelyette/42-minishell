@@ -1,10 +1,8 @@
 Nguyen todo:
-- Bug:
-    - initiate SHLVL and PWD when shell start
 - Expansion:
     - $?
 - Builtins: 
-    - cd, exit.
+    - exit.
 - Signal:
     - Signals in child processes.
 - Assign:
@@ -15,6 +13,17 @@ Nguyen todo:
 - Wildcard *.
 
 ## Changelog:
+
+----------------
+02 May: Nguyen
+- Now handle cd
+    - cd path
+    - cd -
+    - cd
+    - Note: not handle cd ~ because it is out of scope, to see if implement.
+- Now initiate SHLVL and PWD when shell start in case of no environnement.
+- Now SHLVL is correctly incremented everytime a new shell is open.
+
 ----------------
 30 April: Nguyen
 - Changed structure of t_env.
