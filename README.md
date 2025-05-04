@@ -1,11 +1,6 @@
 Nguyen todo:
-- Expansion:
-    - $?
-- Exit code:
-    - initiate exit code in env when shell launch
-    - code a function to set exit code and return exit code
 - Builtins:
-    - exit.
+    - exit
 - Signal:
     - Signals in child processes.
 - Assign:
@@ -15,7 +10,16 @@ Nguyen todo:
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
 - Wildcard *. Probably not do.
 
-## Changelog:
+### Changelog:
+----------------
+04 May: Nguyen
+- Now initiate variable ? during shell launch
+    - key is ?
+    - value is the exit code in string.
+- Now handle $? expansion.
+- Function set_get_code(int code, t_env **env) is now used to manage exit code
+    - If code -1 is passed to the function, the exit code stored in variable ? is returned.
+    - If any code other than -1 is passed to the function, the variable ? is updated with the code, and this code is then returned.
 
 ----------------
 02 May: Nguyen
