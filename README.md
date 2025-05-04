@@ -1,7 +1,10 @@
 Nguyen todo:
 - Expansion:
     - $?
-- Builtins: 
+- Exit code:
+    - initiate exit code in env when shell launch
+    - code a function to set exit code and return exit code
+- Builtins:
     - exit.
 - Signal:
     - Signals in child processes.
@@ -10,7 +13,7 @@ Nguyen todo:
     - Assign can be followed by cmd, in this case assign scope is local.
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
-- Wildcard *.
+- Wildcard *. Probably not do.
 
 ## Changelog:
 
