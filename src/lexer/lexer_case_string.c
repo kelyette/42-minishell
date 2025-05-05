@@ -6,11 +6,12 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:22:25 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:54:55 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "libft.h"
 
 t_token	*case_singlequote(t_token *token, char *line, int *cnt)
 {
@@ -21,7 +22,7 @@ t_token	*case_singlequote(t_token *token, char *line, int *cnt)
 		(*cnt)++;
 	(*cnt)++;
 	token->type = TK_String;
-	temp = ft_substring(line, *cnt);
+	temp = ft_substr(line, 0, *cnt);
 	if (temp == NULL)
 		return (NULL);
 	token->str = ft_strtrim(temp, "\'");
@@ -41,7 +42,7 @@ t_token	*case_doublequote(t_token *token, char *line, int *cnt)
 		(*cnt)++;
 	(*cnt)++;
 	token->type = TK_String;
-	temp = ft_substring(line, *cnt);
+	temp = ft_substr(line, 0, *cnt);
 	if (temp == NULL)
 		return (NULL);
 	token->str = ft_strtrim(temp, "\"");
@@ -54,9 +55,9 @@ t_token	*case_doublequote(t_token *token, char *line, int *cnt)
 
 void	case_string_helper1(t_token **token, char *line, int *cnt)
 {
-	while (ft_isnumber(line[*cnt]))
+	while (ft_isdigit(line[*cnt]))
 	{
-		if (ft_isspace(line[*cnt + 1]) && !ft_isnumber(line[*cnt + 1]))
+		if (ft_isspace(line[*cnt + 1]) && !ft_isdigit(line[*cnt + 1]))
 		{
 			*cnt = 0;
 			break ;
@@ -81,7 +82,7 @@ t_token	*case_string(t_token *token, char *line, int *cnt)
 {
 	token->type = TK_String;
 	case_string_helper1(&token, line, cnt);
-	if ((ft_isalphabet(line[0]) || line[0] == '_') && token->type == TK_String)
+	if ((ft_isalpha(line[0]) || line[0] == '_') && token->type == TK_String)
 	{
 		while (line[*cnt] != ' ' && line[*cnt] != '\0'
 			&& line[*cnt] != '<' && line[*cnt] != '>'
@@ -92,13 +93,13 @@ t_token	*case_string(t_token *token, char *line, int *cnt)
 			(*cnt)++;
 		}
 	}
-	else if (ft_isprintable(line[0]) && token->type == TK_String)
+	else if (ft_isprint(line[0]) && token->type == TK_String)
 	{
 		while (line[*cnt] != ' ' && line[*cnt] != '\0'
 			&& line[*cnt] != '<' && line[*cnt] != '>' && line[*cnt] != '|')
 			(*cnt)++;
 	}
-	token->str = ft_substring(line, *cnt);
+	token->str = ft_substr(line, 0, *cnt);
 	if (token->str == NULL)
 		return (NULL);
 	token->next = NULL;

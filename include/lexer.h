@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/28 19:22:07 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:56:54 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ typedef struct s_token
 }	t_token;
 
 // DOLLAR ------------------------------------------------------
-char	*ft_strdup(const char *s);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_isalnum(int c);
-
 char	*ft_strjoin_variable(char *s1, char *s2, int i);
 char	*case_expand(char *s, int i, t_env **env);
 char	*find_variable(char *s, t_env **env);
@@ -57,12 +53,6 @@ char	*expand_variable(char *s, int i, t_env **env);
 char	*handle_exit_code(void);
 
 // TOKEN -------------------------------------------------------
-char	*ft_substring(char *s, int len);
-char	*ft_strtrim(char *s1, char *set);
-int		ft_isalphabet(int c);
-int		ft_isspace(char c);
-int		ft_isnumber(int c);
-int		ft_isprintable(int c);
 void	ft_lstadd_back_token(t_token **lst, t_token *new_token);
 void	ft_lstclear_token(t_token **lst);
 

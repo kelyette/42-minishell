@@ -6,11 +6,12 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:38:11 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:30:16 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:57:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "libft.h"
 
 // Placeholder for handling $?
 char	*handle_exit_code(void)

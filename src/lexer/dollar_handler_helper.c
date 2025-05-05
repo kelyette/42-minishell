@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dollar_handler_helper_2.c                          :+:      :+:    :+:   */
+/*   dollar_handler_helper.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:52:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/25 11:30:26 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:59:56 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "libft.h"
 
 // expand the $ by replacing the $variable by its value
 char	*case_expand(char *s, int i, t_env **env)
@@ -24,7 +25,7 @@ char	*case_expand(char *s, int i, t_env **env)
 	while (ft_isalnum(s[i]))
 		i++;
 	i--;
-	temp = ft_substring(&(s[count + 1]), i - count);
+	temp = ft_substr(&(s[count + 1]), 0, i - count);
 	if (temp == NULL)
 		return (NULL);
 	value = find_variable(temp, env);
@@ -97,7 +98,7 @@ char	*expand_variable(char *s, int i, t_env **env)
 {
 	if (s[i + 1] == '?')
 		return (handle_exit_code());
-	if (ft_isalphabet(s[i + 1]) || s[i + 1] == '_')
+	if (ft_isalpha(s[i + 1]) || s[i + 1] == '_')
 		return (case_expand(s, i, env));
 	return (NULL);
 }

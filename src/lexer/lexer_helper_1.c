@@ -6,19 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:39:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/25 10:06:46 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:55:25 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-
-int	ft_isalphabet(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	else
-		return (0);
-}
 
 // TOKEN: free individual node
 void	ft_lstdelone_token(t_token *lst)
@@ -60,24 +52,4 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new_token)
 			temp = temp->next;
 		temp->next = new_token;
 	}
-}
-
-// copy the substring from the input
-char	*ft_substring(char *s, int len)
-{
-	char	*ptr;
-	size_t	i;
-
-	i = 0;
-	ptr = malloc(sizeof(char) * (len + 1));
-	if (ptr == NULL)
-		return (perror("Error"), NULL);
-	while (len > 0)
-	{
-		ptr[i] = s[i];
-		i++;
-		len--;
-	}
-	ptr[i] = '\0';
-	return (ptr);
 }

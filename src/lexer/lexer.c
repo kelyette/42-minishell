@@ -6,11 +6,12 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:46:05 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/24 15:38:08 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:50:28 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "libft.h"
 
 int	lexer_helper(char *line, t_token **head, int *i)
 {
@@ -32,7 +33,7 @@ int	lexer_helper(char *line, t_token **head, int *i)
 			return (ft_lstclear_token(head), 1);
 		(*i)++;
 	}
-	else if (ft_isprintable(line[*i]) && !ft_isspace(line[*i]))
+	else if (ft_isprint(line[*i]) && !ft_isspace(line[*i]))
 	{
 		if (case_printable(head, &line[*i], &count) == NULL)
 			return (ft_lstclear_token(head), 1);
@@ -47,6 +48,9 @@ int	lexer(char *line, t_token **head)
 {
 	int		i;
 
+	*head = NULL;
+	if (!line)
+		return (0);
 	i = 0;
 	while (line[i] != '\0')
 	{
