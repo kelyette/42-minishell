@@ -6,15 +6,16 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:24:55 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/28 18:25:35 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/05 18:04:12 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 
 int	create_node(t_pctx *ctx, t_node **nodeptr, int type)
 {
-	*nodeptr = calloc(1, sizeof(t_node)); // TODO replace forbidden func
+	*nodeptr = ft_calloc(1, sizeof(t_node));
 	if (!*nodeptr)
 		return (set_err(ctx, PE_Internal), 1);
 	(*nodeptr)->type = type;

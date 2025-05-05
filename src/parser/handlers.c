@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 16:42:47 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/28 18:25:30 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/05 18:03:40 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	handle_assign(t_pctx *ctx, t_node **nodeptr)
 {
 	t_token	*data;
 
-	data = lst_getlast((*nodeptr)->data);
+	data = lst_getlast_token((*nodeptr)->data);
 	if ((*nodeptr)->type != NT_Cmd || !data || data->type != TK_Assign)
 		ctx->tkn->type = TK_String;
 	else if (add_data(ctx, &(*nodeptr)->data, ctx->tkn))

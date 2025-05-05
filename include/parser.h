@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:50:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/29 13:16:10 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/05 18:03:36 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	free_tree(t_node **rootptr);
 void	print_err(t_pctx *ctx);
 void	set_err(t_pctx *ctx, int type);
 int		add_data(t_pctx *ctx, t_token **dataptr, t_token *val);
-t_token	*lst_getlast(t_token *head);
+t_token	*lst_getlast_token(t_token *head);
 int		in_group_tkn(int type, int group);
 
 // dev functions TODO

@@ -6,11 +6,12 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:53:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/29 13:12:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/05 18:05:12 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 
 void	print_err(t_pctx *ctx)
 {
@@ -32,7 +33,7 @@ inline void	set_err(t_pctx *ctx, int err)
 		ctx->error = err;
 }
 
-t_token	*lst_getlast(t_token *head)
+t_token	*lst_getlast_token(t_token *head)
 {
 	while (head && head->next)
 		head = head->next;
@@ -55,7 +56,7 @@ int	add_data(t_pctx *ctx, t_token **dataptr, t_token *val)
 		*dataptr = copy;
 	else
 	{
-		tmp = lst_getlast(*dataptr);
+		tmp = lst_getlast_token(*dataptr);
 		tmp->next = copy;
 	}
 	return (0);
