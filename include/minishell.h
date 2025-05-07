@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 15:15:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/28 15:58:10 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/01 21:01:06 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/29 13:08:54 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/01 20:59:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	run(t_token **head, t_env **env)
 				return (1);
 			ft_lstclear_token(head);
 			if (tree)
-				executor(tree, &ec, *env);
+				executor(tree, &ec, env);
 			free_tree(&tree);
 		}
 	}

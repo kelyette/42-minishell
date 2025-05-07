@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:06 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/05 17:48:02 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/06 14:02:01 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_env	*get_env_key(const t_env *env, char *key)
 {
 	while (env)
 	{
-		if (ft_strncmp(key, env->key, ft_strlen(key)))
+		if (!ft_strncmp(key, env->key, ft_strlen(key)))
 			return ((t_env *)env);
 		env = env->next;
 	}
