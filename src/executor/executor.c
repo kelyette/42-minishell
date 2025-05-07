@@ -6,14 +6,14 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:26:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/28 18:32:06 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/01 20:58:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 // From the root of the tree, recursively apply the executor
-void	executor(t_node *tree, int *i, t_env *env)
+void	executor(t_node *tree, int *i, t_env **env)
 {
 	if (tree->type == NT_Candidate || tree == NULL)
 		return ;

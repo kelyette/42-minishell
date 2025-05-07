@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/04/29 14:20:30 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/01 20:58:00 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	perform_redirs(t_redir *redir)
 	return (0);
 }
 
-void	exe_in(t_node *tree, int *ec, t_env *env)
+/*void	exe_in(t_node *tree, int *ec, t_env *env)
 {
 	int		fd;
 
@@ -105,4 +105,4 @@ void	exe_redirection(t_node *tree, int *ec, t_env *env)
 		exe_out(tree, ec, env);
 	else if (tree->type == NT_RdrAppend)
 		exe_append(tree, ec, env);
-}
+}*/

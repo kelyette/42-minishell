@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:51:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/29 15:47:25 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:18:47 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,5 @@ void	free_arr(char **arr)
 {
 	while (*arr)
 		free(arr);
+	free(arr);
 }
