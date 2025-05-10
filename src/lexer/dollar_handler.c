@@ -6,17 +6,33 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:38:11 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/05 17:57:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/04 16:34:50 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-#include "libft.h"
 
 // Placeholder for handling $?
-char	*handle_exit_code(void)
+char	*handle_exit_code(char *s, int i, t_env **env)
 {
-	return (ft_strdup("0"));
+	int		count;
+	char	*temp;
+	char	*value;
+
+	count = i;
+	value = find_variable("?", env);
+	if (value == NULL)
+		return (NULL);
+	temp = ft_strjoin_variable(s, value, count);
+	free(value);
+	if (temp == NULL)
+		return (NULL);
+	i++;
+	value = ft_strjoin(temp, &(s[i + 1]));
+	free(temp);
+	if (value == NULL)
+		return (NULL);
+	return (value);
 }
 
 // Handle variable expansion without quotes

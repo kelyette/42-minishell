@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:46:05 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/05 17:50:28 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/09 18:23:49 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	lexer(char *line, t_token **head)
 	int		i;
 
 	*head = NULL;
-	if (!line)
-		return (0);
 	i = 0;
 	while (line[i] != '\0')
 	{

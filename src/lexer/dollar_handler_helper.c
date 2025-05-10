@@ -6,12 +6,64 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:52:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/05 17:59:56 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/09 18:28:43 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "libft.h"
+
+// find the value of the variable, return an empty string if no match
+char	*find_variable(char *s, t_env **env)
+{
+	t_env	*temp;
+	char	*line;
+
+	if (env == NULL || *env == NULL)
+		return (ft_strdup("\0"));
+	temp = *env;
+	line = ft_strdup("\0");
+	if (line == NULL)
+		return (perror("Error"), NULL);
+	while (temp != NULL)
+	{
+		if (!ft_strncmp(s, temp->key, ft_strlen(s)))
+		{
+			free(line);
+			line = ft_strdup(temp->value);
+			if (line == NULL)
+				return (perror("Error"), NULL);
+			return (line);
+		}
+		temp = temp->next;
+	}
+	return (line);
+}
+
+char	*ft_strjoin_variable(char *s1, char *s2, int i)
+{
+	char	*line;
+	int		j;
+
+	line = malloc(sizeof(char) * (i + ft_strlen(s2)) + 1);
+	if (line == NULL)
+		return (perror("Error"), NULL);
+	j = 0;
+	while (j < i)
+	{
+		line[j] = s1[j];
+		j++;
+	}
+	i = 0;
+	while (s2[i] != '\0')
+	{
+		line[j] = s2[i];
+		j++;
+		i++;
+	}
+	line[j] = '\0';
+	return (line);
+}
 
 // expand the $ by replacing the $variable by its value
 char	*case_expand(char *s, int i, t_env **env)
@@ -43,61 +95,11 @@ char	*case_expand(char *s, int i, t_env **env)
 	return (value);
 }
 
-char	*ft_strjoin_variable(char *s1, char *s2, int i)
-{
-	char	*line;
-	int		j;
-
-	line = malloc(sizeof(char) * (i + ft_strlen(s2)) + 1);
-	if (line == NULL)
-		return (perror("Error"), NULL);
-	j = 0;
-	while (j < i)
-	{
-		line[j] = s1[j];
-		j++;
-	}
-	i = 0;
-	while (s2[i] != '\0')
-	{
-		line[j] = s2[i];
-		j++;
-		i++;
-	}
-	line[j] = '\0';
-	return (line);
-}
-
-// find the value of the variable, return an empty string if no match
-char	*find_variable(char *s, t_env **env)
-{
-	t_env	*temp;
-	char	*line;
-
-	temp = *env;
-	line = ft_strdup("\0");
-	if (line == NULL)
-		return (perror("Error"), NULL);
-	while (temp != NULL)
-	{
-		if (!ft_strncmp(s, temp->key, ft_strlen(s)))
-		{
-			free(line);
-			line = ft_strdup(temp->value);
-			if (line == NULL)
-				return (perror("Error"), NULL);
-			return (line);
-		}
-		temp = temp->next;
-	}
-	return (line);
-}
-
 // Expand variable
 char	*expand_variable(char *s, int i, t_env **env)
 {
 	if (s[i + 1] == '?')
-		return (handle_exit_code());
+		return (handle_exit_code(s, i, env));
 	if (ft_isalpha(s[i + 1]) || s[i + 1] == '_')
 		return (case_expand(s, i, env));
 	return (NULL);

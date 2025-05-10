@@ -1,40 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp.c                                             :+:      :+:    :+:   */
+/*   envp_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:06 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/06 14:02:01 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/09 18:16:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "envp.h"
 #include "libft.h"
 
-t_env	*get_env_key(const t_env *env, char *key)
+// ENVP: extract value
+char	*ft_substring_value(char *s)
 {
-	while (env)
-	{
-		if (!ft_strncmp(key, env->key, ft_strlen(key)))
-			return ((t_env *)env);
-		env = env->next;
-	}
-	return (NULL);
-}
-
-void	free_envp(char **envp)
-{
-	int	i;
+	char	*ptr;
+	size_t	i;
 
 	i = 0;
-	while (envp[i] != NULL)
+	while (*s != '=')
+		s++;
+	s++;
+	while (s[i] != '\0')
+		i++;
+	ptr = malloc(sizeof(char) * (i + 1));
+	if (ptr == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i] != '\0')
 	{
-		free(envp[i]);
+		ptr[i] = s[i];
 		i++;
 	}
-	free(envp);
+	ptr[i] = '\0';
+	return (ptr);
+}
+
+// ENVP: extract key
+char	*ft_substring_key(char *s)
+{
+	char	*ptr;
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '=')
+		i++;
+	ptr = malloc(sizeof(char) * (i + 1));
+	if (ptr == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i] != '=')
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
 
 char	**env_to_envp_helper(char **envp, t_env *temp, int i)

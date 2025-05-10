@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/05 17:56:54 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/09 18:30:06 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*case_expand(char *s, int i, t_env **env);
 char	*find_variable(char *s, t_env **env);
 char	*dollar_handler(char *s, t_env **env);
 char	*expand_variable(char *s, int i, t_env **env);
-char	*handle_exit_code(void);
+char	*handle_exit_code(char *s, int i, t_env **env);
 
 // TOKEN -------------------------------------------------------
 void	ft_lstadd_back_token(t_token **lst, t_token *new_token);

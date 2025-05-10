@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/01 20:59:04 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/09 17:51:35 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "envp.h"
 
 // to clarify on utility
-sig_atomic_t	g_signal;
+int	g_signal;
 
 // handle history
 void	history_handler(char *line)
@@ -75,7 +75,7 @@ int	main(int ac, char **av, char **envp)
 	if (transform_env(&env, envp))
 		return (1);
 	if (run(&head, &env))
-		return (1);
+		return (rl_clear_history(), ft_lstclear_env(&env), 1);
 	return (rl_clear_history(), ft_lstclear_env(&env), 0);
 }
 
