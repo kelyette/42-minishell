@@ -12,7 +12,7 @@ Nguyen todo:
 				return (1);
     			execute_child_process();
     			...
-  		}
+  			}
 		```
 - Assign:
     - If a variable that exist in env is assigned, it will replace the value in env.
