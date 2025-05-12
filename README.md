@@ -10,8 +10,8 @@ Nguyen todo:
     		{
 			if (signal_handler())
 				return (1);
-    			execute_child_process();
-    			...
+  		execute_child_process();
+  		...
   			}
 		```
 - Assign:
