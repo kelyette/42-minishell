@@ -2,15 +2,25 @@ Nguyen todo:
 - Builtins:
     - exit
 - Signal:
-    - Signals in child processes.
+    - In child processes:
+          - insert when (pid == 0)
+            ```
+            if (signal_handler())
+		        return (1);
+            ```
+      - In CTRL \ (SIGNQUIT) need to cleanup child process
 - Assign:
-    - Assign can only at the start, or at second if export.
-    - Assign can be followed by cmd, in this case assign scope is local.
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
 - Wildcard *. Probably not do.
 
+
 ### Changelog:
+
+----------------
+12 May: Nguyen
+- Signal now work correctly in interactive mode.
+
 ----------------
 04 May: Nguyen
 - Now initiate variable ? during shell launch
