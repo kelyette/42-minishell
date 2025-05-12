@@ -9,7 +9,7 @@ Nguyen todo:
  	if (pid == 0)
  	{
 		if (signal_handler())
-		return (1);
+			return (1);
   		execute_child_process();
   		...
  	}
