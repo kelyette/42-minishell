@@ -2,13 +2,18 @@ Nguyen todo:
 - Builtins:
     - exit
 - Signal:
+    - Cleanup child process in SIGQUIT (CTRL \).
     - In child processes:
-          - insert when (pid == 0)
-```
-if (signal_handler())
-	return (1);
-```
-      - In CTRL \ (SIGNQUIT) need to cleanup child process
+          - insert when fork child
+		```
+    		if (pid == 0)
+    		{
+			if (signal_handler())
+				return (1);
+    			execute_child_process();
+    			...
+  		}
+		```
 - Assign:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
