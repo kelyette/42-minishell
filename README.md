@@ -5,14 +5,14 @@ Nguyen todo:
     - Cleanup child process in SIGQUIT (CTRL \).
     - In child processes:
           - insert when fork child
-		```
-    		if (pid == 0)
-    		{
-			if (signal_handler())
-				return (1);
+	```
+ 	if (pid == 0)
+ 	{
+		if (signal_handler())
+		return (1);
   		execute_child_process();
   		...
-  			}
+ 	}
 		```
 - Assign:
     - If a variable that exist in env is assigned, it will replace the value in env.
