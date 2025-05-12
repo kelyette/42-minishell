@@ -1,6 +1,7 @@
+### IMPORTANT:
+Use set_get_code() function to set return/exit code to correctly update the exit code.
+
 Nguyen todo:
-- Builtins:
-    - exit
 - Signal:
     - Cleanup child process in SIGQUIT (CTRL \).
     - In child processes:
@@ -17,7 +18,6 @@ Nguyen todo:
 - Assign:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.
-- Wildcard *. Probably not do.
 
 
 ### Changelog:
@@ -25,6 +25,14 @@ Nguyen todo:
 ----------------
 12 May: Nguyen
 - Signal now work correctly in interactive mode.
+- Now handle exit
+    - exit with no argument: exit with exit code stored in env.
+    - exit with number: exit with entered number. If number > 256, then code % 256. Code is unsigned int.
+    - exit with non numeric argument: print error and exit with code 255.
+    - exit with more than 2 arguments: print error, not exit and return/set code 1.
+    - print "exit\n" in interactive mode.
+- Now set all relevent exit code with set_get_code().
+- Now restructured code to separate libft and indicate which files to copy.
 
 ----------------
 04 May: Nguyen
