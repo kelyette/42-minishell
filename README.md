@@ -4,10 +4,10 @@ Nguyen todo:
 - Signal:
     - In child processes:
           - insert when (pid == 0)
-            ```
-            if (signal_handler())
-		        return (1);
-            ```
+```
+if (signal_handler())
+	return (1);
+```
       - In CTRL \ (SIGNQUIT) need to cleanup child process
 - Assign:
     - If a variable that exist in env is assigned, it will replace the value in env.
