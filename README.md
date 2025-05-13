@@ -33,8 +33,8 @@ Use set_get_code() function to set return/exit code to correctly update the exit
     - exit with non numeric argument: print error and exit with code 255.
     - exit with more than 2 arguments: print error, not exit and return/set code 1.
     - print "exit\n" in interactive mode.
-- Now set all relevent exit code with set_get_code().
-- Now restructured code to separate libft and indicate which files to copy.
+- All relevent exit codes are now set with set_get_code().
+- Code is new restructured to separate libft and to indicate which files to copy.
 
 ----------------
 04 May: Nguyen
