@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/09 17:51:35 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/20 15:44:17 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include "parser.h"
 #include "executor.h"
 #include "envp.h"
-
-// to clarify on utility
-int	g_signal;
 
 // handle history
 void	history_handler(char *line)
@@ -34,28 +31,29 @@ int	run(t_token **head, t_env **env)
 	char	*line;
 	char	*tmp;
 	t_node	*tree;
-	int		ec;
 
 	while (1)
 	{
 		line = readline("Minishell> ");
 		if (line == NULL)
-			return (printf("exit\n"), rl_clear_history(), 0);
+			return (printf("exit\n"), set_get_code(0, env));
 		history_handler(line);
 		if (line != NULL && line[0] != '\0')
 		{
 			tmp = dollar_handler(line, env);
 			free(line);
 			if (tmp == NULL)
-				return (1);
-			if (lexer(tmp, head))
-				return (free(tmp), 1);
+				return (set_get_code(1, env));
+			if (lexer(tmp, head, env))
+				return (free(tmp), set_get_code(1, env));
 			free(tmp);
 			if (parse(*head, &tree))
-				return (1);
+				return (ft_lstclear_token(head), set_get_code(1, env));
 			ft_lstclear_token(head);
 			if (tree)
-				executor(tree, &ec, env);
+				print_tree(tree);
+			if (tree)
+				set_get_code(executor(tree, env), env);
 			free_tree(&tree);
 		}
 	}
@@ -70,30 +68,11 @@ int	main(int ac, char **av, char **envp)
 	(void) av;
 	head = NULL;
 	env = NULL;
-	if (signal_handler())
-		return (1);
 	if (transform_env(&env, envp))
 		return (1);
+	if (signal_handler())
+		return (set_get_code(1, &env));
 	if (run(&head, &env))
 		return (rl_clear_history(), ft_lstclear_env(&env), 1);
 	return (rl_clear_history(), ft_lstclear_env(&env), 0);
 }
-
-// // loop to show ARRAY to LIST env
-// while (env != NULL)
-// {
-// 	printf("%s", env->key);
-// 	printf("=");
-// 	printf("%s", env->value);
-// 	printf("\n");
-// 	env = env->next;
-// }
-
-// // loop to show LIST to ARRAY envp
-// char **test;
-// test = env_to_envp(&env);
-// for (int i=0; test[i]; i++)
-// {
-// 	printf("%s\n", test[i]);
-// }
-// free_envp(test);

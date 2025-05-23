@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp_lst_utils.c                                   :+:      :+:    :+:   */
+/*   envp_helper_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:38 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/09 18:16:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/12 22:40:54 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,49 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new_env)
 	}
 }
 
-int	ft_lstsize_env(t_env *lst)
+// ENVP: extract value
+char	*ft_substring_value(char *s)
 {
-	int	i;
+	char	*ptr;
+	size_t	i;
 
 	i = 0;
-	while (lst != NULL)
-	{
+	while (*s != '=')
+		s++;
+	s++;
+	while (s[i] != '\0')
 		i++;
-		lst = lst->next;
+	ptr = malloc(sizeof(char) * (i + 1));
+	if (ptr == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i] != '\0')
+	{
+		ptr[i] = s[i];
+		i++;
 	}
-	return (i);
+	ptr[i] = '\0';
+	return (ptr);
+}
+
+// ENVP: extract key
+char	*ft_substring_key(char *s)
+{
+	char	*ptr;
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '=')
+		i++;
+	ptr = malloc(sizeof(char) * (i + 1));
+	if (ptr == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i] != '=')
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }

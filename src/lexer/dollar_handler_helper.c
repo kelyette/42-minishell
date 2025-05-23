@@ -6,12 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:52:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/09 18:28:43 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/14 16:42:50 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-#include "libft.h"
 
 // find the value of the variable, return an empty string if no match
 char	*find_variable(char *s, t_env **env)

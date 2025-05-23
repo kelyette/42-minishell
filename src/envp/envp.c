@@ -1,64 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp_init.c                                        :+:      :+:    :+:   */
+/*   envp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:06 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/09 18:16:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/12 22:39:50 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envp.h"
-#include "libft.h"
-
-// ENVP: extract value
-char	*ft_substring_value(char *s)
-{
-	char	*ptr;
-	size_t	i;
-
-	i = 0;
-	while (*s != '=')
-		s++;
-	s++;
-	while (s[i] != '\0')
-		i++;
-	ptr = malloc(sizeof(char) * (i + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\0')
-	{
-		ptr[i] = s[i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
-}
-
-// ENVP: extract key
-char	*ft_substring_key(char *s)
-{
-	char	*ptr;
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '=')
-		i++;
-	ptr = malloc(sizeof(char) * (i + 1));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i] != '=')
-	{
-		ptr[i] = s[i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
-}
+#include "lexer.h"
 
 char	**env_to_envp_helper(char **envp, t_env *temp, int i)
 {
@@ -67,11 +19,11 @@ char	**env_to_envp_helper(char **envp, t_env *temp, int i)
 	envp[i] = NULL;
 	tmp = ft_strjoin(temp->key, "=");
 	if (tmp == NULL)
-		return (free_envp(envp), NULL);
+		return (perror("Error"), free_envp(envp), NULL);
 	envp[i] = ft_strjoin(tmp, temp->value);
 	free(tmp);
 	if (envp[i] == NULL)
-		return (free_envp(envp), NULL);
+		return (perror("Error"), free_envp(envp), NULL);
 	return (envp);
 }
 
@@ -102,26 +54,75 @@ char	**env_to_envp(t_env **env)
 	return (envp);
 }
 
+// update shlvl to reflect current shell level
+// default behavior when executing shell in shell
+int	update_shlvl(t_env **env)
+{
+	t_env	*temp;
+	int		count;
+
+	temp = *env;
+	while (temp != NULL)
+	{
+		if (!ft_strncmp(temp->key, "SHLVL", 6))
+		{
+			count = ft_atoi(temp->value);
+			free(temp->value);
+			count += 1;
+			temp->value = ft_itoa(count);
+			if (temp->value == NULL)
+				return (perror("Error"), ft_lstclear_env(env), 1);
+			return (0);
+		}
+		temp = temp->next;
+	}
+	return (0);
+}
+
+int	initiate_exit_code(t_env **env)
+{
+	*env = malloc(sizeof(t_env));
+	if (*env == NULL)
+		return (perror("Error"), 1);
+	(*env)->key = ft_strdup("?");
+	if ((*env)->key == NULL)
+		return (perror("Error"), 1);
+	(*env)->value = ft_strdup("0");
+	if ((*env)->value == NULL)
+		return (perror("Error"), 1);
+	(*env)->exported = false;
+	(*env)->only_key = false;
+	(*env)->code = true;
+	(*env)->printed = false;
+	(*env)->next = NULL;
+	return (0);
+}
+
 // transform ARRAY envp to LIST env
 int	transform_env(t_env **env, char **envp)
 {
 	t_env	*var;
 
+	if (envp == NULL || *envp == NULL)
+		return (initiate_base_env(env));
+	if (initiate_exit_code(env) != 0)
+		return (perror("Error"), 1);
 	while (*envp != NULL)
 	{
 		var = malloc(sizeof(t_env));
 		if (var == NULL)
 			return (perror("Error"), ft_lstclear_env(env), 1);
 		var->key = ft_substring_key(*envp);
-		if (var->key == NULL)
-			return (perror("Error"), ft_lstclear_env(env), 1);
 		var->value = ft_substring_value(*envp);
-		if (var->value == NULL)
+		if (var->key == NULL || var->value == NULL)
 			return (perror("Error"), ft_lstclear_env(env), 1);
 		var->exported = true;
+		var->only_key = false;
+		var->code = false;
+		var->printed = false;
 		var->next = NULL;
 		ft_lstadd_back_env(env, var);
 		envp++;
 	}
-	return (0);
+	return (update_shlvl(env));
 }

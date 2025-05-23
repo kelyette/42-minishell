@@ -6,14 +6,13 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:46:05 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/09 18:23:49 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:45:16 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-#include "libft.h"
 
-int	lexer_helper(char *line, t_token **head, int *i)
+int	lexer_helper(char *line, t_token **head, int *i, t_env **env)
 {
 	int		count;
 
@@ -22,7 +21,7 @@ int	lexer_helper(char *line, t_token **head, int *i)
 		|| (line[*i] == '>' && line[*i + 1] != '>'))
 	{
 		if (case_single_char(head, line[*i]) == NULL)
-			return (ft_lstclear_token(head), 1);
+			return (ft_lstclear_token(head), set_get_code(1, env));
 	}
 	else if ((line[*i] == '|' && line[*i + 1] == '|')
 		|| (line[*i] == '<' && line[*i + 1] == '<')
@@ -30,25 +29,24 @@ int	lexer_helper(char *line, t_token **head, int *i)
 		|| (line[*i] == '&' && line[*i + 1] == '&'))
 	{
 		if (case_double_char(head, line[*i]) == NULL)
-			return (ft_lstclear_token(head), 1);
+			return (ft_lstclear_token(head), set_get_code(1, env));
 		(*i)++;
 	}
 	else if (ft_isprint(line[*i]) && !ft_isspace(line[*i]))
 	{
 		if (case_printable(head, &line[*i], &count) == NULL)
-			return (ft_lstclear_token(head), 1);
+			return (ft_lstclear_token(head), set_get_code(1, env));
 		*i += count - 1;
 	}
-	return (0);
+	return (set_get_code(0, env));
 }
 
 // tokenizer, 
 // note: "" and '' not removed because of $ in string, treat with ft_strtrim
-int	lexer(char *line, t_token **head)
+int	lexer(char *line, t_token **head, t_env **env)
 {
 	int		i;
 
-	*head = NULL;
 	i = 0;
 	while (line[i] != '\0')
 	{
@@ -58,14 +56,14 @@ int	lexer(char *line, t_token **head)
 			&& line[i + 1] != '<' && line[i + 1] != '>' && line[i + 1] != '|')
 		{
 			if (case_single_char(head, line[i]) == NULL)
-				return (ft_lstclear_token(head), 1);
+				return (ft_lstclear_token(head), set_get_code(1, env));
 		}
 		else
 		{
-			if (lexer_helper(line, head, &i) == 1)
-				return (1);
+			if (lexer_helper(line, head, &i, env) == 1)
+				return (set_get_code(1, env));
 		}
 		i++;
 	}
-	return (0);
+	return (set_get_code(0, env));
 }

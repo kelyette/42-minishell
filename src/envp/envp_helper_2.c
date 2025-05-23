@@ -1,18 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp_baseinit.c                                    :+:      :+:    :+:   */
+/*   envp_helper_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/09 18:08:11 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/09 18:14:13 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/04/23 17:26:08 by hoannguy          #+#    #+#             */
+/*   Updated: 2025/05/12 22:39:52 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "envp.h"
+#include "lexer.h"
 
-int	initiate_base_env_exitcode(t_env **env)
+void	free_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
+}
+
+int	ft_lstsize_env(t_env *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}
+
+int	initiate_base_env_helper_helper(t_env **env)
 {
 	t_env	*exit_code;
 
@@ -34,7 +60,7 @@ int	initiate_base_env_exitcode(t_env **env)
 	return (0);
 }
 
-int	initiate_base_env_shlvl(t_env **env)
+int	initiate_base_env_helper(t_env **env)
 {
 	t_env	*shlvl;
 
@@ -53,7 +79,7 @@ int	initiate_base_env_shlvl(t_env **env)
 	shlvl->printed = false;
 	shlvl->next = NULL;
 	(*env)->next = shlvl;
-	return (initiate_base_env_exitcode(env));
+	return (initiate_base_env_helper_helper(env));
 }
 
 // in case of NULL envp,
@@ -74,5 +100,5 @@ int	initiate_base_env(t_env **env)
 	(*env)->code = false;
 	(*env)->printed = false;
 	(*env)->next = NULL;
-	return (initiate_base_env_shlvl(env));
+	return (initiate_base_env_helper(env));
 }
