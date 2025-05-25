@@ -1,8 +1,8 @@
 Bugs:
 - exit code in executor.
-- echo segfault when running with no environnement.
 - leak when exit because tree isnt free.
 --------------
+- Fixed: echo segfault when running with no environnement.
 - Fixed: builtin lookup not working proprely. It skips first built-in and last built-in.
 - Fixed: cd .. segfault when running with no environnement.
 - Fixed: passing t_env *env to exec_bin and exec_cmd instead of t_env **env.
