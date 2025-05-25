@@ -1,4 +1,5 @@
 Bugs:
+- Il n'y a pas de rule dans makefile pour compile libft.
 - exit code in executor.
 - leak when exit because tree isnt free.
 --------------
