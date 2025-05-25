@@ -1,6 +1,7 @@
 Bugs:
 - exit code in executor.
 - builtin lookup not working proprely. It skips first built-in and last built-in doesnt work.
+- echo segfault when running with no environnement.
 --------------
 - Fixed: cd .. segfault when running with no environnement.
 - Fixed: passing t_env *env to exec_bin and exec_cmd instead of t_env **env.
