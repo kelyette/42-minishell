@@ -16,9 +16,6 @@ Bugs:
 
 --------------
 
-### IMPORTANT:
-Use set_get_code() function to set return/exit code to correctly update the exit code.
-
 # Nguyen todo:
 - exit buildin:
     - Cleanup (ast tree and such) before exit.
@@ -42,6 +39,10 @@ Use set_get_code() function to set return/exit code to correctly update the exit
 
 ### Changelog:
 
+----------------
+25 May: Nguyen
+- Fix bugs.
+  
 ----------------
 12 May: Nguyen
 - Signal now work correctly in interactive mode.
