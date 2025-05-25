@@ -2,6 +2,7 @@ Bugs:
 - Il n'y a pas de rule dans makefile pour compile libft.
 - exit code in executor.
 - leak when exit because tree isnt free.
+- unset segfault when unset first env variable.
 --------------
 - Fixed: unset builtin is included in executor.h and in builtin lookup function.
 - Fixed: echo segfault when running with no environnement.
