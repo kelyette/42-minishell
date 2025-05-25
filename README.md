@@ -1,3 +1,12 @@
+Bugs:
+- exit code in executor.
+- builtin lookup not working proprely. It skips first built-in and last built-in doesnt work.
+
+- Fixed: cd .. segfault when running with no environnement.
+- Fixed: passing t_env *env to exec_bin and exec_cmd instead of t_env **env.
+
+
+
 ### IMPORTANT:
 Use set_get_code() function to set return/exit code to correctly update the exit code.
 
