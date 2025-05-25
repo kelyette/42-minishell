@@ -3,6 +3,7 @@ Bugs:
 - exit code in executor.
 - leak when exit because tree isnt free.
 --------------
+- Fixed: unset builtin is included in executor.h and in builtin lookup function.
 - Fixed: echo segfault when running with no environnement.
 - Fixed: builtin lookup not working proprely. It skips first built-in and last built-in.
 - Fixed: cd .. segfault when running with no environnement.
