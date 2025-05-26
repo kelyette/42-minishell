@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 11:11:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:41:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/25 17:07:18 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ int	new_assign(char *key, char *value, t_env **env)
 	var->exported = true;
 	var->only_key = false;
 	var->code = false;
+	var->printed = false;
 	ft_lstadd_back_env(env, var);
 	return (0);
 }
 
-//case export follow by assign, like export test=
+// case export follow by assign, like export test=
 // if test exist, update the value
 // if test doesn't exist, create new env variable
 int	export_assign(char *s, t_env **env)
@@ -47,7 +48,8 @@ int	export_assign(char *s, t_env **env)
 	temp = *env;
 	while (temp != NULL)
 	{
-		if (!ft_strncmp(key, temp->key, ft_strlen(key)))
+		if (ft_strlen(key) == ft_strlen(temp->key)
+			&& ft_strncmp(key, temp->key, ft_strlen(key)) == 0)
 		{
 			temp->exported = true;
 			temp->only_key = false;
@@ -83,9 +85,9 @@ int	export_string(char *key, t_env **env)
 	if (var == NULL)
 		return (perror("Error"), 1);
 	var->key = ft_strdup(key);
-	if (var->key == NULL)
+	var->value = ft_strdup("");
+	if (var->key == NULL || var->value == NULL)
 		return (perror("Error"), 1);
-	var->value = NULL;
 	var->exported = false;
 	var->only_key = true;
 	var->code = false;
@@ -102,11 +104,16 @@ int	builtin_export(t_node *node, t_env **env)
 		return (export_no_arg(env));
 	else
 	{
+		// printf("%d\n", node->data->type); export a=b is broken because a=b isnt TK_Assign
 		node->data = node->data->next;
 		if (node->data->type == TK_Assign)
+		{
 			return (export_assign(node->data->str, env));
+		}
 		else if (node->data->type == TK_String)
+		{
 			return (export_string(node->data->str, env));
+		}
 	}
 	return (0);
 }

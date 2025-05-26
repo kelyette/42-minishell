@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:53:48 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:42:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/25 17:09:48 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ int	builtin_echo(t_node *node, t_env **env)
 	(void)env;
 	flag = 0;
 	node->data = node->data->next;
+	if (node->data == NULL)
+		return (printf("\n"), 0);
 	if (!ft_strncmp(node->data->str, "-n", 3))
 	{
 		flag = 1;
 		node->data = node->data->next;
+		if (node->data == NULL)
+			return (0);
 	}
 	while (node->data != NULL)
 	{
@@ -34,7 +38,7 @@ int	builtin_echo(t_node *node, t_env **env)
 	}
 	if (flag == 0)
 		printf("\n");
-	return (1);
+	return (0);
 }
 
 // case env
@@ -51,7 +55,7 @@ int	builtin_env(t_node *node, t_env **env)
 		if (temp->exported == true && temp->code == false)
 		{
 			printf("%s=%s\n", temp->key, temp->value);
-		}
+		}	
 		temp = temp->next;
 	}
 	return (0);

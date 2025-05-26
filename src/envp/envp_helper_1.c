@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:47:38 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/12 22:40:54 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/25 16:47:16 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,17 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new_env)
 	t_env	*temp;
 
 	if (*lst == NULL)
+	{
 		*lst = new_env;
+		new_env->next = NULL;
+	}
 	else
 	{
 		temp = *lst;
 		while (temp->next != NULL)
 			temp = temp->next;
 		temp->next = new_env;
+		new_env->next = NULL;
 	}
 }
 

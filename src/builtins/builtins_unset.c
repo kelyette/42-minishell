@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:59:30 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:39:01 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/25 11:37:03 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ void	pop_env(t_env *temp, t_env **env)
 	t_env	*tmp;
 
 	tmp = *env;
+	if (tmp == temp)
+	{
+		*env = temp->next;
+		ft_lstdelone_env(temp);
+		return ;
+	}
 	while (tmp != NULL)
 	{
 		if (tmp->next == temp)
@@ -29,7 +35,7 @@ void	pop_env(t_env *temp, t_env **env)
 	}
 }
 
-// case unset, pop multiple variable
+// case unset, pop multiple variables
 int	builtin_unset(t_node *node, t_env **env)
 {
 	t_env	*temp;
@@ -37,13 +43,15 @@ int	builtin_unset(t_node *node, t_env **env)
 	if (env == NULL || *env == NULL || node->data == NULL)
 		return (0);
 	node->data = node->data->next;
-	if (!ft_strncmp(node->data->str, "?", 2))
-		return (printf("Can not unset exit code\n"), 0);
+	if (node->data == NULL)
+		return (0);
 	while (node->data != NULL)
 	{
 		temp = *env;
 		while (temp != NULL)
 		{
+			if (!ft_strncmp(node->data->str, "?", 2))
+				return (printf("Can not unset exit code\n"), 0);
 			if (!ft_strncmp(node->data->str, temp->key,
 					ft_compare(node->data->str, temp->key)))
 			{

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:31:00 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:44:42 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/24 22:56:55 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ char	**env_to_envp(t_env **env);
 void	free_envp(char **envp);
 int		set_get_code(int code, t_env **env);
 
-t_env	*get_env_key(const t_env *env, char *key);
+t_env	*get_env_key(t_env **env, char *key);
 
 #endif

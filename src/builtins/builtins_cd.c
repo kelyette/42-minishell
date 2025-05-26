@@ -6,11 +6,12 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:39:54 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:33:11 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/25 17:16:01 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "envp.h"
 
 // handle cd path
 int	case_cd_path(char *path, t_env **env)
@@ -24,10 +25,20 @@ int	case_cd_path(char *path, t_env **env)
 	line = getcwd(NULL, 0);
 	if (line == NULL)
 		return (perror("Error"), set_get_code(1, env));
-	oldpwd = get_env_key(*env, "OLDPWD");
-	pwd = get_env_key(*env, "PWD");
-	free(oldpwd->value);
-	oldpwd->value = pwd->value;
+	pwd = get_env_key(env, "PWD");
+	oldpwd = get_env_key(env, "OLDPWD");
+	if (oldpwd != NULL)
+	{
+		free(oldpwd->value);
+		oldpwd->value = pwd->value;
+	}
+	else
+	{
+		oldpwd = initiate_oldpwd_env(env);
+		if (oldpwd == NULL)
+			return (perror("Error"), set_get_code(1, env));
+		oldpwd->value = pwd->value;
+	}
 	pwd->value = line;
 	return (set_get_code(0, env));
 }
@@ -39,10 +50,10 @@ int	case_cd_previous(t_env **env)
 	t_env	*oldpwd;
 	char	*tmp;
 
-	oldpwd = get_env_key(*env, "OLDPWD");
+	oldpwd = get_env_key(env, "OLDPWD");
 	if (oldpwd == NULL)
 		return (printf("bash: cd: OLDPWD not set\n"), set_get_code(1, env));
-	pwd = get_env_key(*env, "PWD");
+	pwd = get_env_key(env, "PWD");
 	if (pwd != NULL)
 		tmp = pwd->value;
 	else
@@ -68,7 +79,7 @@ int	case_cd_home(char *path, t_env **env)
 	char	*temp;
 
 	(void)new_path;
-	home = get_env_key(*env, "HOME");
+	home = get_env_key(env, "HOME");
 	if (home == NULL)
 		return (printf("bash: cd: HOME not set\n"), 1);
 	temp = ft_strdup(&path[1]);
@@ -89,7 +100,7 @@ int	case_cd_no_arg(t_env **env)
 {
 	t_env	*home;
 
-	home = get_env_key(*env, "HOME");
+	home = get_env_key(env, "HOME");
 	if (home == NULL)
 		return (printf("bash: cd: HOME not set\n"), 1);
 	return (case_cd_path(home->value, env));
