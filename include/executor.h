@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/05 18:26:59 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/26 14:04:16 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,52 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <sys/param.h>
+# include <sys/errno.h>
 # include "minishell.h"
 # include "libft.h"
 # include "envp.h"
 # include "parser.h"
+# include "builtins.h"
+# define DO_FORK 1
+# define NO_FORK 0
 
-typedef int	(*t_bltnf)(t_node *node, t_env **env);
-struct s_builtin
+typedef struct s_cmd_data
 {
-	char	*str;
-	t_bltnf	fn;
-};
+	char	*path;
+	char	**argv;
+	char	**envp;
+}	t_cmdd;
 
 typedef struct s_redir
 {
 	char			*filename;
 	int				tfd;
 	int				flags;
+	int				base_fd;
 	struct s_redir	*next;
 }	t_redir;
 
-void	executor(t_node *tree, int *ec, t_env **env);
-void	exe_operator(t_node *tree, int *ec, t_env **env);
-void	exe_pipe(t_node *tree, int *ec, t_env **env);
-//void	exe_redirection(t_node *tree, int *ec, t_env **env);
-void	exe_cmd(t_node *tree, int *ec, t_env **env);
-void	exe_assign(t_node *tree, int *ec, t_env **env);
+typedef struct s_pipeline
+{
+	t_node	**cmds;
+	pid_t	*pids;
+	int		(*fds)[2];
+	int		size;
+}	t_pipe;
 
-// builtins
-t_bltnf	lookup_builtin(char *name);
-int		builtin_echo(t_node *node, t_env **env);
-int		builtin_pwd(t_node *node, t_env **env);
-int		builtin_env(t_node *node, t_env **env);
-int		builtin_export(t_node *node, t_env **env);
-int		builtin_cd(t_node *node, t_env **env);
+int		executor(t_node *tree, t_env **env);
+int		exe_bin(t_node *tree, t_env **env);
+int		exe_pipe(t_node *tree, t_env **env);
+int		exe_cmd(t_node *tree, t_env **env, int can_fork);
 
 // exec utils
 int		collect_redirs(t_redir **headptr, t_node **treeptr);
 int		perform_redirs(t_redir *redir);
-char	*search_bin_path(const t_env *env, char *name);
+void	reset_redirs(t_redir *redir);
+void	free_redirs(t_redir *redir);
+int		search_bin_path(char **pathptr, t_env **env, char *name);
 
 // utils
 int		lst_getsize_token(t_token *head);

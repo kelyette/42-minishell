@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/09 14:37:51 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/26 11:41:49 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 		tmp->next = *headptr;
 		tmp->filename = tree->data->str;
 		tmp->tfd = 0;
+		tmp->base_fd = -1;
 		if (tree->type == NT_RdrOut || tree->type == NT_RdrAppend)
 			tmp->tfd = 1;
 		if (tree->type == NT_RdrIn)
@@ -48,6 +49,9 @@ int	perform_redirs(t_redir *redir)
 
 	while (redir)
 	{
+		redir->base_fd = dup(redir->tfd);
+		if (redir->base_fd < 0)
+			return (perror("minishell"), 1);
 		if (redir->flags & O_CREAT)
 			fd = open(redir->filename, redir->flags, 0644);
 		else
@@ -60,6 +64,16 @@ int	perform_redirs(t_redir *redir)
 		redir = redir->next;
 	}
 	return (0);
+}
+
+void	reset_redirs(t_redir *redir)
+{
+	while (redir)
+	{
+		if (dup2(redir->base_fd, redir->tfd) < 0)
+			perror("minishell");
+		close(redir->base_fd);
+	}
 }
 
 /*void	exe_in(t_node *tree, int *ec, t_env *env)

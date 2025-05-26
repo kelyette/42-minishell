@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/05 18:21:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:12:31 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*concat_path(const char *dir, const char *name)
 	dsize = ft_strlen(dir);
 	nsize = ft_strlen(name);
 	path = malloc(sizeof(char) * (dsize + nsize + 2));
+	if (!path)
+		return (perror("minishell"), NULL);
 	ft_memcpy(path, dir, dsize);
 	path[dsize] = '/';
 	ft_memcpy(path + dsize + 1, name, nsize);
@@ -30,40 +32,42 @@ char	*concat_path(const char *dir, const char *name)
 	return (path);
 }
 
-int	is_executable(const char *path)
+int	search_bin_path(char **pathptr, t_env **env, char *name)
 {
 	struct stat	st;
+	t_env		*env_path;
+	char		**paths;
+	char		*tmp;
+	int			i;
 
-	if (stat(path, &st) || !S_ISREG(st.st_mode))
-		return (0);
-	if (access(path, X_OK))
-		return (0);
-	return (1);
-}
-
-char	*search_bin_path(const t_env *env, char *name)
-{
-	t_env	*env_path;
-	char	**paths;
-	char	*tmp;
-	int		i;
-
-	if (!name || !*name)
-		return (NULL);
 	env_path = get_env_key(env, "PATH");
-	if (!env_path || !env_path->value || !*env_path->value)
-		return (NULL);
+	if (!name || !env_path || !env_path->value || !*env_path->value)
+		return (0);
 	paths = ft_split(env_path->value, ':');
 	if (!paths)
-		return (NULL);
+		return (1);
 	i = -1;
 	while (paths[++i])
 	{
 		tmp = concat_path(paths[i], name);
-		if (is_executable(tmp))
-			return (ft_free_split(paths), tmp);
+		if (!tmp)
+			return (1);
+		if (!stat(tmp, &st) && S_ISREG(st.st_mode))
+			return (ft_free_split(paths), (*pathptr = tmp), 0);
 		free(tmp);
 	}
 	ft_free_split(paths);
-	return (NULL);
+	return (0);
+}
+
+void	free_redirs(t_redir *redir)
+{
+	t_redir	*tmp;
+
+	while (redir)
+	{
+		tmp = redir->next;
+		free(redir);
+		redir = tmp;
+	}
 }

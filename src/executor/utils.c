@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:51:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/05 16:18:47 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:04:20 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	lst_getsize_token(t_token *head)
 }
 
 // copies each string in a t_token* list to a null terminated char*[]
-// only up to n values (-1 means no limit, 0 returns NULL)
 char	**lst_toarr_token(t_token *head)
 {
 	char	**arr;
@@ -46,7 +45,12 @@ char	**lst_toarr_token(t_token *head)
 
 void	free_arr(char **arr)
 {
-	while (*arr)
-		free(arr);
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
 	free(arr);
 }
