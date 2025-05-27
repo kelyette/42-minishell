@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/20 15:44:17 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:18:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	run(t_token **head, t_env **env)
 			if (parse(*head, &tree))
 				return (ft_lstclear_token(head), set_get_code(1, env));
 			ft_lstclear_token(head);
-			if (tree)
-				print_tree(tree);
+			//if (tree)
+			//	print_tree(tree);
 			if (tree)
 				set_get_code(executor(tree, env), env);
 			free_tree(&tree);

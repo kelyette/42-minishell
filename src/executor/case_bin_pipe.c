@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/26 12:19:20 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:59:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ int	collect_commands(t_node ***headptr, int *sizeptr, t_node *tree)
 
 int	run_pipe_cmds(t_pipe pl, t_env **env)
 {
-	int		i;
+	int	i;
+	int	st;
 
-	i = 0;
+	i = -1;
 	while (++i < pl.size)
 	{
 		pl.pids[i] = fork();
@@ -68,15 +69,20 @@ int	run_pipe_cmds(t_pipe pl, t_env **env)
 			return (perror("minishell"), clean_pipes(pl.fds, pl.size), 1);
 		if (pl.pids[i] == 0)
 		{
-			if (i > 0)
-				dup2(pl.fds[i - 1][1], STDIN_FILENO);
-			if (i < pl.size - 1)
-				dup2(pl.fds[i + 1][0], STDOUT_FILENO);
+			if (i > 0 && dup2(pl.fds[i - 1][0], STDIN_FILENO) == -1)
+				return (perror("minishell"), exit(1), 1);
+			if (i < pl.size - 1 && dup2(pl.fds[i][1], STDOUT_FILENO) == -1)
+				return (perror("minishell"), exit(1), 1);
 			clean_pipes(pl.fds, pl.size);
-			exit(exe_cmd(pl.cmds[i], env, NO_FORK));
+			int rval = exe_cmd(pl.cmds[i], env, NO_FORK);
+			exit(rval);
 		}
 	}
-	return (0);
+	clean_pipes(pl.fds, pl.size);
+	i = -1;
+	while (++i < pl.size)
+		waitpid(pl.pids[i], &st, 0);
+	return (WEXITSTATUS(pl.pids[pl.size - 1]));
 }
 
 int	exe_pipe(t_node *tree, t_env **env)
@@ -93,10 +99,11 @@ int	exe_pipe(t_node *tree, t_env **env)
 	i = -1;
 	while (++i < pl.size)
 		if (pipe(pl.fds[i]) == -1)
-			return (clean_pipes(pl.fds, i - 1), free(pl.pids), MS_ERROR);
+			return (perror("minishell"), clean_pipes(pl.fds, --i),
+				free(pl.pids), MS_ERROR);
 	if (run_pipe_cmds(pl, env))
-		return (MS_ERROR);
-	return (MS_OK);
+		return (free(pl.cmds), free(pl.pids), MS_ERROR);
+	return (free(pl.cmds), free(pl.pids), MS_OK);
 }
 
 /*// fd[0] read end, 1 write end

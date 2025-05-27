@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:24:55 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/05 18:04:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:18:20 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,22 @@ int	split_node(t_pctx *ctx, t_node **nodeptr, int type)
 	return (0);
 }
 
+void	free_data(t_token **dataptr)
+{
+	t_token	*data;
+	t_token	*tmp;
+
+	data = *dataptr;
+	while (data)
+	{
+		tmp = data->next;
+		free(data->str);
+		free(data);
+		data = tmp;
+	}
+	*dataptr = NULL;
+}
+
 void	free_tree(t_node **rootptr)
 {
 	if (!*rootptr)
@@ -41,6 +57,7 @@ void	free_tree(t_node **rootptr)
 		free_tree(&(*rootptr)->lnode);
 	if ((*rootptr)->rnode)
 		free_tree(&(*rootptr)->rnode);
+	free_data(&(*rootptr)->data);
 	free(*rootptr);
 	*rootptr = NULL;
 }
