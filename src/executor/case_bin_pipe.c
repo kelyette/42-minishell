@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/28 16:59:51 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:23:16 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ int	run_pipe_cmds(t_pipe pl, t_env **env)
 {
 	int	i;
 	int	st;
+	int	sig;
 
+	disable_sigint_handler();
 	i = -1;
 	while (++i < pl.size)
 	{
@@ -84,6 +86,16 @@ int	run_pipe_cmds(t_pipe pl, t_env **env)
 	i = -1;
 	while (++i < pl.size)
 		waitpid(pl.pids[i], &st, 0);
+	restore_sigint_handler();
+	if (WIFSIGNALED(st))
+	{
+		sig = WTERMSIG(st);
+		if (sig == SIGINT)
+			printf("\n");
+		if (sig == SIGQUIT)
+			printf("Quit (core dumped)\n");
+		return 128 + sig;
+	}
 	return (WEXITSTATUS(pl.pids[pl.size - 1]));
 }
 

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/28 14:08:31 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:32:46 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		builtin_export(t_node *node, t_env **env);
 int		builtin_unset(t_node *node, t_env **env);
 int		builtin_cd(t_node *node, t_env **env);
 t_env	*initiate_oldpwd_env(t_env **env);
+t_env	*initiate_pwd_env(t_env **env);
 int		builtin_exit(t_node *node, t_env **env);
 t_env	*get_env_key(t_env **env, char *key);
 
