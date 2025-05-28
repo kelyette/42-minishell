@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 15:22:49 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/26 10:22:29 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 13:51:20 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_bltnf	lookup_builtin(char *name)
 	i = 0;
 	while (i < size)
 	{
-		if (!ft_strncmp(name, table[i].str, ft_strlen(table[i].str)))
+		if (!ft_strncmp(name, table[i].str, ft_strlen(table[i].str) + 1))
 			return (table[i].fn);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:34:42 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:59:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 16:20:42 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,4 @@ int	signal_handler(void)
 		return (perror("Error"), 1);
 	return (0);
 }
+

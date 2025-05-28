@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/27 17:16:49 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 16:22:29 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	exe_fork(t_cmdd *cmdd, t_redir *redir)
 		return (perror("minishell"), MS_ERROR);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+    	signal(SIGQUIT, SIG_DFL);
 		if (perform_redirs(redir))
 			exit(MS_ERROR);
 		execve(cmdd->path, cmdd->argv, cmdd->envp);

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/27 16:59:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 16:22:32 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	run_pipe_cmds(t_pipe pl, t_env **env)
 			return (perror("minishell"), clean_pipes(pl.fds, pl.size), 1);
 		if (pl.pids[i] == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+    		signal(SIGQUIT, SIG_DFL);
 			if (i > 0 && dup2(pl.fds[i - 1][0], STDIN_FILENO) == -1)
 				return (perror("minishell"), exit(1), 1);
 			if (i < pl.size - 1 && dup2(pl.fds[i][1], STDOUT_FILENO) == -1)
