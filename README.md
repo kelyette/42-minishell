@@ -1,18 +1,17 @@
 Bugs:
 - Critical: `export a=b` , a=b isnt marked as TK_Assign after treated in parser, so export assign is broken. The bug is very likely from
-  `int handle_assign(t_pctx *ctx, t_node **nodeptr)` in handlers.c in parsers
-- Il n'y a pas de rule dans makefile pour compile libft.
+  `int handle_assign(t_pctx *ctx, t_node **nodeptr)` in handlers.c in parsers.
 - exit code in executor.
-- leak when exit because tree isnt free.
+- leak when exit.
+- leak when ctrl-D.
+- built-ins lookup not compare the whole string.
+- cd path will segfault if env is empty, because it try to assign value to oldpwd and pwd, both are not exist if env is empty.
 
 --------------
 - Fixed: ft_lstadd_back_env() now correctly set the ->next to NULL.
 - Fixed: unset segfault when unset first env variable.
 - Fixed: unset builtin is included in executor.h and in builtin lookup function.
 - Fixed: echo segfault when running with no environnement.
-- Fixed: builtin lookup not working proprely. It skips first built-in and last built-in.
-- Fixed: cd .. segfault when running with no environnement.
-- Fixed: passing t_env *env to exec_bin and exec_cmd instead of t_env **env.
 
 --------------
 
