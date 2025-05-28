@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 15:15:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/28 16:21:12 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:39:25 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <readline/history.h>
 # include "libft.h"
 # define ERRPREFIX "minishell"
-
-extern sig_atomic_t	g_signal;
 
 int		signal_handler(void);
 
