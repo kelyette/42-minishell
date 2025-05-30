@@ -6,17 +6,15 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/05/28 17:23:16 by hoannguy         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/30 14:30:31 by kcsajka          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-void	close_pipe(int fd[2])
-{
-	close(fd[0]);
-	close(fd[1]);
-}
 
 void	clean_pipes(int (*fds)[2], int size)
 {

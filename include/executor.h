@@ -6,7 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/05/28 14:10:35 by hoannguy         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/30 14:30:08 by kcsajka          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +39,7 @@ typedef struct s_cmd_data
 
 typedef struct s_redir
 {
+	int				type;
 	char			*filename;
 	int				tfd;
 	int				flags;
@@ -67,6 +72,7 @@ int		collect_redirs(t_redir **headptr, t_node **treeptr);
 int		perform_redirs(t_redir *redir);
 void	reset_redirs(t_redir *redir);
 void	free_redirs(t_redir *redir);
+void	close_pipe(int fd[2]);
 int		search_bin_path(char **pathptr, t_env **env, char *name);
 
 // utils

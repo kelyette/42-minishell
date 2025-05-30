@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:51:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/26 15:04:20 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/30 14:31:21 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,10 @@ void	free_arr(char **arr)
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
+}
+
+void	close_pipe(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
 }

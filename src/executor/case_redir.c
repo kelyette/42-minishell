@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/26 11:41:49 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/30 14:38:56 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 	while (tree && in_group_tkn(tree->type, GRP_REDIR))
 	{
 		tmp = malloc(sizeof(t_redir));
-		tmp->next = *headptr;
-		tmp->filename = tree->data->str;
-		tmp->tfd = 0;
-		tmp->base_fd = -1;
+		*tmp = (t_redir){tree->type, tree->data->str, 0, 0, -1, *headptr};
 		if (tree->type == NT_RdrOut || tree->type == NT_RdrAppend)
 			tmp->tfd = 1;
 		if (tree->type == NT_RdrIn)
@@ -36,11 +33,41 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 			tmp->flags = O_WRONLY | O_CREAT | O_TRUNC;
 		else if (tree->type == NT_RdrAppend)
 			tmp->flags = O_WRONLY | O_CREAT | O_APPEND;
+		else if (tree->type == NT_HereDoc)
+			tmp->flags = O_WRONLY | O_CREAT | O_RDWR;
 		*headptr = tmp;
 		tree = tree->lnode;
 	}
 	*treeptr = tree;
 	return (0);
+}
+
+int	handle_heredoc(t_redir *redir)
+{
+	int		fds[2];
+	char	*line;
+	char	*delim;
+	int		dlen;
+
+	delim = redir->filename;
+	dlen = ft_strlen(delim);
+	if (pipe(fds) < 0)
+		return (perror("minishell"), -1);
+	while (1)
+	{
+		write(1, "> ", 2);
+		line = get_next_line(0);
+		if (!line || (ft_strncmp(line, delim, dlen) == 0
+				&& (line[dlen] == '\n' || line[dlen] == 0)))
+		{
+			free(line);
+			get_next_line(-1);
+			break ;
+		}
+		write(fds[1], line, ft_strlen(line));
+	}
+	close(fds[1]);
+	return (fds[0]);
 }
 
 int	perform_redirs(t_redir *redir)
@@ -52,11 +79,13 @@ int	perform_redirs(t_redir *redir)
 		redir->base_fd = dup(redir->tfd);
 		if (redir->base_fd < 0)
 			return (perror("minishell"), 1);
-		if (redir->flags & O_CREAT)
+		if (redir->type == NT_HereDoc)
+			fd = handle_heredoc(redir);
+		else if (redir->type == NT_RdrOut || redir->type == NT_RdrAppend)
 			fd = open(redir->filename, redir->flags, 0644);
 		else
 			fd = open(redir->filename, redir->flags);
-		if (fd == -1)
+		if (fd < 0)
 			return (perror("minishell"), 1);
 		if (dup2(fd, redir->tfd) == -1)
 			return (perror("minishell"), 1);

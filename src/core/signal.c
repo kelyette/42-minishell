@@ -6,7 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:34:42 by hoannguy          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/05/28 17:15:15 by hoannguy         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/28 14:36:57 by kcsajka          ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
