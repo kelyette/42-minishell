@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/27 17:16:49 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:22:32 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,16 @@ int	exe_fork(t_cmdd *cmdd, t_redir *redir)
 {
 	pid_t	pid;
 	int		st;
+	int		sig;
 
+	disable_sigint_handler();
 	pid = fork();
 	if (pid < 0)
 		return (perror("minishell"), MS_ERROR);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+    	signal(SIGQUIT, SIG_DFL);
 		if (perform_redirs(redir))
 			exit(MS_ERROR);
 		execve(cmdd->path, cmdd->argv, cmdd->envp);
@@ -64,6 +68,16 @@ int	exe_fork(t_cmdd *cmdd, t_redir *redir)
 		exit(MS_NO_EXEC);
 	}
 	waitpid(pid, &st, 0);
+	restore_sigint_handler();
+	if (WIFSIGNALED(st))
+	{
+ 		sig = WTERMSIG(st);
+ 		if (sig == SIGINT)
+			printf("\n");
+		if (sig == SIGQUIT)
+			printf("Quit (core dumped)\n");
+		return 128 + sig;
+	}
 	return (WEXITSTATUS(st));
 }
 

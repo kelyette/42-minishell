@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:39:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:48:46 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:31:05 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new_token)
 		while (temp->next != NULL)
 			temp = temp->next;
 		temp->next = new_token;
+		new_token->next = NULL;
 	}
 }

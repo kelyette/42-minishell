@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:39:54 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/25 17:16:01 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:42:48 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,20 @@ int	case_cd_path(char *path, t_env **env)
 	t_env	*oldpwd;
 	char	*line;
 
+	pwd = get_env_key(env, "PWD");
+	if (pwd == NULL)
+		pwd = initiate_pwd_env(env);
+	oldpwd = get_env_key(env, "OLDPWD");
+	if (oldpwd == NULL)
+		oldpwd = initiate_oldpwd_env(env);
+	if (oldpwd == NULL || pwd == NULL)
+			return (perror("Error"), set_get_code(1, env));
 	if (chdir(path) != 0)
 		return (perror("Error"), set_get_code(1, env));
 	line = getcwd(NULL, 0);
 	if (line == NULL)
 		return (perror("Error"), set_get_code(1, env));
-	pwd = get_env_key(env, "PWD");
-	oldpwd = get_env_key(env, "OLDPWD");
-	if (oldpwd != NULL)
-	{
-		free(oldpwd->value);
-		oldpwd->value = pwd->value;
-	}
-	else
-	{
-		oldpwd = initiate_oldpwd_env(env);
-		if (oldpwd == NULL)
-			return (perror("Error"), set_get_code(1, env));
-		oldpwd->value = pwd->value;
-	}
+	oldpwd->value = pwd->value;
 	pwd->value = line;
 	return (set_get_code(0, env));
 }

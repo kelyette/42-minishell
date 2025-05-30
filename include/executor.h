@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/26 14:04:16 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:10:35 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ typedef struct s_pipeline
 	int		(*fds)[2];
 	int		size;
 }	t_pipe;
+
+typedef struct s_exec
+{
+	t_node	**root;
+	t_node	*tree;
+	t_env	**env;
+}	t_exec;
 
 int		executor(t_node *tree, t_env **env);
 int		exe_bin(t_node *tree, t_env **env);

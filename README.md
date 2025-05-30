@@ -4,33 +4,16 @@ Bugs:
 - exit code in executor.
 - leak when exit.
 - leak when ctrl-D.
-- built-ins lookup not compare the whole string.
-- cd path will segfault if env is empty, because it try to assign value to oldpwd and pwd, both are not exist if env is empty.
 
 --------------
-- Fixed: ft_lstadd_back_env() now correctly set the ->next to NULL.
-- Fixed: unset segfault when unset first env variable.
-- Fixed: unset builtin is included in executor.h and in builtin lookup function.
-- Fixed: echo segfault when running with no environnement.
+- Fixed: built-ins lookup not compare the whole string.
+- Fixed: cd path will segfault if env is empty.
 
 --------------
 
 # Nguyen todo:
 - exit buildin:
     - Cleanup (ast tree and such) before exit.
-- Signal:
-    - Cleanup child process in SIGQUIT (CTRL \).
-    - In child processes:
-          - insert when fork child
-	```
- 	if (pid == 0)
- 	{
-		if (signal_handler())
-			return (1);
-  		execute_child_process();
-  		...
- 	}
-	```
 - Assign:
     - If a variable that exist in env is assigned, it will replace the value in env.
     - If a variable that doesn't exist in env, then a linked list of variable is created to hold this new key value pair.

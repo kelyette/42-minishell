@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 15:15:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/21 17:27:19 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:09:54 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 # include "libft.h"
 # define ERRPREFIX "minishell"
 
-extern sig_atomic_t	g_signal;
-
 int		signal_handler(void);
+void	signal_change(int signal);
+void 	disable_sigint_handler(void);
+void 	restore_sigint_handler(void);
 
 typedef enum e_status
 {

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 11:11:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/25 17:07:18 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:23:35 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,8 @@ int	builtin_export(t_node *node, t_env **env)
 		return (export_no_arg(env));
 	else
 	{
-		// printf("%d\n", node->data->type); export a=b is broken because a=b isnt TK_Assign
 		node->data = node->data->next;
-		if (node->data->type == TK_Assign)
+		if (node->data->type == TK_Assign || ft_strchr(node->data->str, '='))
 		{
 			return (export_assign(node->data->str, env));
 		}
