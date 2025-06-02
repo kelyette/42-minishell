@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/02 18:11:34 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/02 18:33:46 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ int	exe_cmd(t_exec ex, int can_fork)
 		return (free_redirs(redir), MS_OK);
 	builtinfn = lookup_builtin(ex.tree->data->str);
 	if (builtinfn)
-		return (exe_builtin(ex, builtinfn, redir, can_fork == NO_FORK));
+		return (set_get_code(exe_builtin(ex, builtinfn, redir,
+					can_fork == NO_FORK), ex.env));
 	rval = collect_cmd_data(&cmdd, ex);
 	if (rval)
 		return (free_redirs(redir), rval);
@@ -121,5 +122,5 @@ int	exe_cmd(t_exec ex, int can_fork)
 		rval = exe_nofork(ex, &cmdd, redir);
 	else
 		rval = exe_fork(ex, &cmdd, redir);
-	return (free_cmdd(&cmdd), free_redirs(redir), rval);
+	return (free_cmdd(&cmdd), free_redirs(redir), set_get_code(rval, ex.env));
 }
