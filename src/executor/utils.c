@@ -5,58 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 16:51:36 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/30 14:31:21 by kcsajka          ###   ########.fr       */
+/*   Created: 2025/06/02 12:29:16 by kcsajka           #+#    #+#             */
+/*   Updated: 2025/06/02 18:12:42 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int	lst_getsize_token(t_token *head)
+t_exec	newexec(t_exec ex, t_node *new)
 {
-	int	i;
-
-	i = 0;
-	while (head && ++i)
-		head = head->next;
-	return (i);
+	if (new)
+		ex.tree = new;
+	else if (!ex.tree)
+		ex.tree = *ex.root;
+	return (ex);
 }
 
-// copies each string in a t_token* list to a null terminated char*[]
-char	**lst_toarr_token(t_token *head)
+void	free_exec(t_exec ex)
 {
-	char	**arr;
-	size_t	size;
-	int		i;
-
-	if (!head)
-		return (NULL);
-	size = lst_getsize_token(head);
-	arr = malloc(sizeof(char *) * (size + 1));
-	i = 0;
-	while (head)
-	{
-		arr[i++] = ft_strdup(head->str);
-		head = head->next;
-	}
-	arr[i] = NULL;
-	return (arr);
-}
-
-void	free_arr(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-}
-
-void	close_pipe(int fd[2])
-{
-	close(fd[0]);
-	close(fd[1]);
+	printf("freeing exec (pid %d) %p\n", getpid(), ex.root);
+	if (ex.root)
+		free_tree(ex.root);
+	if (ex.env)
+		ft_lstclear_env(ex.env);
 }

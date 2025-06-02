@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/30 15:07:43 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/02 12:50:21 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,26 @@ typedef struct s_pipeline
 typedef struct s_exec
 {
 	t_node	**root;
-	t_node	*tree;
 	t_env	**env;
+	t_node	*tree;
 }	t_exec;
 
-int		executor(t_node *tree, t_env **env);
-int		exe_bin(t_node *tree, t_env **env);
-int		exe_pipe(t_node *tree, t_env **env);
-int		exe_cmd(t_node *tree, t_env **env, int can_fork);
+int		executor(t_exec ex, t_node *tree);
+int		exe_bin(t_exec ex);
+int		exe_pipe(t_exec ex);
+int		exe_cmd(t_exec ex, int can_fork);
 
 // exec utils
 int		collect_redirs(t_redir **headptr, t_node **treeptr);
 int		perform_redirs(t_redir *redir);
+int		search_bin_path(char **pathptr, t_env **env, char *name);
+t_exec	newexec(t_exec ex, t_node *new);
+
 void	reset_redirs(t_redir *redir);
 void	free_redirs(t_redir *redir);
+void	free_exec(t_exec ex);
+void	clean_pipes(int (*fds)[2], int size);
 void	close_pipe(int fd[2]);
-int		search_bin_path(char **pathptr, t_env **env, char *name);
 
 // utils
 int		lst_getsize_token(t_token *head);
