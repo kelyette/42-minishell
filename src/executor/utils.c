@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:29:16 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/02 18:12:42 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/02 18:28:04 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_exec	newexec(t_exec ex, t_node *new)
 
 void	free_exec(t_exec ex)
 {
-	printf("freeing exec (pid %d) %p\n", getpid(), ex.root);
 	if (ex.root)
 		free_tree(ex.root);
 	if (ex.env)
