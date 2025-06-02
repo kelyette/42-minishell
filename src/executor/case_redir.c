@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/30 14:38:56 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/30 15:30:50 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 			tmp->flags = O_WRONLY | O_CREAT | O_TRUNC;
 		else if (tree->type == NT_RdrAppend)
 			tmp->flags = O_WRONLY | O_CREAT | O_APPEND;
-		else if (tree->type == NT_HereDoc)
-			tmp->flags = O_WRONLY | O_CREAT | O_RDWR;
 		*headptr = tmp;
 		tree = tree->lnode;
 	}
@@ -95,13 +93,27 @@ int	perform_redirs(t_redir *redir)
 	return (0);
 }
 
+void	free_redirs(t_redir *redir)
+{
+	t_redir	*tmp;
+
+	while (redir)
+	{
+		tmp = redir->next;
+		free(redir);
+		redir = tmp;
+	}
+}
+
 void	reset_redirs(t_redir *redir)
 {
 	while (redir)
 	{
-		if (dup2(redir->base_fd, redir->tfd) < 0)
-			perror("minishell");
+		if (redir->base_fd >= 0)
+			if (dup2(redir->base_fd, redir->tfd) < 0)
+				perror("minishell");
 		close(redir->base_fd);
+		redir = redir->next;
 	}
 }
 

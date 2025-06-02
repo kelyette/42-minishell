@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/28 17:22:32 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:11:34 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ static void	free_cmdd(t_cmdd *cmdd)
 	ft_bzero(cmdd, sizeof(*cmdd));
 }
 
-static int	collect_cmd_data(t_cmdd *cmdd, t_node *tree, t_env **env)
+static int	collect_cmd_data(t_cmdd *cmdd, t_exec ex)
 {
-	cmdd->envp = env_to_envp(env);
-	cmdd->argv = lst_toarr_token(tree->data);
-	if (!cmdd->argv && tree->data->str)
+	cmdd->envp = env_to_envp(ex.env);
+	cmdd->argv = lst_toarr_token(ex.tree->data);
+	if (!cmdd->argv && ex.tree->data->str)
 		return (free_envp(cmdd->envp), 1);
 	cmdd->path = NULL;
-	if (search_bin_path(&cmdd->path, env, cmdd->argv[0]))
+	if (search_bin_path(&cmdd->path, ex.env, cmdd->argv[0]))
 		return (free_cmdd(cmdd), 1);
 	if (!cmdd->path)
 		return (printf("minishell: %s: command not found\n", cmdd->argv[0]),
@@ -38,16 +38,20 @@ static int	collect_cmd_data(t_cmdd *cmdd, t_node *tree, t_env **env)
 	return (0);
 }
 
-int	exe_nofork(t_cmdd *cmdd, t_redir *redir)
+int	exe_nofork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 {
 	if (perform_redirs(redir))
+	{
+		free_exec(ex);
 		exit(MS_ERROR);
+	}
 	execve(cmdd->path, cmdd->argv, cmdd->envp);
 	perror(cmdd->argv[0]);
+	free_exec(ex);
 	exit(MS_NO_EXEC);
 }
 
-int	exe_fork(t_cmdd *cmdd, t_redir *redir)
+int	exe_fork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 {
 	pid_t	pid;
 	int		st;
@@ -65,6 +69,7 @@ int	exe_fork(t_cmdd *cmdd, t_redir *redir)
 			exit(MS_ERROR);
 		execve(cmdd->path, cmdd->argv, cmdd->envp);
 		perror(cmdd->argv[0]);
+		free_exec(ex);
 		exit(MS_NO_EXEC);
 	}
 	waitpid(pid, &st, 0);
@@ -76,36 +81,45 @@ int	exe_fork(t_cmdd *cmdd, t_redir *redir)
 			printf("\n");
 		if (sig == SIGQUIT)
 			printf("Quit (core dumped)\n");
-		return 128 + sig;
+		return (128 + sig);
 	}
 	return (WEXITSTATUS(st));
 }
 
-int	exe_cmd(t_node *tree, t_env **env, int can_fork)
+int	exe_builtin(t_exec ex, t_bltnf builtinfn, t_redir *redir, int in_child)
+{
+	int	rval;
+
+	if (perform_redirs(redir))
+		return (MS_ERROR);
+	rval = builtinfn(ex.tree, ex.env);
+	reset_redirs(redir);
+	free_redirs(redir);
+	if (in_child)
+		free_exec(ex);
+	return (rval);
+}
+
+int	exe_cmd(t_exec ex, int can_fork)
 {
 	t_redir	*redir;
 	t_bltnf	builtinfn;
 	t_cmdd	cmdd;
 	int		rval;
 
-	if (collect_redirs(&redir, &tree))
+	if (collect_redirs(&redir, &ex.tree))
 		return (MS_ERROR);
-	if (!tree || !tree->data)
+	if (!ex.tree || !ex.tree->data)
 		return (free_redirs(redir), MS_OK);
-	builtinfn = lookup_builtin(tree->data->str);
+	builtinfn = lookup_builtin(ex.tree->data->str);
 	if (builtinfn)
-	{
-		if (perform_redirs(redir))
-			return (MS_ERROR);
-		rval = builtinfn(tree, env);
-		return (reset_redirs(redir), free_redirs(redir), rval);
-	}
-	rval = collect_cmd_data(&cmdd, tree, env);
+		return (exe_builtin(ex, builtinfn, redir, can_fork == NO_FORK));
+	rval = collect_cmd_data(&cmdd, ex);
 	if (rval)
 		return (free_redirs(redir), rval);
 	if (can_fork == NO_FORK)
-		rval = exe_nofork(&cmdd, redir);
+		rval = exe_nofork(ex, &cmdd, redir);
 	else
-		rval = exe_fork(&cmdd, redir);
+		rval = exe_fork(ex, &cmdd, redir);
 	return (free_cmdd(&cmdd), free_redirs(redir), rval);
 }

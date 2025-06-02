@@ -6,21 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/30 15:10:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/02 12:51:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-void	clean_pipes(int (*fds)[2], int size)
-{
-	int	i;
-
-	i = -1;
-	while (++i < size)
-		close_pipe(fds[i]);
-	free(fds);
-}
 
 int	collect_commands(t_node ***headptr, int *sizeptr, t_node *tree)
 {
@@ -50,7 +40,7 @@ int	collect_commands(t_node ***headptr, int *sizeptr, t_node *tree)
 	return (0);
 }
 
-int	run_pipe_cmds(t_pipe pl, t_env **env)
+int	run_pipe_cmds(t_pipe pl, t_exec ex)
 {
 	int	i;
 	int	st;
@@ -66,14 +56,14 @@ int	run_pipe_cmds(t_pipe pl, t_env **env)
 		if (pl.pids[i] == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-    		signal(SIGQUIT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			if (i > 0 && dup2(pl.fds[i - 1][0], STDIN_FILENO) == -1)
-				return (perror("minishell"), exit(1), 1);
+				return (perror("minishell"), free_exec(ex), exit(1), 1);
 			if (i < pl.size - 1 && dup2(pl.fds[i][1], STDOUT_FILENO) == -1)
-				return (perror("minishell"), exit(1), 1);
+				return (perror("minishell"), free_exec(ex), exit(1), 1);
 			clean_pipes(pl.fds, pl.size);
-			int rval = exe_cmd(pl.cmds[i], env, NO_FORK);
-			exit(rval);
+			ex.tree = pl.cmds[i];
+			exit(exe_cmd(ex, NO_FORK));
 		}
 	}
 	clean_pipes(pl.fds, pl.size);
@@ -88,17 +78,17 @@ int	run_pipe_cmds(t_pipe pl, t_env **env)
 			printf("\n");
 		if (sig == SIGQUIT)
 			printf("Quit (core dumped)\n");
-		return 128 + sig;
+		return (128 + sig);
 	}
 	return (WEXITSTATUS(pl.pids[pl.size - 1]));
 }
 
-int	exe_pipe(t_node *tree, t_env **env)
+int	exe_pipe(t_exec ex)
 {
 	t_pipe	pl;
 	int		i;
 
-	if (collect_commands(&pl.cmds, &pl.size, tree))
+	if (collect_commands(&pl.cmds, &pl.size, ex.tree))
 		return (MS_ERROR);
 	pl.fds = malloc(sizeof(int [2]) * pl.size);
 	pl.pids = malloc(sizeof(pid_t) * pl.size);
@@ -109,7 +99,7 @@ int	exe_pipe(t_node *tree, t_env **env)
 		if (pipe(pl.fds[i]) == -1)
 			return (perror("minishell"), clean_pipes(pl.fds, --i),
 				free(pl.pids), MS_ERROR);
-	if (run_pipe_cmds(pl, env))
+	if (run_pipe_cmds(pl, ex))
 		return (free(pl.cmds), free(pl.pids), MS_ERROR);
 	return (free(pl.cmds), free(pl.pids), MS_OK);
 }
@@ -149,9 +139,9 @@ int	e1xe_pipe(t_node *tree, t_env **env)
 }*/
 
 // Case of || and &&
-int	exe_bin(t_node *tree, t_env **env)
+int	exe_bin(t_exec ex)
 {
-	if ((executor(tree->lnode, env) == 0) ^ (tree->type == NT_Or))
-		executor(tree->rnode, env);
+	if ((executor(ex, ex.tree->lnode) == 0) ^ (ex.tree->type == NT_Or))
+		executor(ex, ex.tree->rnode);
 	return (0);
 }

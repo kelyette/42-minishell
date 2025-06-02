@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/26 15:12:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/05/30 15:30:38 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,4 @@ int	search_bin_path(char **pathptr, t_env **env, char *name)
 	}
 	ft_free_split(paths);
 	return (0);
-}
-
-void	free_redirs(t_redir *redir)
-{
-	t_redir	*tmp;
-
-	while (redir)
-	{
-		tmp = redir->next;
-		free(redir);
-		redir = tmp;
-	}
 }
