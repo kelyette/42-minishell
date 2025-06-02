@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 12:29:16 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/02 18:28:04 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/02 18:37:39 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,4 @@ void	free_exec(t_exec ex)
 {
 	if (ex.root)
 		free_tree(ex.root);
-	if (ex.env)
-		ft_lstclear_env(ex.env);
 }
