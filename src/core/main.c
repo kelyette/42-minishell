@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/02 18:28:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/03 11:26:51 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	run(t_token **head, t_env **env)
 {
 	char	*line;
 	char	*tmp;
-	t_node	*tree;
+	// t_node	*tree;
 
 	while (1)
 	{
@@ -42,17 +42,18 @@ int	run(t_token **head, t_env **env)
 		{
 			tmp = dollar_handler(line, env);
 			free(line);
+			printf("%s\n", tmp);
 			if (tmp == NULL)
 				return (set_get_code(1, env));
 			if (lexer(tmp, head, env))
 				return (free(tmp), set_get_code(1, env));
 			free(tmp);
-			if (parse(*head, &tree))
-				return (ft_lstclear_token(head), set_get_code(1, env));
-			ft_lstclear_token(head);
-			if (tree)
-				set_get_code(executor((t_exec){&tree, env, NULL}, tree), env);
-			free_tree(&tree);
+			// if (parse(*head, &tree))
+			// 	return (ft_lstclear_token(head), set_get_code(1, env));
+			// ft_lstclear_token(head);
+			// if (tree)
+			// 	set_get_code(executor((t_exec){&tree, env, NULL}, tree), env);
+			// free_tree(&tree);
 		}
 	}
 }

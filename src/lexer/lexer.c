@@ -6,11 +6,42 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:46:05 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 14:45:16 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/03 11:29:15 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+
+static void	skip_and_copy(char *src, char *dst, int *i, int *j, char quote)
+{
+	(*i)++;
+	while (src[*i] && src[*i] != quote)
+		dst[(*j)++] = src[(*i)++];
+	if (src[*i] == quote)
+		(*i)++;
+}
+
+char	*trim_quotes(char *raw_line)
+{
+	char	*clean;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	clean = malloc(ft_strlen(raw_line) + 1);
+	if (!clean)
+		return (perror("Error"), NULL);
+	while (raw_line[i])
+	{
+		if (raw_line[i] == '\'' || raw_line[i] == '\"')
+			skip_and_copy(raw_line, clean, &i, &j, raw_line[i]);
+		else
+			clean[j++] = raw_line[i++];
+	}
+	clean[j] = '\0';
+	return (clean);
+}
 
 int	lexer_helper(char *line, t_token **head, int *i, t_env **env)
 {
@@ -42,17 +73,25 @@ int	lexer_helper(char *line, t_token **head, int *i, t_env **env)
 }
 
 // tokenizer, 
-// note: "" and '' not removed because of $ in string, treat with ft_strtrim
-int	lexer(char *line, t_token **head, t_env **env)
+// note: "" and '' not removed, treat with ft_strtrim
+int	lexer(char *raw_line, t_token **head, t_env **env)
 {
 	int		i;
+	char	*line;
 
 	i = 0;
+	line = trim_quotes(raw_line);
+	printf("%s\n", line);
+	(void)i;
+	(void)line;
+	(void)head;
+	if (line == NULL)
+		return (set_get_code(1, env));
 	while (line[i] != '\0')
 	{
 		while (ft_isspace(line[i]))
 			i++;
-		if (line[i] == '$' && !ft_isspace(line[i + 1]) && line[i + 1] != '\0'
+		if (!ft_isspace(line[i + 1]) && line[i + 1] != '\0'
 			&& line[i + 1] != '<' && line[i + 1] != '>' && line[i + 1] != '|')
 		{
 			if (case_single_char(head, line[i]) == NULL)

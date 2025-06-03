@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:38:25 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/25 10:41:31 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:54:20 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,12 @@
 void	clean_exit(int code, t_env **env) //Update to cleanup ast tree and such
 {
 	ft_lstclear_env(env);
+	rl_clear_history();
 	if (isatty(STDIN_FILENO))
+	{
 		printf("exit\n");
+	}
+	printf("%d\n", code);
 	exit(code);
 }
 
