@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 10:31:26 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/03 11:31:29 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:24:02 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,8 @@ t_token	*case_string(t_token *token, char *line, int *cnt)
 	if ((ft_isalpha(line[0]) || line[0] == '_') && token->type == TK_String)
 	{
 		while (line[*cnt] != ' ' && line[*cnt] != '\0'
-			&& line[*cnt] != '<' && line[*cnt] != '>' && line[*cnt] != '|')
-			// && line[*cnt] != '|' && line[*cnt] != '\"' && line[*cnt] != '\'')
-
+			&& line[*cnt] != '<' && line[*cnt] != '>'
+			&& line[*cnt] != '|' && line[*cnt] != '\"' && line[*cnt] != '\'')
 		{
 			if (line[*cnt] == '=')
 				token->type = TK_Assign;
@@ -115,8 +114,6 @@ t_token	**case_printable(t_token **head, char *line, int *cnt)
 	if (token == NULL)
 		return (perror("Error"), NULL);
 	*cnt = 0;
-	// if (case_string(token, line, cnt) == NULL)
-	// 		return (free(token), NULL);
 	if (line[*cnt] == '\"')
 	{
 		if (case_doublequote(token, line, cnt) == NULL)
