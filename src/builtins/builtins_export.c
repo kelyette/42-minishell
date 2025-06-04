@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 11:11:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/30 15:09:38 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/04 13:42:54 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,23 @@ int	export_string(char *key, t_env **env)
 // case export
 int	builtin_export(t_node *node, t_env **env)
 {
+	t_token	*current;
+
 	if (env == NULL && *env == NULL)
 		return (0);
-	if (node->data->next == NULL)
+	current = node->data;
+	if (current->next == NULL)
 		return (export_no_arg(env));
 	else
 	{
-		node->data = node->data->next;
-		if (node->data->type == TK_Assign || ft_strchr(node->data->str, '='))
+		current = current->next;
+		if (current->type == TK_Assign || ft_strchr(current->str, '='))
 		{
-			return (export_assign(node->data->str, env));
+			return (export_assign(current->str, env));
 		}
-		else if (node->data->type == TK_String)
+		else if (current->type == TK_String)
 		{
-			return (export_string(node->data->str, env));
+			return (export_string(current->str, env));
 		}
 	}
 	return (0);

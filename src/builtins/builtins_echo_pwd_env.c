@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:53:48 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/25 17:09:48 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:43:24 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,27 @@
 // case echo
 int	builtin_echo(t_node *node, t_env **env)
 {
-	int	flag;
+	int		flag;
+	t_token	*current;
 
 	(void)env;
 	flag = 0;
-	node->data = node->data->next;
-	if (node->data == NULL)
+	current = node->data->next;
+	if (current == NULL)
 		return (printf("\n"), 0);
-	if (!ft_strncmp(node->data->str, "-n", 3))
+	if (!ft_strncmp(current->str, "-n", 3))
 	{
 		flag = 1;
-		node->data = node->data->next;
-		if (node->data == NULL)
+		current = current->next;
+		if (current == NULL)
 			return (0);
 	}
-	while (node->data != NULL)
+	while (current != NULL)
 	{
-		printf("%s", node->data->str);
-		if (node->data->next != NULL)
+		printf("%s", current->str);
+		if (current->next != NULL)
 			printf(" ");
-		node->data = node->data->next;
+		current = current->next;
 	}
 	if (flag == 0)
 		printf("\n");
@@ -55,7 +56,7 @@ int	builtin_env(t_node *node, t_env **env)
 		if (temp->exported == true && temp->code == false)
 		{
 			printf("%s=%s\n", temp->key, temp->value);
-		}	
+		}
 		temp = temp->next;
 	}
 	return (0);
