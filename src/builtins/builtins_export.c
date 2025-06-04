@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 11:11:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 20:15:57 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:11:59 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ int	export_assign(char *s, t_env **env)
 			temp->only_key = false;
 			free(temp->value);
 			temp->value = value;
-			free(key);
-			return (0);
+			return (free(key), 0);
 		}
 		temp = temp->next;
 	}
@@ -95,6 +94,23 @@ int	export_string(char *key, t_env **env)
 	return (0);
 }
 
+int	argument_checker(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_isalpha(str[i]) && str[i] != '_')
+		return (1);
+	i++;
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 // case export
 int	builtin_export(t_node *node, t_env **env)
 {
@@ -108,6 +124,11 @@ int	builtin_export(t_node *node, t_env **env)
 	else
 	{
 		current = current->next;
+		if (argument_checker(current->str) != 0)
+		{
+			ft_putendl_fd(" not a valid identifier", 2);
+			return (1);
+		}
 		if (current->type == TK_Assign || ft_strchr(current->str, '='))
 		{
 			return (export_assign(current->str, env));
