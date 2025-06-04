@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:46:05 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 12:33:16 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:32:39 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	lexer_helper(char *line, t_token **head, int *i, t_env **env)
 			return (ft_lstclear_token(head), set_get_code(1, env));
 		*i += count - 1;
 	}
-	return (set_get_code(0, env));
+	return (0);
 }
 
 // tokenizer
@@ -81,5 +81,5 @@ int	lexer(char *line, t_token **head, t_env **env)
 		}
 		i++;
 	}
-	return (set_get_code(0, env));
+	return (0);
 }

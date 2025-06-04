@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 12:01:57 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:53:08 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	run(t_token **head, t_env **env)
 	{
 		line = readline("Minishell> ");
 		if (line == NULL)
-			return (printf("exit\n"), set_get_code(0, env));
+			return (printf("exit\n"), set_get_code(-1, env));
 		history_handler(line);
 		if (line != NULL && line[0] != '\0')
 		{
@@ -53,7 +53,7 @@ int	run(t_token **head, t_env **env)
 					return (ft_lstclear_token(head), set_get_code(1, env));
 				ft_lstclear_token(head);
 				if (tree)
-					set_get_code(executor((t_exec){&tree, env, NULL}, tree), env);
+					executor((t_exec){&tree, env, 0}, tree);
 				free_tree(&tree);
 			}
 		}
@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_token	*head;
 	t_env	*env;
+	int		ec;
 
 	(void) ac;
 	(void) av;
@@ -73,7 +74,6 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	if (signal_handler())
 		return (set_get_code(1, &env));
-	if (run(&head, &env))
-		return (rl_clear_history(), ft_lstclear_env(&env), 1);
-	return (rl_clear_history(), ft_lstclear_env(&env), 0);
+	ec = run(&head, &env);
+	return (rl_clear_history(), ft_lstclear_env(&env), ec);
 }

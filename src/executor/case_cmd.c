@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/02 18:33:46 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/04 17:54:19 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	collect_cmd_data(t_cmdd *cmdd, t_exec ex)
 		return (free_cmdd(cmdd), 1);
 	if (!cmdd->path)
 		return (printf("minishell: %s: command not found\n", cmdd->argv[0]),
-			free_cmdd(cmdd), 1);
+			free_cmdd(cmdd), MS_CMD_NOT_FOUND);
 	return (0);
 }
 
@@ -64,7 +64,7 @@ int	exe_fork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-    	signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (perform_redirs(redir))
 			exit(MS_ERROR);
 		execve(cmdd->path, cmdd->argv, cmdd->envp);

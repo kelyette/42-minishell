@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/02 12:51:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/04 17:35:26 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,14 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 			printf("Quit (core dumped)\n");
 		return (128 + sig);
 	}
-	return (WEXITSTATUS(pl.pids[pl.size - 1]));
+	return (WEXITSTATUS(st));
 }
 
 int	exe_pipe(t_exec ex)
 {
 	t_pipe	pl;
 	int		i;
+	int		rval;
 
 	if (collect_commands(&pl.cmds, &pl.size, ex.tree))
 		return (MS_ERROR);
@@ -99,9 +100,8 @@ int	exe_pipe(t_exec ex)
 		if (pipe(pl.fds[i]) == -1)
 			return (perror("minishell"), clean_pipes(pl.fds, --i),
 				free(pl.pids), MS_ERROR);
-	if (run_pipe_cmds(pl, ex))
-		return (free(pl.cmds), free(pl.pids), MS_ERROR);
-	return (free(pl.cmds), free(pl.pids), MS_OK);
+	rval = run_pipe_cmds(pl, ex);
+	return (free(pl.cmds), free(pl.pids), rval);
 }
 
 /*// fd[0] read end, 1 write end
@@ -141,7 +141,11 @@ int	e1xe_pipe(t_node *tree, t_env **env)
 // Case of || and &&
 int	exe_bin(t_exec ex)
 {
-	if ((executor(ex, ex.tree->lnode) == 0) ^ (ex.tree->type == NT_Or))
-		executor(ex, ex.tree->rnode);
-	return (0);
+	int	rval;
+
+	rval = executor(ex, ex.tree->lnode);
+	if ((ex.tree->type == NT_And && rval == 0)
+		|| (ex.tree->type == NT_Or && rval != 0))
+		rval = executor(ex, ex.tree->rnode);
+	return (rval);
 }
