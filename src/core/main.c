@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/03 19:27:28 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:01:57 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,16 @@ int	run(t_token **head, t_env **env)
 				return (set_get_code(1, env));
 			if (lexer(tmp, head, env))
 				return (free(tmp), set_get_code(1, env));
-
-			// t_token *temp;
-			// temp = *head;
-			// while (temp != NULL)
-			// {
-			// 	printf("Type: %d | Str: %s\n", temp->type, temp->str);
-			// 	temp = temp->next;
-			// }
-
 			free(tmp);
-			if (parse(*head, &tree))
-				return (ft_lstclear_token(head), set_get_code(1, env));
-			ft_lstclear_token(head);
-			if (tree)
-				set_get_code(executor((t_exec){&tree, env, NULL}, tree), env);
-			free_tree(&tree);
+			if (head != NULL && *head != NULL)
+			{
+				if (parse(*head, &tree))
+					return (ft_lstclear_token(head), set_get_code(1, env));
+				ft_lstclear_token(head);
+				if (tree)
+					set_get_code(executor((t_exec){&tree, env, NULL}, tree), env);
+				free_tree(&tree);
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:39:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/28 17:31:05 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:32:48 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,29 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new_token)
 		temp->next = new_token;
 		new_token->next = NULL;
 	}
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*joined;
+
+	if (!s1 || !s2)
+	{
+		free(s1);
+		free(s2);
+		return (NULL);
+	}
+	joined = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (joined);
+}
+
+int	is_valid_char(char c)
+{
+	if (c == '\0' || ft_isspace(c))
+		return (0);
+	if (c == '<' || c == '>' || c == '|')
+		return (0);
+	return (1);
 }
