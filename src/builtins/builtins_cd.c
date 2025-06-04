@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:39:54 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/28 17:42:48 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:43:51 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ int	case_cd_path(char *path, t_env **env)
 	if (oldpwd == NULL)
 		oldpwd = initiate_oldpwd_env(env);
 	if (oldpwd == NULL || pwd == NULL)
-			return (perror("Error"), set_get_code(1, env));
+		return (perror("Error"), set_get_code(1, env));
 	if (chdir(path) != 0)
 		return (perror("Error"), set_get_code(1, env));
 	line = getcwd(NULL, 0);
 	if (line == NULL)
 		return (perror("Error"), set_get_code(1, env));
+	free(oldpwd->value);
 	oldpwd->value = pwd->value;
 	pwd->value = line;
 	return (set_get_code(0, env));
@@ -85,7 +86,7 @@ int	case_cd_home(char *path, t_env **env)
 	if (new_path == NULL)
 		return (perror ("Error"), 1);
 	if (case_cd_path(new_path, env) != 0)
-		return (1);
+		return (free(new_path), 1);
 	free(new_path);
 	return (0);
 }
@@ -104,16 +105,19 @@ int	case_cd_no_arg(t_env **env)
 // case cd
 int	builtin_cd(t_node *node, t_env **env)
 {
-	if (node->data->next == NULL)
+	t_token	*current;
+
+	current = node->data;
+	if (current->next == NULL)
 		return (case_cd_no_arg(env));
-	if (node->data->next->next != NULL)
+	if (current->next->next != NULL)
 		return (printf("bash: cd: too many arguments\n"), 1);
-	node->data = node->data->next;
-	if (!ft_strncmp(node->data->str, "~", 1))
-		return (case_cd_home(node->data->str, env));
-	if (!ft_strncmp(node->data->str, "-", 2))
+	current = current->next;
+	if (!ft_strncmp(current->str, "~", 1))
+		return (case_cd_home(current->str, env));
+	if (!ft_strncmp(current->str, "-", 2))
 		return (case_cd_previous(env));
 	else
-		return (case_cd_path(node->data->str, env));
+		return (case_cd_path(current->str, env));
 	return (0);
 }

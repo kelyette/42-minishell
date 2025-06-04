@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/14 14:47:14 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/04 12:33:51 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,12 @@ char	*handle_exit_code(char *s, int i, t_env **env);
 // TOKEN -------------------------------------------------------
 void	ft_lstadd_back_token(t_token **lst, t_token *new_token);
 void	ft_lstclear_token(t_token **lst);
+int		is_valid_char(char c);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 int		lexer(char *line, t_token **head, t_env **env);
 t_token	**case_single_char(t_token **head, char character);
 t_token	**case_double_char(t_token **head, char character);
-t_token	**case_printable(t_token **head, char *line, int *count);
-void	case_string_helper2(t_token **token, char *line, int *count);
+t_token	*case_string(t_token *token, char *line, int *cnt);
 
 #endif

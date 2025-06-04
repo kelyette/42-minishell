@@ -31,7 +31,7 @@ INCFLAGS     := -I$(RLLIBDIR)/include -I$(LIBFTDIR) -Iinclude
 LDIRFLAGS    := -L$(RLLIBDIR)/lib -L$(LIBFTDIR)
 LFLAGS       := -lreadline -lft
 
-NAME         ?= minishell
+NAME         = minishell
 
 ifneq ($(ASAN),0)
 	CCFLAGS += -fsanitize=address

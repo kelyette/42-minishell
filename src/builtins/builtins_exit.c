@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:38:25 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/25 10:41:31 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:40:33 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,12 @@
 void	clean_exit(int code, t_env **env) //Update to cleanup ast tree and such
 {
 	ft_lstclear_env(env);
+	rl_clear_history();
 	if (isatty(STDIN_FILENO))
+	{
 		printf("exit\n");
+	}
+	printf("%d\n", code);
 	exit(code);
 }
 
@@ -56,14 +60,17 @@ void	exit_no_arg(t_env **env)
 
 int	builtin_exit(t_node *node, t_env **env) //need to pass in ast tree to clean up
 {
+	t_token	*current;
+
 	if (env == NULL && *env == NULL)
 		return (0);
-	if (node->data->next == NULL)
+	current = node->data;
+	if (current->next == NULL)
 		return (exit_no_arg(env), 0);
-	node->data = node->data->next;
-	if (check_number(node->data->str))
+	current = current->next;
+	if (check_number(current->str))
 		return (printf("Numeric argument required\n"), clean_exit(255, env), 0);
-	if (node->data->next != NULL)
+	if (current->next != NULL)
 		return (printf("Too many argument\n"), set_get_code(1, env));
-	return (exit_with_number(node->data->str, env), 0);
+	return (exit_with_number(current->str, env), 0);
 }
