@@ -1,5 +1,4 @@
 Bugs:
-- exit code.
 - error message to stderr.
 - leak when exit.
 
