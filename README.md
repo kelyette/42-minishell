@@ -4,9 +4,11 @@ Bugs:
 - leak when exit.
 
 - `$PWD` would need to check if path is a directory.
-  On the same note, giving a directory as command would give the same result, and the exit code isn't correctly set to 126. `/include`
+  - giving a directory as command would give the same result, and the exit code isn't correctly set to 126. `/include`
 
 - interupt with CTRL C doesn't set exit code to 130.
+
+- giving a file without permission give incorrect error message and code isnt set to 126. `./hello.txt` with hello.txt is a file without permission.
 
 - Run these with valgrind. The command with redirection doesn't run and there is leak in some due to SIGSEGV
   - `cat <"./test_files/infile" | echo hi`
