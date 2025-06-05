@@ -5,7 +5,8 @@ Bugs:
 - `$PWD` would need to check if path is a directory.
   - giving a directory as command would give the same result, and the exit code isn't correctly set to 126. `/include`
 
-- interupt with CTRL C doesn't set exit code to 130 and doesnt print \n.
+- interupt with CTRL C doesn't set exit code to 130.
+  - CTLR C is correctly \n with `sleep 20s` but not \n with `sleep 20s | ls`.
 
 - giving a file without permission give incorrect error message and code isnt set to 126. `./hello.txt` with hello.txt is a file without permission.
 
