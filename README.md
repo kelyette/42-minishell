@@ -6,7 +6,7 @@ Bugs:
 - `$PWD` would need to check if path is a directory.
   - giving a directory as command would give the same result, and the exit code isn't correctly set to 126. `/include`
 
-- interupt with CTRL C doesn't set exit code to 130.
+- interupt with CTRL C doesn't set exit code to 130 and doesnt print \n.
 
 - giving a file without permission give incorrect error message and code isnt set to 126. `./hello.txt` with hello.txt is a file without permission.
 
@@ -18,3 +18,13 @@ Bugs:
   - and a few more of the same nature...
 
 - Can not run command from absolute path or semi absolute path: `/bin/ls`
+
+- command `|` gives wrong error message instead of "syntax error near unexpected token `token'" and exit code not set to 2
+
+- $EMPTY not clear exit code. (need to clarify on this)
+
+- `cat <<HERE <<DOC` not chaining properly. Doubt this will get tested though
+
+- `<< echo oi` this doesnt recognise echo as LIMITER
+
+- conditional jump depends on uninitialised values in export_no_arg -> get_variable -> get_variable_helper
