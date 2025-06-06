@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:59:30 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 13:32:34 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:02:30 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_unset(t_node *node, t_env **env)
 		while (temp != NULL)
 		{
 			if (!ft_strncmp(current->str, "?", 2))
-				return (printf("Can not unset exit code\n"), 0);
+				return (ft_putendl_fd("Can not unset exit code", 2), 0);
 			if (!ft_strncmp(current->str, temp->key,
 					ft_compare(current->str, temp->key)))
 			{

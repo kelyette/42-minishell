@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 14:38:25 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 13:40:33 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:11:55 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	clean_exit(int code, t_env **env) //Update to cleanup ast tree and such
 	{
 		printf("exit\n");
 	}
-	printf("%d\n", code);
 	exit(code);
 }
 
@@ -29,7 +28,7 @@ int	check_number(char *str)
 	int	i;
 
 	i = 0;
-	if (str[i] == '-')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i] != '\0')
 	{
@@ -69,8 +68,8 @@ int	builtin_exit(t_node *node, t_env **env) //need to pass in ast tree to clean 
 		return (exit_no_arg(env), 0);
 	current = current->next;
 	if (check_number(current->str))
-		return (printf("Numeric argument required\n"), clean_exit(255, env), 0);
+		return (ft_putendl_fd(" numeric argument required", 2), clean_exit(2, env), 0);
 	if (current->next != NULL)
-		return (printf("Too many argument\n"), set_get_code(1, env));
+		return (ft_putendl_fd(" too many arguments", 2), 1);
 	return (exit_with_number(current->str, env), 0);
 }
