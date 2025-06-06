@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:39:54 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 13:43:51 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:04:03 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ int	case_cd_path(char *path, t_env **env)
 	if (oldpwd == NULL)
 		oldpwd = initiate_oldpwd_env(env);
 	if (oldpwd == NULL || pwd == NULL)
-		return (perror("Error"), set_get_code(1, env));
+		return (perror("Error"), 1);
 	if (chdir(path) != 0)
-		return (perror("Error"), set_get_code(1, env));
+		return (perror("Error"), 1);
 	line = getcwd(NULL, 0);
 	if (line == NULL)
-		return (perror("Error"), set_get_code(1, env));
+		return (perror("Error"), 1);
 	free(oldpwd->value);
 	oldpwd->value = pwd->value;
 	pwd->value = line;
-	return (set_get_code(0, env));
+	return (0);
 }
 
 // handle cd -
@@ -48,7 +48,7 @@ int	case_cd_previous(t_env **env)
 
 	oldpwd = get_env_key(env, "OLDPWD");
 	if (oldpwd == NULL)
-		return (printf("bash: cd: OLDPWD not set\n"), set_get_code(1, env));
+		return (ft_putendl_fd("OLDPWD not set", 2), 1);
 	pwd = get_env_key(env, "PWD");
 	if (pwd != NULL)
 		tmp = pwd->value;
@@ -56,16 +56,16 @@ int	case_cd_previous(t_env **env)
 	{
 		tmp = getcwd(NULL, 0);
 		if (tmp == NULL)
-			return (perror("Error"), set_get_code(1, env));
+			return (perror("Error"), 1);
 	}
 	if (chdir(oldpwd->value) != 0)
-		return (perror("Error"), set_get_code(1, env));
+		return (perror("Error"), 1);
 	if (pwd != NULL)
 		pwd->value = oldpwd->value;
 	else
 		free(oldpwd->value);
 	oldpwd->value = tmp;
-	return (set_get_code(0, env));
+	return (0);
 }
 
 int	case_cd_home(char *path, t_env **env)
@@ -77,7 +77,7 @@ int	case_cd_home(char *path, t_env **env)
 	(void)new_path;
 	home = get_env_key(env, "HOME");
 	if (home == NULL)
-		return (printf("bash: cd: HOME not set\n"), 1);
+		return (ft_putendl_fd("HOME not set", 2), 1);
 	temp = ft_strdup(&path[1]);
 	if (temp == NULL)
 		return (perror("Error"), 1);
@@ -98,7 +98,7 @@ int	case_cd_no_arg(t_env **env)
 
 	home = get_env_key(env, "HOME");
 	if (home == NULL)
-		return (printf("bash: cd: HOME not set\n"), 1);
+		return (ft_putendl_fd("HOME not set", 2), 1);
 	return (case_cd_path(home->value, env));
 }
 
@@ -111,7 +111,7 @@ int	builtin_cd(t_node *node, t_env **env)
 	if (current->next == NULL)
 		return (case_cd_no_arg(env));
 	if (current->next->next != NULL)
-		return (printf("bash: cd: too many arguments\n"), 1);
+		return (ft_putendl_fd(" too many arguments", 2), 1);
 	current = current->next;
 	if (!ft_strncmp(current->str, "~", 1))
 		return (case_cd_home(current->str, env));
