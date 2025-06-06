@@ -4,16 +4,6 @@
 
 ---------------
 
-# Path:
-- `$PWD` would need to check if path is a directory.
-  - giving a directory as command would give the same result, and the exit code isn't correctly set to 126. `/include`
-
-- Can not run command from absolute path or semi absolute path: `/bin/ls`
-
-- giving a file without permission give incorrect error message and code isnt set to 126. `./hello.txt` with hello.txt is a file without permission.
-
----------------
-
 # Parsing:
 - command `|` gives wrong error message instead of "syntax error near unexpected token `token'" and exit code not set to 2
 - `<< echo oi` this doesnt recognise echo as LIMITER
