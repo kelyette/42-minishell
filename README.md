@@ -34,5 +34,6 @@
 
 # Builtins and signals:
 - conditional jump depends on uninitialised values in export_no_arg -> get_variable -> get_variable_helper
+(pas possible a replique)
 
-- $EMPTY not clear exit code. (need to clarify on this)
+- $EMPTY not clear exit code. (plus complique que prevu, donc on ne probablement va pas faire)
