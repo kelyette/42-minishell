@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 17:54:19 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/06 20:06:58 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ static void	free_cmdd(t_cmdd *cmdd)
 
 static int	collect_cmd_data(t_cmdd *cmdd, t_exec ex)
 {
+	int	code;
+
 	cmdd->envp = env_to_envp(ex.env);
 	cmdd->argv = lst_toarr_token(ex.tree->data);
 	if (!cmdd->argv && ex.tree->data->str)
 		return (free_envp(cmdd->envp), 1);
 	cmdd->path = NULL;
-	if (search_bin_path(&cmdd->path, ex.env, cmdd->argv[0]))
-		return (free_cmdd(cmdd), 1);
-	if (!cmdd->path)
-		return (printf("minishell: %s: command not found\n", cmdd->argv[0]),
-			free_cmdd(cmdd), MS_CMD_NOT_FOUND);
+	code = search_bin_path(&cmdd->path, ex.env, cmdd->argv[0]);
+	if (code != 0)
+		return (free_cmdd(cmdd), code);
 	return (0);
 }
 

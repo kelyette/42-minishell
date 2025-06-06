@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/30 15:30:38 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/06 20:20:12 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,112 @@
 #include <sys/stat.h>
 #include "libft.h"
 
-char	*concat_path(const char *dir, const char *name)
+int	is_directory(char *path)
 {
-	char	*path;
-	size_t	dsize;
-	size_t	nsize;
+	struct stat	st;
 
-	dsize = ft_strlen(dir);
-	nsize = ft_strlen(name);
-	path = malloc(sizeof(char) * (dsize + nsize + 2));
-	if (!path)
-		return (perror("minishell"), NULL);
-	ft_memcpy(path, dir, dsize);
-	path[dsize] = '/';
-	ft_memcpy(path + dsize + 1, name, nsize);
-	path[dsize + nsize + 1] = 0;
-	return (path);
+	return (stat(path, &st) == 0 && S_ISDIR(st.st_mode));
+}
+
+int	save_some_more_line(char **temp, char **pathptr)
+{
+	if (is_directory(*temp))
+		return (free(*temp), printf(" Is a directory\n"), 126);
+	if (access(*temp, X_OK) == 0)
+	{
+		*pathptr = *temp;
+		return (-1);
+	}
+	else
+		return (free(*temp), perror("minishell"), 126);
+}
+
+int	cmd_path_helper(char *line, char *copy, char **pathptr)
+{
+	char	*temp;
+
+	while (copy != NULL)
+	{
+		temp = ft_strjoin(copy, line);
+		if (temp == NULL)
+			return (perror("Error"), 1);
+		if (access(temp, F_OK) == 0)
+			return (save_some_more_line(&temp, pathptr));
+		free(temp);
+		temp = ft_strrchr(copy, '/');
+		if (temp != NULL)
+			*temp = '\0';
+		else
+		{
+			free(copy);
+			break ;
+		}
+	}
+	return (0);
+}
+
+char	*save_some_line(char *cmd, char **line)
+{
+	if (cmd != NULL && cmd[0] != '/' )
+		*line = ft_strjoin("/", cmd);
+	else if (cmd != NULL)
+		*line = ft_strdup(cmd);
+	return (*line);
+}
+
+int	cmd_path(char **paths, char **pathptr, char *cmd, int *count)
+{
+	char	*line;
+	char	*copy;
+	int		temp;
+
+	if (cmd == NULL)
+		return (1);
+	line = save_some_line(cmd, &line);
+	if (line == NULL)
+		return (perror("Error"), 1);
+	while (paths[*count] != NULL)
+	{
+		copy = ft_strdup(paths[*count]);
+		if (copy == NULL)
+			return (perror("Error"), 1);
+		temp = cmd_path_helper(line, copy, pathptr);
+		if (temp == 126)
+			return (free(line), free(copy), 126);
+		else if (temp == 1)
+			return (free(line), free(copy), 1);
+		else if (temp == -1)
+			return (free(line), free(copy), 0);
+		(*count)++;
+	}
+	return (free(line), printf(" command not found\n"), 127);
 }
 
 int	search_bin_path(char **pathptr, t_env **env, char *name)
 {
-	struct stat	st;
 	t_env		*env_path;
 	char		**paths;
-	char		*tmp;
-	int			i;
+	int			code;
+	int			count;
 
-	env_path = get_env_key(env, "PATH");
-	if (!name || !env_path || !env_path->value || !*env_path->value)
+	if (!name)
 		return (0);
+	env_path = get_env_key(env, "PATH");
+	if (!env_path || !env_path->value || !*env_path->value)
+	{
+		if (name[0] != '/')
+			*pathptr = ft_strjoin("/", name);
+		else
+			*pathptr = ft_strdup(name);
+		return (0);
+	}
 	paths = ft_split(env_path->value, ':');
 	if (!paths)
 		return (1);
-	i = -1;
-	while (paths[++i])
-	{
-		tmp = concat_path(paths[i], name);
-		if (!tmp)
-			return (1);
-		if (!stat(tmp, &st) && S_ISREG(st.st_mode))
-			return (ft_free_split(paths), (*pathptr = tmp), 0);
-		free(tmp);
-	}
+	count = 0;
+	code = cmd_path(paths, pathptr, name, &count);
+	if (code != 0)
+		return (ft_free_split(paths), code);
 	ft_free_split(paths);
 	return (0);
 }
