@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/06 20:27:57 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:33:02 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	save_some_more_line(char **temp, char **pathptr)
 	struct stat	st;
 
 	if (stat(*temp, &st) == 0 && S_ISDIR(st.st_mode))
-		return (free(*temp), printf(" Is a directory\n"), 126);
+		return (free(*temp), ft_putendl_fd(" Is a directory", 2), 126);
 	if (access(*temp, X_OK) == 0)
 	{
 		*pathptr = *temp;
@@ -87,7 +87,7 @@ int	cmd_path(char **paths, char **pathptr, char *cmd, int *count)
 			return (free(line), free(copy), 0);
 		(*count)++;
 	}
-	return (free(line), printf(" command not found\n"), 127);
+	return (free(line), ft_putendl_fd(" command not found", 2), 127);
 }
 
 int	search_bin_path(char **pathptr, t_env **env, char *name)
