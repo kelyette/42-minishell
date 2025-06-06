@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/06 20:20:12 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:27:57 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,11 @@
 #include <sys/stat.h>
 #include "libft.h"
 
-int	is_directory(char *path)
+int	save_some_more_line(char **temp, char **pathptr)
 {
 	struct stat	st;
 
-	return (stat(path, &st) == 0 && S_ISDIR(st.st_mode));
-}
-
-int	save_some_more_line(char **temp, char **pathptr)
-{
-	if (is_directory(*temp))
+	if (stat(*temp, &st) == 0 && S_ISDIR(st.st_mode))
 		return (free(*temp), printf(" Is a directory\n"), 126);
 	if (access(*temp, X_OK) == 0)
 	{
