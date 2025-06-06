@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/30 15:30:38 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/06 16:01:30 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,24 @@ int	search_bin_path(char **pathptr, t_env **env, char *name)
 		return (0);
 	paths = ft_split(env_path->value, ':');
 	if (!paths)
-		return (1);
+		return (MS_ERROR);
 	i = -1;
 	while (paths[++i])
 	{
 		tmp = concat_path(paths[i], name);
 		if (!tmp)
-			return (1);
+			return (MS_ERROR);
 		if (!stat(tmp, &st) && S_ISREG(st.st_mode))
 			return (ft_free_split(paths), (*pathptr = tmp), 0);
 		free(tmp);
 	}
 	ft_free_split(paths);
-	return (0);
+	return (MS_OK);
 }
+/*
+int	lookup_command(char **pathptr, t_env **env, char *name)
+{
+	if (!name || !*name)
+		return (*pathptr = NULL, 0);
+	if (name[])
+}*/
