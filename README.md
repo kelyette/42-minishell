@@ -34,8 +34,5 @@
 
 # Builtins and signals:
 - conditional jump depends on uninitialised values in export_no_arg -> get_variable -> get_variable_helper
-  
-- interupt with CTRL C doesn't set exit code to 130, and CTRL to 131 (128 + 3).
-  - CTLR C is correctly \n with `sleep 20s` and `ls | sleep 20s` but not \n with `sleep 20s | ls`.
 
 - $EMPTY not clear exit code. (need to clarify on this)
