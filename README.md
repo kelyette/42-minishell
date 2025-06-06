@@ -2,7 +2,7 @@
 - error message to stderr.
 - leak when exit.
 
-
+---------------
 
 # Path:
 - `$PWD` would need to check if path is a directory.
