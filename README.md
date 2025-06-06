@@ -1,10 +1,10 @@
-#general:
+# general:
 - error message to stderr.
 - leak when exit.
 
 ---------------
 
-#Path:
+# Path:
 - `$PWD` would need to check if path is a directory.
   - giving a directory as command would give the same result, and the exit code isn't correctly set to 126. `/include`
 
@@ -14,13 +14,13 @@
 
 ---------------
 
-#Parsing:
+# Parsing:
 - command `|` gives wrong error message instead of "syntax error near unexpected token `token'" and exit code not set to 2
 - `<< echo oi` this doesnt recognise echo as LIMITER
 
 ---------------
 
-#Redirection:
+# Redirection:
 - Run these with valgrind. The command with redirection doesn't run and there is leak in some due to SIGSEGV
   - `cat <"./test_files/infile" | echo hi`
   - `cat <"./test_files/infile" | grep hello`
@@ -32,7 +32,7 @@
 
 -----------------
 
-#Builtins and signals:
+# Builtins and signals:
 - conditional jump depends on uninitialised values in export_no_arg -> get_variable -> get_variable_helper
   
 - interupt with CTRL C doesn't set exit code to 130, and CTRL to 131 (128 + 3).
