@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/06 17:23:59 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/09 17:08:16 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	collect_commands(t_node ***headptr, int *sizeptr, t_node *tree)
 
 	tmp = tree;
 	i = 0;
-	while (tmp && tmp->type != NT_Cmd)
+	while (tmp && tmp->type == NT_Pipe)
 	{
-		i += (tmp->lnode->type == NT_Cmd) + 1;
+		i += (tmp->lnode->type != NT_Pipe) + 1;
 		tmp = tmp->lnode;
 	}
 	*sizeptr = i;
@@ -32,7 +32,7 @@ int	collect_commands(t_node ***headptr, int *sizeptr, t_node *tree)
 	while (i > 0)
 	{
 		nodes[--i] = tree->rnode;
-		if (tree->lnode->type == NT_Cmd)
+		if (tree->lnode->type != NT_Pipe)
 			nodes[--i] = tree->lnode;
 		tree = tree->lnode;
 	}
@@ -71,7 +71,7 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 			exit(ec);
 		}
 	}
-	printf("pid %d reached end of pipe loop\n", getpid());
+	clean_pipes(pl.fds, pl.size);
 	i = -1;
 	while (++i < pl.size)
 	{
@@ -83,14 +83,13 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 				printf("\n");
 			if (sig == SIGQUIT)
 				printf("Quit (core dumped)\n");
-			return (128 + sig);
+			ec = 128 + sig;
 		}
-		else if (i == pl.size - 1)
-			break ;
+		else if (i == pl.size - 1 && WIFEXITED(st))
+			ec = WEXITSTATUS(st);
 	}
-	clean_pipes(pl.fds, pl.size);
 	restore_sigint_handler();
-	return (WEXITSTATUS(st));
+	return (ec);
 }
 
 int	exe_pipe(t_exec ex)

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/30 15:30:50 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:51:22 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 
 	tree = *treeptr;
 	*headptr = NULL;
+	if (!tree)
+		return (0);
 	if (!in_group_tkn(tree->type, GRP_REDIR))
 		return (0);
 	while (tree && in_group_tkn(tree->type, GRP_REDIR))
@@ -84,9 +86,9 @@ int	perform_redirs(t_redir *redir)
 		else
 			fd = open(redir->filename, redir->flags);
 		if (fd < 0)
-			return (perror("minishell"), 1);
+			return (close(redir->base_fd), perror(redir->filename), 1);
 		if (dup2(fd, redir->tfd) == -1)
-			return (perror("minishell"), 1);
+			return (close(redir->base_fd), perror(redir->filename), 1);
 		close(fd);
 		redir = redir->next;
 	}

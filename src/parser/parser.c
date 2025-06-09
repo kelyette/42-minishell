@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:19:27 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/04/28 18:25:42 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:25:56 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_node	*parse_cmd(t_pctx *ctx)
 
 	if (!ctx->tkn || ctx->tkn->type == TK_Null)
 		return (set_err(ctx, PE_UEOL), NULL);
-	if (ctx->tkn->type > TK_In)
+	if (ctx->tkn->type > TK_HereDoc)
 		return (set_err(ctx, PE_BadTkn), NULL);
 	if (create_node(ctx, &cmd, NT_Cmd))
 		return (NULL);
