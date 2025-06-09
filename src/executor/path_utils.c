@@ -115,6 +115,14 @@ int	search_bin_path(char **pathptr, t_env **env, char *name)
 	code = cmd_path(paths, pathptr, name, &count);
 	if (code != 0)
 		return (ft_free_split(paths), code);
+
 	ft_free_split(paths);
-	return (0);
+	return (MS_OK);
 }
+/*
+int	lookup_command(char **pathptr, t_env **env, char *name)
+{
+	if (!name || !*name)
+		return (*pathptr = NULL, 0);
+	if (name[])
+}*/

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 17:35:26 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/06 17:23:59 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,16 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 	int	i;
 	int	st;
 	int	sig;
+	int	ec;
 
 	disable_sigint_handler();
 	i = -1;
+	//printf("starting pipe loop %d\n", getpid());
 	while (++i < pl.size)
 	{
 		pl.pids[i] = fork();
 		if (pl.pids[i] == -1)
-			return (perror("minishell"), clean_pipes(pl.fds, pl.size), 1);
+			return (perror("minishell"), clean_pipes(pl.fds, i - 1), 1);
 		if (pl.pids[i] == 0)
 		{
 			signal(SIGINT, SIG_DFL);
@@ -63,23 +65,31 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 				return (perror("minishell"), free_exec(ex), exit(1), 1);
 			clean_pipes(pl.fds, pl.size);
 			ex.tree = pl.cmds[i];
-			exit(exe_cmd(ex, NO_FORK));
+			ec = exe_cmd(ex, NO_FORK);
+			free(pl.pids);
+			free(pl.cmds);
+			exit(ec);
 		}
 	}
-	clean_pipes(pl.fds, pl.size);
+	printf("pid %d reached end of pipe loop\n", getpid());
 	i = -1;
 	while (++i < pl.size)
-		waitpid(pl.pids[i], &st, 0);
-	restore_sigint_handler();
-	if (WIFSIGNALED(st))
 	{
-		sig = WTERMSIG(st);
-		if (sig == SIGINT)
-			printf("\n");
-		if (sig == SIGQUIT)
-			printf("Quit (core dumped)\n");
-		return (128 + sig);
+		waitpid(pl.pids[i], &st, 0);
+		if (WIFSIGNALED(st))
+		{
+			sig = WTERMSIG(st);
+			if (sig == SIGINT)
+				printf("\n");
+			if (sig == SIGQUIT)
+				printf("Quit (core dumped)\n");
+			return (128 + sig);
+		}
+		else if (i == pl.size - 1)
+			break ;
 	}
+	clean_pipes(pl.fds, pl.size);
+	restore_sigint_handler();
 	return (WEXITSTATUS(st));
 }
 

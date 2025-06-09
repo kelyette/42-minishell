@@ -113,8 +113,7 @@ int	exe_cmd(t_exec ex, int can_fork)
 		return (free_redirs(redir), MS_OK);
 	builtinfn = lookup_builtin(ex.tree->data->str);
 	if (builtinfn)
-		return (set_get_code(exe_builtin(ex, builtinfn, redir,
-					can_fork == NO_FORK), ex.env));
+		return (exe_builtin(ex, builtinfn, redir, can_fork == NO_FORK));
 	rval = collect_cmd_data(&cmdd, ex);
 	if (rval)
 		return (free_redirs(redir), rval);
