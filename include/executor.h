@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/02 12:50:21 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/09 17:43:16 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_redir
 	int				tfd;
 	int				flags;
 	int				base_fd;
+	int				active;
 	struct s_redir	*next;
 }	t_redir;
 

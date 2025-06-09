@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:26:55 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/09 18:28:20 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,9 @@ int	exe_builtin(t_exec ex, t_bltnf builtinfn, t_redir *redir, int in_child)
 	int	rval;
 
 	if (perform_redirs(redir))
-		return (MS_ERROR);
+		return (reset_redirs(redir), MS_ERROR);
 	rval = builtinfn(ex.tree, ex.env);
 	reset_redirs(redir);
-	free_redirs(redir);
 	if (in_child)
 		free_exec(ex);
 	return (rval);
@@ -108,10 +107,9 @@ int	exe_cmd(t_exec ex, int can_fork)
 	int		rval;
 
 	if (collect_redirs(&redir, &ex.tree))
-		return (MS_ERROR);
+		return (reset_redirs(redir), MS_ERROR);
 	if (!ex.tree || !ex.tree->data)
-		return (perform_redirs(redir), reset_redirs(redir),
-			free_redirs(redir), MS_OK);
+		return (perform_redirs(redir), reset_redirs(redir), MS_OK);
 	builtinfn = lookup_builtin(ex.tree->data->str);
 	if (builtinfn)
 		return (exe_builtin(ex, builtinfn, redir, can_fork == NO_FORK));

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/09 13:51:22 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/09 17:51:41 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 	while (tree && in_group_tkn(tree->type, GRP_REDIR))
 	{
 		tmp = malloc(sizeof(t_redir));
-		*tmp = (t_redir){tree->type, tree->data->str, 0, 0, -1, *headptr};
+		*tmp = (t_redir){tree->type, tree->data->str, 0, 0, -1, 0, *headptr};
 		if (tree->type == NT_RdrOut || tree->type == NT_RdrAppend)
 			tmp->tfd = 1;
 		if (tree->type == NT_RdrIn)
@@ -90,6 +90,7 @@ int	perform_redirs(t_redir *redir)
 		if (dup2(fd, redir->tfd) == -1)
 			return (close(redir->base_fd), perror(redir->filename), 1);
 		close(fd);
+		redir->active = 1;
 		redir = redir->next;
 	}
 	return (0);
@@ -109,14 +110,21 @@ void	free_redirs(t_redir *redir)
 
 void	reset_redirs(t_redir *redir)
 {
+	t_redir	*head;
+
+	head = redir;
 	while (redir)
 	{
-		if (redir->base_fd >= 0)
-			if (dup2(redir->base_fd, redir->tfd) < 0)
-				perror("minishell");
-		close(redir->base_fd);
+		if (redir->active)
+		{
+			if (redir->base_fd >= 0)
+				if (dup2(redir->base_fd, redir->tfd) < 0)
+					perror("minishell");
+			close(redir->base_fd);
+		}
 		redir = redir->next;
 	}
+	free_redirs(head);
 }
 
 /*void	exe_in(t_node *tree, int *ec, t_env *env)
