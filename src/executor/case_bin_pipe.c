@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/09 17:08:16 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 00:38:11 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 	{
 		pl.pids[i] = fork();
 		if (pl.pids[i] == -1)
-			return (perror("minishell"), clean_pipes(pl.fds, i - 1), 1);
+			return (perror("minishell"), clean_pipes(pl.fds, pl.size - 1), 1);
 		if (pl.pids[i] == 0)
 		{
 			signal(SIGINT, SIG_DFL);
@@ -63,7 +63,7 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 				return (perror("minishell"), free_exec(ex), exit(1), 1);
 			if (i < pl.size - 1 && dup2(pl.fds[i][1], STDOUT_FILENO) == -1)
 				return (perror("minishell"), free_exec(ex), exit(1), 1);
-			clean_pipes(pl.fds, pl.size);
+			clean_pipes(pl.fds, pl.size - 1);
 			ex.tree = pl.cmds[i];
 			ec = exe_cmd(ex, NO_FORK);
 			free(pl.pids);
@@ -71,7 +71,7 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 			exit(ec);
 		}
 	}
-	clean_pipes(pl.fds, pl.size);
+	clean_pipes(pl.fds, pl.size - 1);
 	i = -1;
 	while (++i < pl.size)
 	{
@@ -100,14 +100,14 @@ int	exe_pipe(t_exec ex)
 
 	if (collect_commands(&pl.cmds, &pl.size, ex.tree))
 		return (MS_ERROR);
-	pl.fds = malloc(sizeof(int [2]) * pl.size);
+	pl.fds = malloc(sizeof(int [2]) * (pl.size - 1));
 	pl.pids = malloc(sizeof(pid_t) * pl.size);
 	if (!pl.fds || !pl.pids)
-		return (perror("minishell"), 1);
+		return (free(pl.cmds), perror("minishell"), 1);
 	i = -1;
-	while (++i < pl.size)
+	while (++i < pl.size - 1)
 		if (pipe(pl.fds[i]) == -1)
-			return (perror("minishell"), clean_pipes(pl.fds, --i),
+			return (perror("minishell"), clean_pipes(pl.fds, i),
 				free(pl.pids), MS_ERROR);
 	rval = run_pipe_cmds(pl, ex);
 	return (free(pl.cmds), free(pl.pids), rval);
