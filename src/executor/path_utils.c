@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/10 20:55:12 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:24:33 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	save_some_more_line(char **temp, char **pathptr)
 	struct stat	st;
 
 	if (stat(*temp, &st) == 0 && S_ISDIR(st.st_mode))
-		return (free(*temp), ft_putendl_fd(" Is a directory", 2), 126);
+		return (ft_putstr_fd(*temp, 2), free(*temp),
+			ft_putendl_fd(": Is a directory", 2), 126);
 	if (access(*temp, X_OK) == 0)
 	{
 		*pathptr = *temp;
@@ -104,10 +105,11 @@ int	cmd_path(char **paths, char **pathptr, char *cmd, int *count)
 			return (free(line), free(copy), temp);
 	}
 	if (flag == 0)
-		return (free(line), ft_putendl_fd(" command not found", 2), 127);
+		return (free(line), ft_putstr_fd(cmd, 2),
+			ft_putendl_fd(": command not found", 2), 127);
 	else
-		return (free(line),
-			ft_putendl_fd(" No such file or directory", 2), 127);
+		return (free(line), ft_putstr_fd(cmd, 2),
+			ft_putendl_fd(": No such file or directory", 2), 127);
 }
 
 int	search_bin_path(char **pathptr, t_env **env, char *name)

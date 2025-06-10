@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 18:29:13 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:25:17 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	run_helper(t_token **head, t_env **env, char *line)
 		return (free(tmp), set_get_code(1, env));
 	free(tmp);
 	if (head != NULL && *head != NULL)
-	{              
+	{
 		if (parse(*head, &tree))
 			return (ft_lstclear_token(head), set_get_code(1, env));
 		ft_lstclear_token(head);
@@ -65,7 +65,7 @@ int	run(t_token **head, t_env **env)
 		{
 			if (run_helper(head, env, line) == 1)
 				return (1);
-			continue; 
+			continue ;
 		}
 		free(line);
 	}
