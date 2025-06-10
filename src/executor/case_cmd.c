@@ -6,37 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/09 18:28:20 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 04:13:51 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-static void	free_cmdd(t_cmdd *cmdd)
-{
-	if (cmdd->envp)
-		free_envp(cmdd->envp);
-	if (cmdd->argv)
-		free_arr(cmdd->argv);
-	if (cmdd->path)
-		free(cmdd->path);
-	ft_bzero(cmdd, sizeof(*cmdd));
-}
-
-static int	collect_cmd_data(t_cmdd *cmdd, t_exec ex)
-{
-	int	code;
-
-	cmdd->envp = env_to_envp(ex.env);
-	cmdd->argv = lst_toarr_token(ex.tree->data);
-	if (!cmdd->argv && ex.tree->data->str)
-		return (free_envp(cmdd->envp), 1);
-	cmdd->path = NULL;
-	code = search_bin_path(&cmdd->path, ex.env, cmdd->argv[0]);
-	if (code != 0)
-		return (free_cmdd(cmdd), code);
-	return (0);
-}
 
 int	exe_nofork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 {
@@ -51,11 +25,28 @@ int	exe_nofork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 	exit(MS_NO_EXEC);
 }
 
+int	wait_fork(pid_t pid)
+{
+	int	st;
+	int	sig;
+
+	waitpid(pid, &st, 0);
+	restore_sigint_handler();
+	if (WIFSIGNALED(st))
+	{
+		sig = WTERMSIG(st);
+		if (sig == SIGINT)
+			printf("\n");
+		if (sig == SIGQUIT)
+			printf("Quit (core dumped)\n");
+		return (128 + sig);
+	}
+	return (WEXITSTATUS(st));
+}
+
 int	exe_fork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 {
 	pid_t	pid;
-	int		st;
-	int		sig;
 
 	disable_sigint_handler();
 	pid = fork();
@@ -72,18 +63,7 @@ int	exe_fork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 		free_exec(ex);
 		exit(MS_NO_EXEC);
 	}
-	waitpid(pid, &st, 0);
-	restore_sigint_handler();
-	if (WIFSIGNALED(st))
-	{
- 		sig = WTERMSIG(st);
- 		if (sig == SIGINT)
-			printf("\n");
-		if (sig == SIGQUIT)
-			printf("Quit (core dumped)\n");
-		return (128 + sig);
-	}
-	return (WEXITSTATUS(st));
+	return (wait_fork(pid));
 }
 
 int	exe_builtin(t_exec ex, t_bltnf builtinfn, t_redir *redir, int in_child)

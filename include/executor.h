@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/09 17:43:16 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 04:10:32 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,15 @@ int		exe_cmd(t_exec ex, int can_fork);
 int		collect_redirs(t_redir **headptr, t_node **treeptr);
 int		perform_redirs(t_redir *redir);
 int		search_bin_path(char **pathptr, t_env **env, char *name);
+void	free_pid_cmd(t_pipe pl);
+int		get_rdr_flags(int type);
+int		collect_cmd_data(t_cmdd *cmdd, t_exec ex);
 t_exec	newexec(t_exec ex, t_node *new);
 
 void	reset_redirs(t_redir *redir);
 void	free_redirs(t_redir *redir);
 void	free_exec(t_exec ex);
+void	free_cmdd(t_cmdd *cmdd);
 void	clean_pipes(int (*fds)[2], int size);
 void	close_pipe(int fd[2]);
 

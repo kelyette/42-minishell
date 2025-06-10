@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/06 20:33:02 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 04:14:18 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,14 +115,6 @@ int	search_bin_path(char **pathptr, t_env **env, char *name)
 	code = cmd_path(paths, pathptr, name, &count);
 	if (code != 0)
 		return (ft_free_split(paths), code);
-
 	ft_free_split(paths);
 	return (MS_OK);
 }
-/*
-int	lookup_command(char **pathptr, t_env **env, char *name)
-{
-	if (!name || !*name)
-		return (*pathptr = NULL, 0);
-	if (name[])
-}*/

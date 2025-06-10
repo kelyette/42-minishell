@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:53:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/05 18:05:12 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 03:52:19 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ inline int	in_group_tkn(int type, int group)
 	return ((type & GROUP_MASK) == group);
 }
 
-char	*tok2str(int type)
+/*char	*tok2str(int type)
 {
 	switch (type)
 	{
@@ -120,4 +120,4 @@ void	print_tree_helper(t_node *tree, int indent) // TODO remove dev function
 void	print_tree(t_node *tree)
 {
 	print_tree_helper(tree, 0);
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:49:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 00:38:11 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 04:03:00 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,12 @@ int	collect_commands(t_node ***headptr, int *sizeptr, t_node *tree)
 	return (0);
 }
 
-int	run_pipe_cmds(t_pipe pl, t_exec ex)
+int	start_cmds(t_pipe pl, t_exec ex)
 {
 	int	i;
-	int	st;
-	int	sig;
 	int	ec;
 
-	disable_sigint_handler();
 	i = -1;
-	//printf("starting pipe loop %d\n", getpid());
 	while (++i < pl.size)
 	{
 		pl.pids[i] = fork();
@@ -66,12 +62,20 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 			clean_pipes(pl.fds, pl.size - 1);
 			ex.tree = pl.cmds[i];
 			ec = exe_cmd(ex, NO_FORK);
-			free(pl.pids);
-			free(pl.cmds);
+			free_pid_cmd(pl);
 			exit(ec);
 		}
 	}
-	clean_pipes(pl.fds, pl.size - 1);
+	return (0);
+}
+
+int	wait_cmds(t_pipe pl)
+{
+	int	i;
+	int	sig;
+	int	st;
+	int	ec;
+
 	i = -1;
 	while (++i < pl.size)
 	{
@@ -88,6 +92,19 @@ int	run_pipe_cmds(t_pipe pl, t_exec ex)
 		else if (i == pl.size - 1 && WIFEXITED(st))
 			ec = WEXITSTATUS(st);
 	}
+	return (ec);
+}
+
+int	run_pipe_cmds(t_pipe pl, t_exec ex)
+{
+	int	ec;
+
+	disable_sigint_handler();
+	ec = start_cmds(pl, ex);
+	if (ec)
+		return (ec);
+	clean_pipes(pl.fds, pl.size - 1);
+	ec = wait_cmds(pl);
 	restore_sigint_handler();
 	return (ec);
 }
@@ -111,50 +128,4 @@ int	exe_pipe(t_exec ex)
 				free(pl.pids), MS_ERROR);
 	rval = run_pipe_cmds(pl, ex);
 	return (free(pl.cmds), free(pl.pids), rval);
-}
-
-/*// fd[0] read end, 1 write end
-int	e1xe_pipe(t_node *tree, t_env **env)
-{
-	t_node	**cmds;
-	pid_t	*pids;
-	int		*sts;
-	int		(*fds)[2];
-
-	if (tree->type == NT_Cmd)
-		return (exe_cmd(tree, env, NO_FORK));
-	if (pipe(fd) == -1)
-		return (1);
-	pid[0] = fork();
-	if (pid[0] == -1)
-		return (1);
-	if (pid[0] == 0)
-	{
-		dup2(fd[1], STDOUT_FILENO);
-		close_pipe(fd);
-		exit(exe_pipe(tree->lnode, env));
-	}
-	pid[1] = fork();
-	if (pid[1] == 0)
-	{
-		dup2(fd[0], STDIN_FILENO);
-		close_pipe(fd);
-		exit(exe_cmd(tree->rnode, env, NO_FORK));
-	}
-	close_pipe(fd);
-	waitpid(pid[0], &st[0], 0);
-	waitpid(pid[1], &st[1], 0);
-	return (WEXITSTATUS(st[1]));
-}*/
-
-// Case of || and &&
-int	exe_bin(t_exec ex)
-{
-	int	rval;
-
-	rval = executor(ex, ex.tree->lnode);
-	if ((ex.tree->type == NT_And && rval == 0)
-		|| (ex.tree->type == NT_Or && rval != 0))
-		rval = executor(ex, ex.tree->rnode);
-	return (rval);
 }

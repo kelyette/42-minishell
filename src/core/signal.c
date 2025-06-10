@@ -6,31 +6,31 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:34:42 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/06 16:47:31 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 04:16:12 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void disable_sigint_handler(void)
+void	disable_sigint_handler(void)
 {
-    struct sigaction sa;
+	struct sigaction	sa;
 
-    sa.sa_handler = SIG_IGN;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 // Restore parent custom signal handler after child exits
-void restore_sigint_handler(void)
+void	restore_sigint_handler(void)
 {
-    struct sigaction sa;
+	struct sigaction	sa;
 
-    sa.sa_handler = signal_change;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = signal_change;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 void	signal_change(int signal)
@@ -60,4 +60,3 @@ int	signal_handler(void)
 		return (perror("Error"), 1);
 	return (0);
 }
-

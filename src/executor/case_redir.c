@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:00:14 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/09 17:51:41 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 04:08:24 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,7 @@ int	collect_redirs(t_redir **headptr, t_node **treeptr)
 		*tmp = (t_redir){tree->type, tree->data->str, 0, 0, -1, 0, *headptr};
 		if (tree->type == NT_RdrOut || tree->type == NT_RdrAppend)
 			tmp->tfd = 1;
-		if (tree->type == NT_RdrIn)
-			tmp->flags = O_RDONLY;
-		else if (tree->type == NT_RdrOut)
-			tmp->flags = O_WRONLY | O_CREAT | O_TRUNC;
-		else if (tree->type == NT_RdrAppend)
-			tmp->flags = O_WRONLY | O_CREAT | O_APPEND;
+		tmp->flags = get_rdr_flags(tree->type);
 		*headptr = tmp;
 		tree = tree->lnode;
 	}
