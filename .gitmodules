@@ -1,3 +1,0 @@
-[submodule "minishell_tester"]
-	path = minishell_tester
-	url = ./minishell_tester
