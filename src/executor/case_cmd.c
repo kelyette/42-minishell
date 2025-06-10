@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 17:03:08 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:01:52 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	exe_nofork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 	execve(cmdd->path, cmdd->argv, cmdd->envp);
 	perror(cmdd->argv[0]);
 	free_exec(ex);
+	free(cmdd->path);
+	free_envp(cmdd->envp);
 	exit(MS_NO_EXEC);
 }
 
@@ -61,6 +63,8 @@ int	exe_fork(t_exec ex, t_cmdd *cmdd, t_redir *redir)
 		execve(cmdd->path, cmdd->argv, cmdd->envp);
 		perror(cmdd->argv[0]);
 		free_exec(ex);
+		free(cmdd->path);
+		free_envp(cmdd->envp);
 		exit(MS_NO_EXEC);
 	}
 	return (wait_fork(pid));

@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:52:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 14:47:42 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:49:57 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*case_expand(char *s, int i, t_env **env)
 
 	count = i;
 	i++;
-	while (ft_isalnum(s[i]))
+	while (ft_isalnum(s[i]) || s[i] == '_')
 		i++;
 	i--;
 	temp = ft_substr(&(s[count + 1]), 0, i - count);
