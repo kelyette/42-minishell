@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/10 15:39:34 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:48:17 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,27 @@ char	*save_some_line(char *cmd, char **line, int *flag)
 	char	*temp;
 	char	*temp1;
 
+	*flag = 1;
 	if (cmd != NULL && cmd[0] == '.')
 	{
 		temp1 = &cmd[1];
 		temp = getcwd(NULL, 0);
 		if (temp == NULL)
-			return (NULL);
+			return (perror("Error"), NULL);
 		*line = ft_strjoin(temp, temp1);
 		if (*line == NULL)
-			return (free(temp), NULL);
+			return (perror("Error"), free(temp), NULL);
 		return (free(temp), *line);
 	}
-	else if (cmd != NULL && cmd[0] != '/' && ft_strchr(cmd, '/') == NULL)
+	else if ((cmd != NULL && cmd[0] != '/' && ft_strchr(cmd, '/') == NULL))
 	{
 		*line = ft_strjoin("/", cmd);
 		*flag = 0;
 	}
-	else if (cmd != NULL)
-	{
+	else
 		*line = ft_strdup(cmd);
-		*flag = 1;
-	}
+	if (*line == NULL)
+		return (NULL);
 	return (*line);
 }
 
@@ -89,29 +89,25 @@ int	cmd_path(char **paths, char **pathptr, char *cmd, int *count)
 	int		temp;
 	int		flag;
 
-	if (cmd == NULL)
-		return (1);
 	line = save_some_line(cmd, &line, &flag);
 	if (line == NULL)
-		return (perror("Error"), 1);
+		return (1);
 	while (paths[*count] != NULL)
 	{
-		copy = ft_strdup(paths[*count]);
+		copy = ft_strdup(paths[(*count)++]);
 		if (copy == NULL)
 			return (perror("Error"), 1);
 		temp = cmd_path_helper(line, copy, pathptr);
-		if (temp == 126)
-			return (free(line), free(copy), 126);
-		else if (temp == 1)
-			return (free(line), free(copy), 1);
-		else if (temp == -1)
+		if (temp == -1)
 			return (free(line), free(copy), 0);
-		(*count)++;
+		else if (temp == 126 || temp == 1)
+			return (free(line), free(copy), temp);
 	}
 	if (flag == 0)
 		return (free(line), ft_putendl_fd(" command not found", 2), 127);
 	else
-		return (free(line), ft_putendl_fd(" No such file or directory", 2), 127);
+		return (free(line),
+			ft_putendl_fd(" No such file or directory", 2), 127);
 }
 
 int	search_bin_path(char **pathptr, t_env **env, char *name)
