@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 21:25:17 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 22:05:40 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ int	run(t_token **head, t_env **env)
 		history_handler(line);
 		if (line != NULL && line[0] != '\0')
 		{
+			if (!ft_strncmp(line, "$EMPTY", 7))
+			{
+				set_get_code(0, env);
+				continue ;
+			}
 			if (run_helper(head, env, line) == 1)
 				return (1);
 			continue ;
