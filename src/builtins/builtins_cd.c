@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:39:54 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 21:04:03 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:57:27 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,11 @@ int	case_cd_no_arg(t_env **env)
 }
 
 // case cd
-int	builtin_cd(t_node *node, t_env **env)
+int	builtin_cd(t_node *node, t_env **env, t_exec ex)
 {
 	t_token	*current;
 
+	(void)ex;
 	current = node->data;
 	if (current->next == NULL)
 		return (case_cd_no_arg(env));

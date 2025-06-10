@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 15:15:04 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/28 17:09:54 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:09:21 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 int		signal_handler(void);
 void	signal_change(int signal);
-void 	disable_sigint_handler(void);
-void 	restore_sigint_handler(void);
+void	disable_sigint_handler(void);
+void	restore_sigint_handler(void);
 
 typedef enum e_status
 {

@@ -6,10 +6,11 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 17:53:08 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 17:08:16 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "lexer.h"
 #include "parser.h"
 #include "executor.h"
@@ -25,12 +26,34 @@ void	history_handler(char *line)
 	}
 }
 
+int	run_helper(t_token **head, t_env **env, char *line)
+{
+	char	*tmp;
+	t_node	*tree;
+
+	tmp = dollar_handler(line, env);
+	free(line);
+	if (tmp == NULL)
+		return (set_get_code(1, env));
+	if (lexer(tmp, head, env))
+		return (free(tmp), set_get_code(1, env));
+	free(tmp);
+	if (head != NULL && *head != NULL)
+	{
+		if (parse(*head, &tree))
+			return (ft_lstclear_token(head), set_get_code(1, env));
+		ft_lstclear_token(head);
+		if (tree)
+			executor((t_exec){&tree, env, 0}, tree);
+		free_tree(&tree);
+	}
+	return (0);
+}
+
 // main helper because of line count
 int	run(t_token **head, t_env **env)
 {
 	char	*line;
-	char	*tmp;
-	t_node	*tree;
 
 	while (1)
 	{
@@ -40,22 +63,8 @@ int	run(t_token **head, t_env **env)
 		history_handler(line);
 		if (line != NULL && line[0] != '\0')
 		{
-			tmp = dollar_handler(line, env);
-			free(line);
-			if (tmp == NULL)
-				return (set_get_code(1, env));
-			if (lexer(tmp, head, env))
-				return (free(tmp), set_get_code(1, env));
-			free(tmp);
-			if (head != NULL && *head != NULL)
-			{
-				if (parse(*head, &tree))
-					return (ft_lstclear_token(head), set_get_code(1, env));
-				ft_lstclear_token(head);
-				if (tree)
-					executor((t_exec){&tree, env, 0}, tree);
-				free_tree(&tree);
-			}
+			if (run_helper(head, env, line) == 1)
+				return (1);
 		}
 	}
 }

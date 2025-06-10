@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:59:30 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 21:02:30 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:53:54 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ void	pop_env(t_env *temp, t_env **env)
 }
 
 // case unset, pop multiple variables
-int	builtin_unset(t_node *node, t_env **env)
+int	builtin_unset(t_node *node, t_env **env, t_exec ex)
 {
 	t_env	*temp;
 	t_token	*current;
 
+	(void)ex;
 	if (!env || !*env || !node->data || !node->data->next)
 		return (0);
 	current = node->data->next;

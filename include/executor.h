@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 10:50:58 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 04:10:32 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 17:10:06 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "libft.h"
 # include "envp.h"
 # include "parser.h"
+# include "exec.h"
 # include "builtins.h"
 # define DO_FORK 1
 # define NO_FORK 0
@@ -51,13 +52,6 @@ typedef struct s_pipeline
 	int		(*fds)[2];
 	int		size;
 }	t_pipe;
-
-typedef struct s_exec
-{
-	t_node	**root;
-	t_env	**env;
-	t_node	*tree;
-}	t_exec;
 
 int		executor(t_exec ex, t_node *tree);
 int		exe_bin(t_exec ex);

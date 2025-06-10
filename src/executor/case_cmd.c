@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:17:33 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/10 04:13:51 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 17:03:08 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	exe_builtin(t_exec ex, t_bltnf builtinfn, t_redir *redir, int in_child)
 
 	if (perform_redirs(redir))
 		return (reset_redirs(redir), MS_ERROR);
-	rval = builtinfn(ex.tree, ex.env);
+	rval = builtinfn(ex.tree, ex.env, ex);
 	reset_redirs(redir);
 	if (in_child)
 		free_exec(ex);

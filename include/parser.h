@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 17:50:44 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/05/05 18:03:36 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 16:31:25 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ enum	e_node_t
 {
 	NT_Candidate = 0,
 	NT_Cmd = 1,
-	NT_Assign = TK_Assign, // ---- 2
-	NT_RdrIn = TK_In, // --------- 17
-	NT_RdrOut = TK_Out, // ------- 18
-	NT_RdrAppend = TK_Append, // - 19
-	NT_HereDoc = TK_HereDoc, // -- 20
-	NT_Pipe = TK_Pipe, // -------- 33
-	NT_And = TK_And, // ---------- 49
-	NT_Or = TK_Or, // ------------ 50
+	NT_Assign = TK_Assign,
+	NT_RdrIn = TK_In,
+	NT_RdrOut = TK_Out,
+	NT_RdrAppend = TK_Append,
+	NT_HereDoc = TK_HereDoc,
+	NT_Pipe = TK_Pipe,
+	NT_And = TK_And,
+	NT_Or = TK_Or,
 };
 
 // TYPE     CHILDREN          DATA

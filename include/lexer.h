@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:04:37 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/04 12:33:51 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:30:40 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,18 @@
 # define GRP_PIPE   32
 # define GRP_BIN    48
 
-extern sig_atomic_t	g_signal;
-
 enum	e_token_t
 {
-	TK_Null, // 0
-	TK_String = GRP_SIMPLE | 1, // 1
-	TK_Assign = GRP_SIMPLE | 2, // 2
-	TK_In = GRP_REDIR | 1,// 17
-	TK_Out = GRP_REDIR | 2,// 18
-	TK_Append = GRP_REDIR | 3,// 19
-	TK_HereDoc = GRP_REDIR | 4,// 20
-	TK_Pipe = GRP_PIPE | 1,// 33
-	TK_And = GRP_BIN | 1,// 49
-	TK_Or = GRP_BIN | 2,// 50
+	TK_Null,
+	TK_String = GRP_SIMPLE | 1,
+	TK_Assign = GRP_SIMPLE | 2,
+	TK_In = GRP_REDIR | 1,
+	TK_Out = GRP_REDIR | 2,
+	TK_Append = GRP_REDIR | 3,
+	TK_HereDoc = GRP_REDIR | 4,
+	TK_Pipe = GRP_PIPE | 1,
+	TK_And = GRP_BIN | 1,
+	TK_Or = GRP_BIN | 2,
 	TK_Number,
 };
 

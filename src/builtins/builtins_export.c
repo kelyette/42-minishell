@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 11:11:29 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 21:11:59 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 16:54:45 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,11 @@ int	argument_checker(char *str)
 }
 
 // case export
-int	builtin_export(t_node *node, t_env **env)
+int	builtin_export(t_node *node, t_env **env, t_exec ex)
 {
 	t_token	*current;
 
+	(void)ex;
 	if (env == NULL && *env == NULL)
 		return (0);
 	current = node->data;
@@ -130,13 +131,9 @@ int	builtin_export(t_node *node, t_env **env)
 			return (1);
 		}
 		if (current->type == TK_Assign || ft_strchr(current->str, '='))
-		{
 			return (export_assign(current->str, env));
-		}
 		else if (current->type == TK_String)
-		{
 			return (export_string(current->str, env));
-		}
 	}
 	return (0);
 }
