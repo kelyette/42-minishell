@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:18:57 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/10 04:14:18 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 15:39:34 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,32 @@ int	cmd_path_helper(char *line, char *copy, char **pathptr)
 	return (0);
 }
 
-char	*save_some_line(char *cmd, char **line)
+char	*save_some_line(char *cmd, char **line, int *flag)
 {
-	if (cmd != NULL && cmd[0] != '/' )
+	char	*temp;
+	char	*temp1;
+
+	if (cmd != NULL && cmd[0] == '.')
+	{
+		temp1 = &cmd[1];
+		temp = getcwd(NULL, 0);
+		if (temp == NULL)
+			return (NULL);
+		*line = ft_strjoin(temp, temp1);
+		if (*line == NULL)
+			return (free(temp), NULL);
+		return (free(temp), *line);
+	}
+	else if (cmd != NULL && cmd[0] != '/' && ft_strchr(cmd, '/') == NULL)
+	{
 		*line = ft_strjoin("/", cmd);
+		*flag = 0;
+	}
 	else if (cmd != NULL)
+	{
 		*line = ft_strdup(cmd);
+		*flag = 1;
+	}
 	return (*line);
 }
 
@@ -67,10 +87,11 @@ int	cmd_path(char **paths, char **pathptr, char *cmd, int *count)
 	char	*line;
 	char	*copy;
 	int		temp;
+	int		flag;
 
 	if (cmd == NULL)
 		return (1);
-	line = save_some_line(cmd, &line);
+	line = save_some_line(cmd, &line, &flag);
 	if (line == NULL)
 		return (perror("Error"), 1);
 	while (paths[*count] != NULL)
@@ -87,7 +108,10 @@ int	cmd_path(char **paths, char **pathptr, char *cmd, int *count)
 			return (free(line), free(copy), 0);
 		(*count)++;
 	}
-	return (free(line), ft_putendl_fd(" command not found", 2), 127);
+	if (flag == 0)
+		return (free(line), ft_putendl_fd(" command not found", 2), 127);
+	else
+		return (free(line), ft_putendl_fd(" No such file or directory", 2), 127);
 }
 
 int	search_bin_path(char **pathptr, t_env **env, char *name)

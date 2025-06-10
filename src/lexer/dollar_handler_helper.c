@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 10:52:16 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/05/14 16:42:50 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/10 14:47:42 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*find_variable(char *s, t_env **env)
 		return (perror("Error"), NULL);
 	while (temp != NULL)
 	{
-		if (!ft_strncmp(s, temp->key, ft_strlen(s)))
+		if (!ft_strncmp(s, temp->key, ft_strlen(s) + 1))
 		{
 			free(line);
 			line = ft_strdup(temp->value);
