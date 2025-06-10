@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 11:53:48 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/04 20:58:38 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/10 03:36:13 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	builtin_echo(t_node *node, t_env **env)
 	flag = 0;
 	current = node->data->next;
 	if (current == NULL)
-		return (printf("\n"), 0);
+		return (write(1, "\n", 1), 0);
 	if (!ft_strncmp(current->str, "-n", 3))
 	{
 		flag = 1;
@@ -32,13 +32,13 @@ int	builtin_echo(t_node *node, t_env **env)
 	}
 	while (current != NULL)
 	{
-		printf("%s", current->str);
+		ft_printf("%s", current->str);
 		if (current->next != NULL)
-			printf(" ");
+			ft_printf(" ");
 		current = current->next;
 	}
 	if (flag == 0)
-		printf("\n");
+		ft_printf("\n");
 	return (0);
 }
 
@@ -55,7 +55,7 @@ int	builtin_env(t_node *node, t_env **env)
 	{
 		if (temp->exported == true && temp->code == false)
 		{
-			printf("%s=%s\n", temp->key, temp->value);
+			ft_printf("%s=%s\n", temp->key, temp->value);
 		}
 		temp = temp->next;
 	}
@@ -72,7 +72,7 @@ int	builtin_pwd(t_node *node, t_env **env)
 	line = getcwd(NULL, 0);
 	if (line == NULL)
 		return (perror("Error"), 1);
-	printf("%s\n", line);
+	ft_printf("%s\n", line);
 	free(line);
 	return (0);
 }
