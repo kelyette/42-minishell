@@ -90,8 +90,6 @@ int	search_bin_path(char **pathptr, t_env **env, char *name)
 
 	if (!name)
 		return (0);
-	if (name[0] == '.')
-		return (case_slash(pathptr, name));
 	i = -1;
 	while (name[++i])
 	{
