@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/11 11:23:39 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:41:27 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	run_helper(t_token **head, t_env **env, char *line)
 {
 	char	*tmp;
 	t_node	*tree;
+	int		rval;
 
 	tmp = dollar_handler(line, env);
 	free(line);
@@ -40,8 +41,9 @@ int	run_helper(t_token **head, t_env **env, char *line)
 	free(tmp);
 	if (head != NULL && *head != NULL)
 	{
-		if (parse(*head, &tree))
-			return (ft_lstclear_token(head), set_get_code(1, env));
+		rval = parse(*head, &tree);
+		if (rval != 0)
+			set_get_code(rval, env);
 		ft_lstclear_token(head);
 		if (tree)
 			executor((t_exec){&tree, env, 0}, tree);
