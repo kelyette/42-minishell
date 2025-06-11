@@ -6,7 +6,7 @@
 /*   By: hoannguy <hoannguy@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 13:37:47 by hoannguy          #+#    #+#             */
-/*   Updated: 2025/06/11 10:27:41 by hoannguy         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:23:39 by hoannguy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ int	run_helper(t_token **head, t_env **env, char *line)
 	return (0);
 }
 
+int	empty_handler(char *line, t_env **env)
+{
+	int	i;
+
+	i = 6;
+	if (get_env_key(env, "EMPTY"))
+		return (1);
+	while (line[i] != '\0')
+	{
+		if (!ft_isspace(line[i]))
+			return (1);
+		i++;
+	}
+	return (set_get_code(0, env));
+}
+
 // main helper because of line count
 int	run(t_token **head, t_env **env)
 {
@@ -63,10 +79,13 @@ int	run(t_token **head, t_env **env)
 		history_handler(line);
 		if (line != NULL && line[0] != '\0')
 		{
-			if (!ft_strncmp(line, "$EMPTY", 7))
+			if (!ft_strncmp(line, "$EMPTY", 6))
 			{
-				set_get_code(0, env);
-				continue ;
+				if (empty_handler(line, env) == 0)
+				{
+					free(line);
+					continue ;
+				}
 			}
 			if (run_helper(head, env, line) == 1)
 				return (1);
