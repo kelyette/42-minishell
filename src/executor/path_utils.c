@@ -85,17 +85,25 @@ int	case_slash(char **pathptr, char *name)
 
 int	search_bin_path(char **pathptr, t_env **env, char *name)
 {
-	int		i;
 	char	*temp;
+	t_env	*tmp;
+	int		i;
 
 	if (!name)
 		return (0);
-	i = -1;
-	while (name[++i])
+	if (name[0] == '~' && name[1] == '/')
 	{
-		if (name[i] == '/')
-			return (case_slash(pathptr, name));
+		tmp = get_env_key(env, "HOME");
+		if (tmp != NULL)
+		{
+			temp = ft_strjoin(tmp->value, name + 1);
+			i = case_slash(pathptr, temp);
+			free(temp);
+			return (i);
+		}
 	}
+	if (ft_strchr(name, '/'))
+		return (case_slash(pathptr, name));
 	temp = ft_strjoin("/", name);
 	if (temp == NULL)
 		return (perror("minishell"), 1);
