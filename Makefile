@@ -44,7 +44,7 @@ $(NAME): $(OBJ)
 	@echo "Built $@"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIRS)
-	$(CC) $(CCFLAGS) $(LDIRFLAGS) $(INCFLAGS) -o $@ -c $<
+	$(CC) $(CCFLAGS) $(INCFLAGS) -o $@ -c $<
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFTDIR)

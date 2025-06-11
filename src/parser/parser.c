@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 16:19:27 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/09 13:25:56 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/11 01:11:55 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ int	parse(t_token *head, t_node **rootptr)
 	root = parse_bin(&ctx);
 	print_err(&ctx);
 	if (ctx.error == PE_Internal)
-		return (1);
-	else if (ctx.error == PE_OK)
-		*rootptr = root;
-	return (0);
+		return (MS_ERROR);
+	else if (ctx.error == PE_BadTkn || ctx.error == PE_UEOL)
+		return (MS_BAD_USAGE);
+	return (*rootptr = root, MS_OK);
 }

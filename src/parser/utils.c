@@ -6,7 +6,7 @@
 /*   By: kcsajka <kcsajka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 19:53:13 by kcsajka           #+#    #+#             */
-/*   Updated: 2025/06/10 03:52:19 by kcsajka          ###   ########.fr       */
+/*   Updated: 2025/06/11 11:36:14 by kcsajka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ void	print_err(t_pctx *ctx)
 	if (ctx->error == PE_OK)
 		return ;
 	else if (ctx->error == PE_UEOL || !ctx->tkn)
-		printf(STERREOL);
+		ft_putendl_fd("syntax error near unexpected newline", 2);
 	else if (ctx->error == PE_BadTkn)
-		printf(STERRBADTKN, ctx->tkn->str);
+	{
+		ft_putstr_fd("syntax error near unexpected token ", 2);
+		ft_putendl_fd(ctx->tkn->str, 2);
+	}
 	else if (ctx->error == PE_Internal)
 		perror("fatal: ");
 	else
-		printf("error: unknown error code %d\n", ctx->error);
+		ft_putendl_fd("error: unknown error code", 2);
 }
 
 inline void	set_err(t_pctx *ctx, int err)
