@@ -10,7 +10,6 @@ OBJDIR       ?= target
 MODULES      := core envp lexer parser builtins executor
 OBJDIRS      := $(addprefix $(OBJDIR)/,$(MODULES))
 LIBFTDIR     := libft
-RLLIBDIR     := /opt/homebrew/Cellar/readline/8.2.13# TODO
 
 SRC          := $(addprefix core/,main.c signal.c)
 SRC          += $(addprefix envp/,envp.c envp_helper_1.c envp_helper_2.c\
@@ -32,10 +31,6 @@ LDIRFLAGS    := -L$(RLLIBDIR)/lib -L$(LIBFTDIR)
 LFLAGS       := -lreadline -lft
 
 NAME         = minishell
-
-ifneq ($(ASAN),0)
-	CCFLAGS += -fsanitize=address
-endif
 
 all: $(LIBFT) $(NAME)
 
